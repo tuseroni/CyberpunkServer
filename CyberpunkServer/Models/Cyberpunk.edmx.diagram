@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9233e4e25f394b5fac3804be9f16f32e" Name="Diagram1" ZoomLevel="98">
+        <EntityTypeShape EntityType="CyberpunkModel.ArmorLocations" Width="1.5" PointX="3" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.Cybernetics" Width="1.5" PointX="6" PointY="22" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.CyberneticTypes" Width="1.5" PointX="3.75" PointY="21" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.Fortress" Width="1.5" PointX="13" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressCodeGates" Width="1.5" PointX="15.25" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressCPU" Width="1.5" PointX="18.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressMemory" Width="1.5" PointX="15.25" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressWalls" Width="1.5" PointX="10.625" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.NetObjType" Width="1.5" PointX="12.625" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.Player" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerArmor" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerCybernetics" Width="1.5" PointX="9.375" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerRoles" Width="1.5" PointX="0.75" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerSkill" Width="1.5" PointX="5.25" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerStat" Width="1.5" PointX="5.25" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerWeapon" Width="1.5" PointX="8.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.Skill" Width="1.5" PointX="3" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.SkillTypes" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.Stat" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.Subgrid" Width="1.5" PointX="10.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.SurgicalCode" Width="1.5" PointX="3.75" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.WeaponConcTypes" Width="1.5" PointX="3.5" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.Weapons" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberpunkModel.WeaponTypes" Width="1.5" PointX="9.125" PointY="1.625" IsExpanded="true" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerArm__Locat__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__Cyberneti__SurgT__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__Cybernetic__Type__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Cyber__7D439ABD" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__Fortress__subgri__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressC__Fortr__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressC__Fortr__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressM__Fortr__628FA481" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressW__Fortr__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressCo__Type__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressCP__Type__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressMe__Type__6383C8BA" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressWa__Type__59FA5E80" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__Player__RoleID__6B24EA82" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerArm__Playe__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Playe__7E37BEF6" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerSki__Playe__7A672E12" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerSta__Playe__6E01572D" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerWea__Playe__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerSki__Skill__797309D9" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerSta__StatI__6EF57B66" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerWea__Weapo__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__Skill__StatID__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__Weapons__Conc__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK__Weapons__Type__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberpunkModel.FK_Skill_Skill" />
+        <AssociationConnector Association="CyberpunkModel.FK_Skill_SkillTypes" />
+        <EntityTypeShape EntityType="CyberpunkModel.C__MigrationHistory" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CyberpunkModel.AspNetRoles" Width="1.5" PointX="11.375" PointY="14.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.AspNetUserClaims" Width="1.5" PointX="15.875" PointY="15.625" />
+        <EntityTypeShape EntityType="CyberpunkModel.AspNetUserLogins" Width="1.5" PointX="15.875" PointY="13" />
+        <EntityTypeShape EntityType="CyberpunkModel.AspNetUsers" Width="1.5" PointX="13.625" PointY="13.375" />
+        <AssociationConnector Association="CyberpunkModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="CyberpunkModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="CyberpunkModel.AspNetUserRoles" />
+        <AssociationConnector Association="CyberpunkModel.FK_Player_AspNetUsers" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

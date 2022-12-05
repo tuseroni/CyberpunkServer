@@ -1,0 +1,83 @@
+﻿@model CyberpunkServer.Models.Player
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Player</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Handle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Handle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SIN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SIN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.REP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.REP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Humanity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Humanity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dammage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dammage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlayerRoles.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlayerRoles.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUsers.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUsers.Email)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

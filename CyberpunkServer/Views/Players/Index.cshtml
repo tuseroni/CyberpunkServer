@@ -1,0 +1,76 @@
+﻿@model IEnumerable<CyberpunkServer.Models.Player>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Handle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SIN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.REP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Humanity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dammage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlayerRoles.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AspNetUsers.Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Handle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SIN)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.REP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Humanity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dammage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PlayerRoles.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AspNetUsers.Email)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

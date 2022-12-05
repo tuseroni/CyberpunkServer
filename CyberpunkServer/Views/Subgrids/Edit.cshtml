@@ -1,0 +1,217 @@
+﻿@model CyberpunkServer.Models.DTO.SubgridData
+
+@{
+	ViewBag.Title = "Edit";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+	rect.gridTile {
+		fill: transparent;
+		border-style: solid;
+		border-width: 1px;
+		stroke: black;
+	}
+
+		rect.gridTile:hover {
+			fill: #add8e6a1;
+		}
+</style>
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<h4>Subgrid</h4>
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.id)
+
+		<div id="gridHolder"></div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Save" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
+
+<div>
+	@Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+	
+	<script src="~/Scripts/jquery.signalR-2.4.3.js"></script>
+	<script src="~/signalr/hubs"></script>
+	<script>
+
+		var subgridData =@Html.Raw(@ViewBag.subgrid);
+		var awaitingPlayerAdd = false;
+		var awaitingPlayer = null;
+		var connection = $.hubConnection();
+		connection.logging = true;
+		connection.url = "/com";
+		var contosoChatHubProxy = connection.createHubProxy('ComHub');
+		contosoChatHubProxy.on('PlayerMove', function (PlayerID, x, y) {
+			var gridtileData = subgridLookup[y][x];
+			var svgElem = Netrunners[PlayerID].SVGElem;
+			svgElem.parentElement.removeChild(svgElem);
+			gridtileData.gElem.appendChild(svgElem);
+
+			console.log(x, y);
+		});
+		contosoChatHubProxy.on('JackInRequestReceived', function (playerData)
+		{
+			awaitingPlayerAdd = true;
+			awaitingPlayer = playerData;
+			console.log(playerData.Handle);
+		});
+		connection.reconnecting(function () {
+			console.log("reconnecting");
+		});
+		connection.start()
+			.done(function () {
+				console.log('Now connected, connection ID=' + connection.id);
+
+			})
+			.fail(function () { console.log('Could not connect'); });
+
+
+		//$(function () {
+		//	var hub = $.connection.ComHub;
+		//	$.connection.hub
+		//		.start()
+		//		.done(function () {
+		//			//hub.server.say('Hello SignalR!');
+		//		});
+		//	hub.PlayerMove = function (PlayerID, x, y) {
+		//		console.log(x, y);
+		//	};
+		//	hub.JackInRequestReceived = function (playerData) {
+		//		console.log(playerData.Handle);
+		//	}
+		//});
+
+
+		// connect
+
+
+        var subgridLookup = {};
+		var gridSize = 20;//px
+		var Netrunners = {};
+        var svgElems = {
+            "1": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><rect width="512" height="512" fill="black"></rect></svg>`,
+            "2": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><circle cx="256" cy="256" r="180" stroke="black" stroke-width="50" fill="white" fill-opacity="0"></circle><line x1="51" x2="455" y1="51" y2="455" stroke="black" stroke-width="40"></line><line x1="51" x2="455" y1="455" y2="51" stroke="black" stroke-width="40"></line></svg>`,
+            "3": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><rect x="81" y="51" width="350" height="410" stroke="black" stroke-width="40" fill="white" fill-opacity="0"></rect></svg>`,
+            "4": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><rect x="51" y="51" fill="white" stroke="black" stroke-width="50" width="400" height="400" fill-opacity="0"></rect><line x1="31" x2="450" y1="140" y2="140" stroke="black" stroke-width="30"></line><line x1="31" x2="450" y1="360" y2="360" stroke="black" stroke-width="30"></line></svg>`,
+            "5": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><path fill="black" d="M439.15 453.06L297.17 384l141.99-69.06c7.9-3.95 11.11-13.56 7.15-21.46L432 264.85c-3.95-7.9-13.56-11.11-21.47-7.16L224 348.41 37.47 257.69c-7.9-3.95-17.51-.75-21.47 7.16L1.69 293.48c-3.95 7.9-.75 17.51 7.15 21.46L150.83 384 8.85 453.06c-7.9 3.95-11.11 13.56-7.15 21.47l14.31 28.63c3.95 7.9 13.56 11.11 21.47 7.15L224 419.59l186.53 90.72c7.9 3.95 17.51.75 21.47-7.15l14.31-28.63c3.95-7.91.74-17.52-7.16-21.47zM150 237.28l-5.48 25.87c-2.67 12.62 5.42 24.85 16.45 24.85h126.08c11.03 0 19.12-12.23 16.45-24.85l-5.5-25.87c41.78-22.41 70-62.75 70-109.28C368 57.31 303.53 0 224 0S80 57.31 80 128c0 46.53 28.22 86.87 70 109.28zM280 112c17.65 0 32 14.35 32 32s-14.35 32-32 32-32-14.35-32-32 14.35-32 32-32zm-112 0c17.65 0 32 14.35 32 32s-14.35 32-32 32-32-14.35-32-32 14.35-32 32-32z"></path></svg>`,
+            "6": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><path fill="black" d="M439.15 453.06L297.17 384l141.99-69.06c7.9-3.95 11.11-13.56 7.15-21.46L432 264.85c-3.95-7.9-13.56-11.11-21.47-7.16L224 348.41 37.47 257.69c-7.9-3.95-17.51-.75-21.47 7.16L1.69 293.48c-3.95 7.9-.75 17.51 7.15 21.46L150.83 384 8.85 453.06c-7.9 3.95-11.11 13.56-7.15 21.47l14.31 28.63c3.95 7.9 13.56 11.11 21.47 7.15L224 419.59l186.53 90.72c7.9 3.95 17.51.75 21.47-7.15l14.31-28.63c3.95-7.91.74-17.52-7.16-21.47zM150 237.28l-5.48 25.87c-2.67 12.62 5.42 24.85 16.45 24.85h126.08c11.03 0 19.12-12.23 16.45-24.85l-5.5-25.87c41.78-22.41 70-62.75 70-109.28C368 57.31 303.53 0 224 0S80 57.31 80 128c0 46.53 28.22 86.87 70 109.28zM280 112c17.65 0 32 14.35 32 32s-14.35 32-32 32-32-14.35-32-32 14.35-32 32-32zm-112 0c17.65 0 32 14.35 32 32s-14.35 32-32 32-32-14.35-32-32 14.35-32 32-32z"></path></svg>`
+		}
+		function addPlayerToGrid(playerData,x,y)
+		{
+			contosoChatHubProxy.invoke('AcceptJackInRequest', playerData, subgridData).done(function () {
+				console.log('Invocation of AcceptJackInRequest succeeded');
+				playerData.Type = 6;
+				Netrunners[playerData.id] = { "PlayerData": playerData, "SVGElem": null };
+				var gridtileData = subgridLookup[y][x];
+				Netrunners[playerData.id].SVGElem=placeElem(playerData, gridtileData);
+
+
+			}).fail(function (error) {
+				console.log('Invocation of AcceptJackInRequest failed. Error: ' + error);
+			});
+		}
+		function handleTileClick(tile, e)
+		{
+			if (awaitingPlayerAdd)
+			{
+				addPlayerToGrid(awaitingPlayer, tile.getAttribute("xPos"), tile.getAttribute("yPos"));
+				awaitingPlayer = null;
+				awaitingPlayerAdd = false;
+			}
+		}
+        function buildGrid(subgrid)
+        {
+            var height = subgrid.height;
+            var width = subgrid.width;
+
+            var gridHolder = document.getElementById("gridHolder");
+            var layoutSVG = document.createElementNS('http://www.w3.org/2000/svg', "svg");
+			layoutSVG.setAttribute("height", height*gridSize);
+			layoutSVG.setAttribute("width", width * gridSize);
+            layoutSVG.setAttribute("viewBox", `0 0 ${width * gridSize} ${height * gridSize}`);
+            for (var i = 0; i < height; i++)
+            {
+                var row = document.createElementNS('http://www.w3.org/2000/svg', "g");
+                row.setAttribute("transform", `translate(0,${i * gridSize})`);
+                subgridLookup[i] = {};
+                for (var j = 0; j < width; j++)
+                {
+                    var tileGroup = document.createElementNS('http://www.w3.org/2000/svg', "g");
+                    tileGroup.setAttribute("transform", `translate(${j * gridSize},0)`);
+                    var tile = document.createElementNS('http://www.w3.org/2000/svg', "rect");
+                    tile.setAttribute("width", gridSize);
+                    tile.setAttribute("height", gridSize);
+                    tile.setAttribute("xPos", j);
+					tile.setAttribute("yPos", i);
+					tile.classList.add("gridTile");
+					tile.addEventListener("click", function (e) { handleTileClick(this, e) });
+                    tileGroup.appendChild(tile);
+					subgridLookup[i][j] = { "gElem": tileGroup, "ContainedElement": null }
+                    row.appendChild(tileGroup);
+                }
+				layoutSVG.appendChild(row);
+            }
+			for (var fort of subgrid.Fortress)
+            {
+
+                for (var wall of fort.FortressWalls)
+                {
+                    addFortElem(wall);
+                }
+				for (var CPU of fort.FortressCPU) {
+                    addFortElem(CPU);
+                }
+				for (var Mem of fort.FortressMemory) {
+                    addFortElem(Mem);
+				}
+                for (var gate of fort.FortressCodeGates)
+                {
+					addFortElem(gate)
+                }
+            }
+            gridHolder.appendChild(layoutSVG);
+        }
+		function placeElem(elem, gridtileData)
+        {
+            
+			if (gridtileData.ContainedElement != null)
+            {
+                return;
+            }
+			var gridTile = gridtileData.gElem;
+			var codeGateSvg = svgElems[elem.Type];
+			gridTile.innerHTML = codeGateSvg + gridTile.innerHTML;
+			codeGateSvg = gridTile.children[0];
+			codeGateSvg.dataset["elemdata"] = JSON.stringify(elem);
+			gridtileData.ContainedElement = codeGateSvg;
+			return codeGateSvg;
+        }
+        function addFortElem(elem)
+        {
+			var gridtileData = subgridLookup[elem.yPos][elem.xPos];
+			var gridTile = gridtileData.gElem;
+			var codeGateSvg = svgElems[elem.Type];
+            gridTile.innerHTML = codeGateSvg + gridTile.innerHTML;
+            codeGateSvg = gridTile.children[0];
+            codeGateSvg.dataset["elemdata"] = JSON.stringify(elem);
+			gridtileData.ContainedElement = codeGateSvg;
+			return codeGateSvg;
+        }
+		buildGrid(subgridData)
+	</script>
+}

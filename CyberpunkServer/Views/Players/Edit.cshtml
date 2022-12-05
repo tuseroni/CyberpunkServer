@@ -1,0 +1,256 @@
+﻿@model CyberpunkServer.Models.DTO.PlayerData
+
+@{
+	ViewBag.Title = "Edit";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+	.PlayerStats, .PlayerSkill, .playerInfo, .SkillType {
+		display: grid;
+		grid-gap: 5px 25px;
+	}
+
+	.PlayerStats {
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	}
+
+	.PlayerSkill {
+		/* grid-template-columns: 1fr 1fr 1fr; */
+	}
+
+	.playerInfo {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.stat-block {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 10% 10%;
+	}
+
+	.playerInfo .stat-block {
+		grid-template-columns: 20% 1fr;
+	}
+
+	.PlayerStats .stat-block {
+		grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr);
+	}
+
+	.PlayerSkill .stat-block {
+		background: linear-gradient(90deg, Green,transparent calc( (((  ( var(--currentIP) /((var(--ranks)+1)*(10 * var(--multiplier))))) * 100) * 1% ), transparent);
+	}
+
+	.SkillType {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.SkillHeader {
+		grid-column: span 3;
+		text-align: center;
+		background: lightgrey;
+	}
+
+	.SkillType.collapsed .chevron::before {
+		content: "\e080";
+	}
+
+	.SkillType.expanded .chevron::before {
+		content: "\e114";
+	}
+
+	.SkillType.collapsed .stat-block {
+		display: none;
+	}
+
+	.pagesTab {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		grid-gap: 0px 2px;
+	}
+
+	.tab {
+		background-color: lightgrey;
+		text-align: center;
+		border-style: solid;
+		border-width: 1px;
+		border-radius: 5px 5px 0px 0px;
+		border-bottom-style: none;
+	}
+
+		.tab.active {
+			background-color: darkgray;
+		}
+
+	.page {
+		background-color: darkgray;
+		min-height: 50vh;
+		display: none;
+	}
+
+	.page.active {
+		display: block;
+	}
+
+	@@media screen and (max-width: 1200px) {
+		.SkillHeader {
+			grid-column: unset;
+		}
+		.PlayerStats {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.playerInfo {
+			grid-template-columns: 1fr;
+		}
+
+		.stat-block {
+			grid-template-columns: minmax(0px,1fr) 10% 10%;
+		}
+
+		.playerInfo .stat-block {
+			grid-template-columns: 20% 1fr;
+		}
+
+		.PlayerStats .stat-block {
+			grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr);
+		}
+
+		.SkillType {
+			grid-template-columns: minmax(0px,1fr);
+		}
+
+		.pagesTab {
+			grid-template-columns: repeat(1, 1fr);
+		}
+	}
+</style>
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+		<h4>@Model.Handle</h4>
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.id)
+<div class="Player">
+	<div class="playerInfo">
+		<div class="stat-block"><label>Handle:</label><input type="text" name="Handle" value="@Model.Handle"></div>
+		<div class="stat-block"><label>S.I.N.:</label><input type="text" name="SIN" value="@Model.SIN"></div>
+		<div class="stat-block"><label>Role:</label>@Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "" })</div>
+	</div>
+	<div class="PlayerStats">
+		@for (var i = 0; i < Model.PlayerStat.Count(); i++)
+		{
+			<div class="stat-block">
+				<input type="hidden" value="@Model.PlayerStat.ElementAt(i).Bonus" name="PlayerStat[@i].Bonus" />
+				<input type="hidden" value="@Model.PlayerStat.ElementAt(i).Current" name="PlayerStat[@i].Current" />
+				<input type="hidden" value="@Model.PlayerStat.ElementAt(i).id" name="PlayerStat[@i].id" />
+				<input type="hidden" value="@Model.PlayerStat.ElementAt(i).PlayerID" name="PlayerStat[@i].PlayerID" />
+				<input type="hidden" value="@Model.PlayerStat.ElementAt(i).StatID" name="PlayerStat[@i].StatID" />
+				<label>@Model.PlayerStat.ElementAt(i).Stat.ABBR</label>
+				<input type="number" value="@Model.PlayerStat.ElementAt(i).Base" name="PlayerStat[@i].Base" onchange="changeStatBase(this)" />
+			</div>
+		}
+	</div>
+	<div class="PlayerStats">
+		<div class="stat-block"><label>IP:</label><input type="number" name="IP" value="@Model.IP"></div>
+		<div class="stat-block"><label>Damage:</label><input type="number" name="Dammage" value="@Model.Dammage"></div>
+		<div class="stat-block"><label>REP:</label><input type="number" name="REP" value="@Model.REP"></div>
+		<div class="stat-block"><label>HL:</label><input type="number" name="Humanity" value="@Model.Humanity"></div>
+		<div class="stat-block calculated" title="Humanity=(Empathy(base)*10)-floor(HL/10)"><label>Humanity:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["EMP"].Base*10) - (Math.Floor((Model.Humanity.Value/10.0))*10) )"></div>
+		<div class="stat-block calculated" title="RUN=(BT)*3"><label>RUN:</label><input disabled="disabled" type="number" value="@(Model.StatLookup["BT"].Base * 3)"></div>
+		<div class="stat-block calculated" title="LEAP=(BT)*3/4"><label>LEAP:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["BT"].Base * 3) / 4)"></div>
+		<div class="stat-block calculated" title="LIFT=(BT)*10"><label>LIFT:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["BT"].Base * 10))"></div>
+	</div>
+	@{
+		var j = 0;
+	}
+	<hr />
+	<div class="pagesTab">
+		<div class="tab active" onclick="changeTab(this)" data-tabname="Skills">Skills</div>
+		<div class="tab" onclick="changeTab(this)" data-tabname="Cybernetics">Cybernetics</div>
+		<div class="tab" onclick="changeTab(this)" data-tabname="Weapons">Weapons</div>
+		<div class="tab" onclick="changeTab(this)" data-tabname="Gear">Gear</div>
+	</div>
+	<div class="skillsPage page active" id="SkillsTab">
+		@foreach (var stat in Model.PlayerSkill.GroupBy(x => x.Skill.SkillType))
+		{
+			<div class="PlayerSkill">
+				<div class="SkillType expanded">
+					<h2 class="SkillHeader" onclick="toggleCollapse(this.parentElement.parentElement)">@stat.First().Skill.SkillTypes.Name<span class="glyphicon chevron"></span></h2>
+					@foreach (var elem in stat)
+					{
+						<div class="stat-block" style="--ranks:@elem.Ranks; --currentIP:@elem.CurrentIP; --multiplier:@elem.Skill.Multiplier">
+							<input type="hidden" value="@elem.id" name="PlayerSkill[@j].id" />
+							<input type="hidden" value="@elem.SkillID" name="PlayerSkill[@j].SkillID" />
+							<input type="hidden" value="@elem.Bonus" name="PlayerSkill[@j].Bonus" />
+							<input type="hidden" value="@elem.PlayerID" name="PlayerSkill[@j].PlayerID" />
+							<label>@elem.Skill.Name</label>
+							<input type="Number" value="@elem.CurrentIP" name="PlayerSkill[@j].CurrentIP" title="Current IP" onchange="CurrentIPChange(this)" />
+							<input type="number" value="@elem.Ranks" name="PlayerSkill[@j].Ranks" title="Ranks" onchange="CurrentRankChange(this)" />
+						</div>
+						j++;
+					}
+				</div>
+			</div>
+		}
+	</div>
+	<div class="CyberneticsPage page" id="CyberneticsTab" data-tabname="Cybernetics">
+	</div>
+	<div class="WeaponsPage page" id="WeaponsTab" data-tabname="Weapons">
+	</div>
+	<div class="GearPage page" id="GearTab" data-tabname="Gear">
+	</div>
+	<input type="submit" value="Save" class="btn btn-default" />
+</div>
+	}
+
+	<div>
+		@Html.ActionLink("Back to List", "Index")
+	</div>
+
+	@section Scripts {
+		<script>
+		var PlayerOBJ =@Html.Raw(@ViewBag.JSON);
+		function toggleCollapse(elem)
+		{
+			elem.querySelectorAll(".SkillType").forEach(x => {
+				x.classList.toggle("expanded");
+				x.classList.toggle("collapsed");
+			});
+		}
+		function CurrentIPChange(elem)
+		{
+			var statBlock = elem.parentElement
+			var newIP = elem.value;
+			statBlock.style.setProperty('--currentIP', newIP);
+		}
+		function CurrentRankChange(elem)
+		{
+			var statBlock = elem.parentElement
+			var newIP = elem.value;
+			statBlock.style.setProperty('--ranks', newIP);
+		}
+		function changeStatBase(elem) {
+			var statBlock = elem.parentElement
+			var newIP = elem.value;
+
+		}
+		function changeTab(elem)
+		{
+			var pagesArea = elem.parentElement;
+			var newTab = elem.dataset["tabname"];
+			pagesArea.querySelectorAll(".active").forEach(x => {
+				x.classList.remove("active");
+				document.getElementById(x.dataset["tabname"] + "Tab").classList.remove("active");
+			});
+			elem.classList.add("active");
+
+			document.getElementById(newTab + "Tab").classList.add("active");
+			
+
+		}
+		</script>
+	}

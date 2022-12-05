@@ -1,0 +1,140 @@
+﻿@model CyberpunkServer.Models.DTO.PlayerData
+
+@{
+	ViewBag.Title = "Create";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<h4>New Character</h4>
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.id)
+
+		<div class="col-md-12">
+			<div class="col-md-12">
+				<div class="col-md-6">
+					<div class="col-md-6">
+						@Html.LabelFor(model => model.Handle, htmlAttributes: new { @class = "control-label col-md-2" })
+					</div>
+					<div class="col-md-6">
+						@Html.EditorFor(model => model.Handle, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.Handle, "", new { @class = "text-danger" })
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="col-md-4">
+						@Html.LabelFor(model => model.SIN, htmlAttributes: new { @class = "control-label col-md-2" })
+					</div>
+					<div class="col-md-8">
+						@Html.EditorFor(model => model.SIN, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.SIN, "", new { @class = "text-danger" })
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="col-md-4">
+						@Html.LabelFor(model => model.RoleID, "RoleID", htmlAttributes: new { @class = "control-label col-md-2" })
+					</div>
+					<div class="col-md-8">
+						@Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "form-control" })
+						@Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="col-md-3">
+						<div class="col-md-12">
+							@Html.LabelFor(model => model.IP, htmlAttributes: new { @class = "control-label col-md-2" })
+						</div>
+						<div class="col-md-12">
+							@Html.EditorFor(model => model.IP, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.ValidationMessageFor(model => model.IP, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="col-md-12">
+							@Html.LabelFor(model => model.REP, htmlAttributes: new { @class = "control-label col-md-2" })
+						</div>
+						<div class="col-md-12">
+							@Html.EditorFor(model => model.REP, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.ValidationMessageFor(model => model.REP, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="col-md-12">
+							@Html.LabelFor(model => model.Humanity, htmlAttributes: new { @class = "control-label col-md-2" })
+						</div>
+						<div class="col-md-12">
+							@Html.EditorFor(model => model.Humanity, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.ValidationMessageFor(model => model.Humanity, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="col-md-12">
+							@Html.LabelFor(model => model.Dammage, htmlAttributes: new { @class = "control-label col-md-2" })
+						</div>
+						<div class="col-md-12">
+							@Html.EditorFor(model => model.Dammage, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.ValidationMessageFor(model => model.Dammage, "", new { @class = "text-danger" })
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					@for (var i = 0; i < ViewBag.Stats.Count; i++)
+					{
+						<div class="col-md-3">
+							<div class="col-md-12">
+								<label class="control-label col-md-2">@ViewBag.stats[i].ABBR</label>
+							</div>
+							<div class="col-md-12">
+								<input type="hidden" value="0" name="PlayerStat[@i].Bonus" />
+								<input type="hidden" value="0" name="PlayerStat[@i].Current" />
+								<input type="hidden" value="@ViewBag.stats[i].id" name="PlayerStat[@i].StatID" />
+								<input type="text" class="form-control text-box single-line valid" value="0" name="PlayerStat[@i].Base" />
+							</div>
+						</div>
+					}
+				</div>
+				<div class="col-md-12">
+					@for (var i = 0; i < ViewBag.skill.Count; i++)
+					{
+						<div class="col-md-6">
+							<div class="col-md-7">
+								<label class="control-label">@ViewBag.skill[i].Name</label>
+							</div>
+							<div class="col-md-5">
+								<input type="hidden" value="@ViewBag.skill[i].id" name="PlayerSkill[@i].SkillID" />
+								<input type="hidden" value="0" name="PlayerSkill[@i].Bonus" />
+								<input type="hidden" value="0" name="PlayerSkill[@i].CurrentIP" />
+								<input type="number" class="form-control text-box single-line valid" value="0" name="PlayerSkill[@i].Ranks" />
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+			<div class="col-md-6">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Save" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
+
+<div>
+	@Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
