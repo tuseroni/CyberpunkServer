@@ -18,6 +18,7 @@ namespace CyberpunkServer.Models.DTO
         public SubgridData()
         {
             this.Fortress = new HashSet<FortressData>();
+            this.JackedInPlayers=new List<PlayerData>();
         }
     
         public int id { get; set; }
@@ -28,5 +29,6 @@ namespace CyberpunkServer.Models.DTO
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FortressData> Fortress { get; set; }
+        public List<PlayerData> JackedInPlayers { get; set; }
     }
 }

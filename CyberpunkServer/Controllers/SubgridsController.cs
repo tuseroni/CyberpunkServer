@@ -76,6 +76,10 @@ namespace CyberpunkServer.Controllers
                .Include("Fortress.FortressCPU")
                .Include("Fortress.FortressMemory")
                .Include("Fortress.FortressWalls")
+               .Include("Fortress.FortressCodeGates.NetObjType")
+               .Include("Fortress.FortressCPU.NetObjType")
+               .Include("Fortress.FortressMemory.NetObjType")
+               .Include("Fortress.FortressWalls.NetObjType")
                .AsNoTracking()
                .Where(x=>x.id==id)
                .Single();
@@ -83,8 +87,10 @@ namespace CyberpunkServer.Controllers
             {
                 return HttpNotFound();
             }
+            var NetOBJType = Newtonsoft.Json.JsonConvert.SerializeObject(Models.DTO.NetObjTypeData.ConvertList(db.NetObjType.AsNoTracking().ToList()));
             var subgridData = (Models.DTO.SubgridData)grid;
             ViewBag.subgrid = Newtonsoft.Json.JsonConvert.SerializeObject(subgridData);
+            ViewBag.NetOBJTypes = NetOBJType;
             return View(subgridData);
         }
 

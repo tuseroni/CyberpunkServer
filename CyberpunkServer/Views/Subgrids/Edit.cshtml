@@ -15,12 +15,55 @@
 		rect.gridTile:hover {
 			fill: #add8e6a1;
 		}
+
+	div#gridHolder {
+		/* height: 60vh; */
+		background-color: white;
+		width: 100%;
+	}
+
+	div#Elements {
+		display: grid;
+		grid-template-columns: repeat(19, 1fr);
+	}
+
+	#Elements svg {
+		height: 100%;
+		width: 100%;
+	}
+
+	.GridSVG {
+		height: 100%;
+		width: 100%;
+	}
+
+	.NetOBJ + rect {
+		fill: transparent;
+	}
+
+		.NetOBJ + rect.selected, .NetOBJ + rect:hover {
+			stroke: black;
+			rx: 5;
+		}
+
+		.NetOBJ + rect.selected {
+			fill: #d3d3d3a1;
+		}
+
+		.NetOBJ + rect:hover {
+			fill: #add8e6a1;
+		}
+
+
+	.NetOBJ {
+		margin: 2px;
+		display: block;
+	}
 </style>
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm())
-{
+<form method="post" onsubmit="submitForm(this)">
 	@Html.AntiForgeryToken()
 
 	<div class="form-horizontal">
@@ -28,16 +71,20 @@
 		<hr />
 		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 		@Html.HiddenFor(model => model.id)
-
-		<div id="gridHolder"></div>
-
+		<div style="display: grid; grid-template-columns: 30% 1fr; grid-gap: 10px;">
+			<div style="border: solid 1px;border-radius: 10px;"></div>
+			<div style="padding: 20px;border: solid 1px;border-radius: 10px;">
+				<div id="gridHolder"></div>
+			</div>
+		</div>
 		<div class="form-group">
 			<div class="col-md-offset-2 col-md-10">
 				<input type="submit" value="Save" class="btn btn-default" />
 			</div>
 		</div>
 	</div>
-}
+</form>
+
 
 <div>
 	@Html.ActionLink("Back to List", "Index")
@@ -46,10 +93,37 @@
 @section Scripts {
 	
 	<script src="~/Scripts/jquery.signalR-2.4.3.js"></script>
-	<script src="~/signalr/hubs"></script>
+	<script src="~/SignalR/hubs"></script>
+	<script>
+		class NetOBJ
+		{
+			id;
+			xPos=0;
+			yPos=0;
+			FortressID=0;
+			Type=0;
+			NetObjType=null;
+			constructor()
+			{
+			}
+		}
+		class NetOBJType
+		{
+			id;
+			Name;
+			Title;
+			SVG;
+			constructor()
+			{
+			}
+		}
+
+	</script>
 	<script>
 
 		var subgridData =@Html.Raw(@ViewBag.subgrid);
+		var NetOBJTypes= @Html.Raw(ViewBag.NetOBJTypes);
+		var ActiveFortress = subgridData.Fortress[0];
 		var awaitingPlayerAdd = false;
 		var awaitingPlayer = null;
 		var connection = $.hubConnection();
@@ -66,9 +140,16 @@
 		});
 		contosoChatHubProxy.on('JackInRequestReceived', function (playerData)
 		{
-			awaitingPlayerAdd = true;
-			awaitingPlayer = playerData;
-			console.log(playerData.Handle);
+			if (confirm(`${playerData.Handle} is Trying to Jack In, Please Click Jack In Point`)) {
+				awaitingPlayerAdd = true;
+				awaitingPlayer = playerData;
+				console.log(playerData.Handle);
+			}
+			else {
+				alert("Jack in Canceled");
+				contosoChatHubProxy.invoke('RejectJackInRequest', playerData)
+			}
+			
 		});
 		connection.reconnecting(function () {
 			console.log("reconnecting");
@@ -103,19 +184,17 @@
         var subgridLookup = {};
 		var gridSize = 20;//px
 		var Netrunners = {};
-        var svgElems = {
-            "1": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><rect width="512" height="512" fill="black"></rect></svg>`,
-            "2": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><circle cx="256" cy="256" r="180" stroke="black" stroke-width="50" fill="white" fill-opacity="0"></circle><line x1="51" x2="455" y1="51" y2="455" stroke="black" stroke-width="40"></line><line x1="51" x2="455" y1="455" y2="51" stroke="black" stroke-width="40"></line></svg>`,
-            "3": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><rect x="81" y="51" width="350" height="410" stroke="black" stroke-width="40" fill="white" fill-opacity="0"></rect></svg>`,
-            "4": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><rect x="51" y="51" fill="white" stroke="black" stroke-width="50" width="400" height="400" fill-opacity="0"></rect><line x1="31" x2="450" y1="140" y2="140" stroke="black" stroke-width="30"></line><line x1="31" x2="450" y1="360" y2="360" stroke="black" stroke-width="30"></line></svg>`,
-            "5": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><path fill="black" d="M439.15 453.06L297.17 384l141.99-69.06c7.9-3.95 11.11-13.56 7.15-21.46L432 264.85c-3.95-7.9-13.56-11.11-21.47-7.16L224 348.41 37.47 257.69c-7.9-3.95-17.51-.75-21.47 7.16L1.69 293.48c-3.95 7.9-.75 17.51 7.15 21.46L150.83 384 8.85 453.06c-7.9 3.95-11.11 13.56-7.15 21.47l14.31 28.63c3.95 7.9 13.56 11.11 21.47 7.15L224 419.59l186.53 90.72c7.9 3.95 17.51.75 21.47-7.15l14.31-28.63c3.95-7.91.74-17.52-7.16-21.47zM150 237.28l-5.48 25.87c-2.67 12.62 5.42 24.85 16.45 24.85h126.08c11.03 0 19.12-12.23 16.45-24.85l-5.5-25.87c41.78-22.41 70-62.75 70-109.28C368 57.31 303.53 0 224 0S80 57.31 80 128c0 46.53 28.22 86.87 70 109.28zM280 112c17.65 0 32 14.35 32 32s-14.35 32-32 32-32-14.35-32-32 14.35-32 32-32zm-112 0c17.65 0 32 14.35 32 32s-14.35 32-32 32-32-14.35-32-32 14.35-32 32-32z"></path></svg>`,
-            "6": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="${gridSize}px" width="${gridSize}px"><path fill="black" d="M439.15 453.06L297.17 384l141.99-69.06c7.9-3.95 11.11-13.56 7.15-21.46L432 264.85c-3.95-7.9-13.56-11.11-21.47-7.16L224 348.41 37.47 257.69c-7.9-3.95-17.51-.75-21.47 7.16L1.69 293.48c-3.95 7.9-.75 17.51 7.15 21.46L150.83 384 8.85 453.06c-7.9 3.95-11.11 13.56-7.15 21.47l14.31 28.63c3.95 7.9 13.56 11.11 21.47 7.15L224 419.59l186.53 90.72c7.9 3.95 17.51.75 21.47-7.15l14.31-28.63c3.95-7.91.74-17.52-7.16-21.47zM150 237.28l-5.48 25.87c-2.67 12.62 5.42 24.85 16.45 24.85h126.08c11.03 0 19.12-12.23 16.45-24.85l-5.5-25.87c41.78-22.41 70-62.75 70-109.28C368 57.31 303.53 0 224 0S80 57.31 80 128c0 46.53 28.22 86.87 70 109.28zM280 112c17.65 0 32 14.35 32 32s-14.35 32-32 32-32-14.35-32-32 14.35-32 32-32zm-112 0c17.65 0 32 14.35 32 32s-14.35 32-32 32-32-14.35-32-32 14.35-32 32-32z"></path></svg>`
-		}
+		NetOBJTypesLookup = {};
+		var activeNetOBJType = null;
 		function addPlayerToGrid(playerData,x,y)
 		{
+			playerData.xPos = x;
+			playerData.yPos = y;
+			subgridData.JackedInPlayers.push(playerData);
 			contosoChatHubProxy.invoke('AcceptJackInRequest', playerData, subgridData).done(function () {
 				console.log('Invocation of AcceptJackInRequest succeeded');
 				playerData.Type = 6;
+				playerData.NetObjType = NetOBJTypesLookup[6];
 				Netrunners[playerData.id] = { "PlayerData": playerData, "SVGElem": null };
 				var gridtileData = subgridLookup[y][x];
 				Netrunners[playerData.id].SVGElem=placeElem(playerData, gridtileData);
@@ -127,27 +206,112 @@
 		}
 		function handleTileClick(tile, e)
 		{
-			if (awaitingPlayerAdd)
-			{
-				addPlayerToGrid(awaitingPlayer, tile.getAttribute("xPos"), tile.getAttribute("yPos"));
+			var xPos = tile.getAttribute("xPos");
+			var yPos = tile.getAttribute("yPos");
+			if (awaitingPlayerAdd) {
+				addPlayerToGrid(awaitingPlayer, xPos, yPos);
 				awaitingPlayer = null;
 				awaitingPlayerAdd = false;
 			}
+			else if (activeNetOBJType !=null)
+			{
+				var elem = {
+					"NetObjType": {
+						"SVG": activeNetOBJType.SVG
+					}
+				};
+				var tileData = subgridLookup[yPos][xPos];
+				var gElem = placeElem(elem, tileData);
+				var newNetOBJ = new NetOBJ();
+				newNetOBJ.NetObjType=Object.assign(new NetOBJType(), activeNetOBJType);
+				newNetOBJ.FortressID = subgridData.Fortress[0].id;
+				newNetOBJ.Type = activeNetOBJType.id;
+				newNetOBJ.xPos = xPos;
+				newNetOBJ.yPos = yPos;
+				switch (activeNetOBJType.id)
+				{
+					case 1:
+						subgridData.Fortress[0].FortressWalls.push(newNetOBJ);
+						break;
+					case 2:
+						subgridData.Fortress[0].FortressCPU.push(newNetOBJ);
+						break;
+					case 3:
+						subgridData.Fortress[0].FortressMemory.push(newNetOBJ);
+						break;
+					case 4:
+						subgridData.Fortress[0].FortressCodeGates.push(newNetOBJ);
+						break;
+					case 5:
+						//subgridData.Fortress[0].FortressProgram.push(newNetOBJ);
+						break;
+					case 6:
+						//subgridData.Fortress[0].FortressRemotes.push(newNetOBJ);
+						break;
+					case 7:
+					case 8:
+					case 9:
+					case 10:
+					case 11:
+					case 12:
+					case 13:
+					case 14:
+					case 15:
+					case 16:
+					case 17:
+					case 18:
+					case 19:
+						subgridData.Fortress[0].FortressRemotes.push(newNetOBJ);
+						break;
+
+
+				}
+
+			}
 		}
+		
         function buildGrid(subgrid)
         {
             var height = subgrid.height;
             var width = subgrid.width;
 
             var gridHolder = document.getElementById("gridHolder");
-            var layoutSVG = document.createElementNS('http://www.w3.org/2000/svg', "svg");
+			var layoutSVG = document.createElementNS('http://www.w3.org/2000/svg', "svg");
+			layoutSVG.classList.add("GridSVG");
 			layoutSVG.setAttribute("height", height*gridSize);
 			layoutSVG.setAttribute("width", width * gridSize);
-            layoutSVG.setAttribute("viewBox", `0 0 ${width * gridSize} ${height * gridSize}`);
+			layoutSVG.setAttribute("viewBox", `0 0 ${width * gridSize} ${height * gridSize}`);
+			var _row = document.createElementNS('http://www.w3.org/2000/svg', "g");
+			_row.setAttribute("transform", `translate(0, 0)`);
+			for (var i = 0; i < NetOBJTypes.length; i++)
+			{
+				var netOBJ = NetOBJTypes[i];
+				NetOBJTypesLookup[netOBJ.id] = netOBJ;
+				var tileGroup = document.createElementNS('http://www.w3.org/2000/svg', "g");
+				tileGroup.setAttribute("transform", `translate(${i * gridSize},0)`);
+				tileGroup.innerHTML = netOBJ.SVG;
+				var svg = tileGroup.children[0];
+				svg.setAttribute("x", 1);
+				svg.setAttribute("y", 1);
+				svg.setAttribute("height", "17px");
+				svg.setAttribute("width", "17px");
+				var hoverRect = document.createElementNS('http://www.w3.org/2000/svg', "rect");
+				hoverRect.setAttribute("width", "20px");
+				hoverRect.setAttribute("height", "20px");
+				hoverRect.addEventListener("click", function (event) {
+					[...layoutSVG.querySelectorAll(".selected")].forEach(x => x.classList.remove("selected"))
+					this.classList.add("selected");
+					activeNetOBJType = NetOBJTypesLookup[this.getAttribute("NetOBJID")];
+				});
+				hoverRect.setAttribute("NetOBJID", netOBJ.id);
+				tileGroup.appendChild(hoverRect);
+				_row.appendChild(tileGroup);
+			}
+			layoutSVG.appendChild(_row);
             for (var i = 0; i < height; i++)
             {
                 var row = document.createElementNS('http://www.w3.org/2000/svg', "g");
-                row.setAttribute("transform", `translate(0,${i * gridSize})`);
+                row.setAttribute("transform", `translate(0,${(i+1) * gridSize})`);
                 subgridLookup[i] = {};
                 for (var j = 0; j < width; j++)
                 {
@@ -194,7 +358,7 @@
                 return;
             }
 			var gridTile = gridtileData.gElem;
-			var codeGateSvg = svgElems[elem.Type];
+			var codeGateSvg = elem.NetObjType.SVG; //svgElems[elem.Type];
 			gridTile.innerHTML = codeGateSvg + gridTile.innerHTML;
 			codeGateSvg = gridTile.children[0];
 			codeGateSvg.dataset["elemdata"] = JSON.stringify(elem);
@@ -202,16 +366,21 @@
 			return codeGateSvg;
         }
         function addFortElem(elem)
-        {
+		{
+			var test = Object.assign(new NetOBJ(), elem);
 			var gridtileData = subgridLookup[elem.yPos][elem.xPos];
 			var gridTile = gridtileData.gElem;
-			var codeGateSvg = svgElems[elem.Type];
+			var codeGateSvg = elem.NetObjType.SVG; //svgElems[elem.Type];
             gridTile.innerHTML = codeGateSvg + gridTile.innerHTML;
             codeGateSvg = gridTile.children[0];
             codeGateSvg.dataset["elemdata"] = JSON.stringify(elem);
 			gridtileData.ContainedElement = codeGateSvg;
 			return codeGateSvg;
-        }
+		}
+		function submitForm(theForm)
+		{
+			return false;
+		}
 		buildGrid(subgridData)
 	</script>
 }

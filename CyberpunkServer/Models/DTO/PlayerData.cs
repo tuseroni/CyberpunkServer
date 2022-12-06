@@ -38,7 +38,9 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> Dammage { get; set; }
         public Nullable<int> RoleID { get; set; }
         public string aspUserID { get; set; }
-    
+        public int xPos { get; set; }
+        public int yPos { get; set; }
+
         public virtual PlayerRolesData PlayerRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlayerArmorData> PlayerArmor { get; set; }

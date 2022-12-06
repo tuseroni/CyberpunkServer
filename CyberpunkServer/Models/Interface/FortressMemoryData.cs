@@ -26,6 +26,7 @@ namespace CyberpunkServer.Models.DTO
                 dest.FortressID = orig.FortressID;
                 dest.id = orig.id;
                 dest.Type = orig.Type;
+                dest.NetObjType = (NetObjTypeData)orig.NetObjType;
                 ret.Add(dest);
             }
             return ret;

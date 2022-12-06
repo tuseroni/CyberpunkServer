@@ -23,6 +23,10 @@ namespace CyberpunkServer.SignalR.hubs
         {
             Clients.Others.JackInRequestAccepted(player, gridData);
         }
+        public void RejectJackInRequest(Models.DTO.PlayerData player)
+        {
+            Clients.Others.JackInRequestRejected(player);
+        }
         public void JackInRequest(int id)
         {
             Player player = db.Player

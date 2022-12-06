@@ -65,6 +65,9 @@
         <AssociationConnector Association="CyberpunkModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="CyberpunkModel.AspNetUserRoles" />
         <AssociationConnector Association="CyberpunkModel.FK_Player_AspNetUsers" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressRemotes" Width="1.5" PointX="18.25" PointY="5.5" />
+        <AssociationConnector Association="CyberpunkModel.FK_FortressRemotes_Fortress" />
+        <AssociationConnector Association="CyberpunkModel.FK_FortressRemotes_NetObjType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

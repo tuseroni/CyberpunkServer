@@ -27,6 +27,7 @@ namespace CyberpunkServer.Models.DTO
                 dest.id = orig.id;
                 dest.Type = orig.Type;
                 dest.WallStrength = orig.WallStrength;
+                dest.NetObjType = (NetObjTypeData)orig.NetObjType;
                 ret.Add(dest);
             }
             return ret;

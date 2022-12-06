@@ -17,10 +17,11 @@ namespace CyberpunkServer.Models.DTO
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FortressData()
         {
-            this.FortressCPU = new HashSet<FortressCPUData>();
-            this.FortressCodeGates = new HashSet<FortressCodeGatesData>();
-            this.FortressMemory = new HashSet<FortressMemoryData>();
-            this.FortressWalls = new HashSet<FortressWallsData>();
+            this.FortressCPU = new List<FortressCPUData>();
+            this.FortressCodeGates = new List<FortressCodeGatesData>();
+            this.FortressMemory = new List<FortressMemoryData>();
+            this.FortressWalls = new List<FortressWallsData>();
+            this.FortressRemotes = new List<FortressRemotesData>();
         }
     
         public int id { get; set; }
@@ -30,14 +31,17 @@ namespace CyberpunkServer.Models.DTO
     
         public virtual SubgridData Subgrid { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FortressCPUData> FortressCPU { get; set; }
+        public virtual List<FortressCPUData> FortressCPU { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FortressCodeGatesData> FortressCodeGates { get; set; }
+        public virtual List<FortressCodeGatesData> FortressCodeGates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FortressMemoryData> FortressMemory { get; set; }
+        public virtual List<FortressMemoryData> FortressMemory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FortressWallsData> FortressWalls { get; set; }
+        public virtual List<FortressWallsData> FortressWalls { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual List<FortressRemotesData> FortressRemotes { get; set; }
+        public List<PlayerData> JackedInPlayers { get; set; }
 
-       
+
     }
 }

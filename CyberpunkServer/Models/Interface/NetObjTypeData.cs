@@ -14,6 +14,28 @@ namespace CyberpunkServer.Models.DTO
 
     public partial class NetObjTypeData
     {
-        
+        public static explicit operator NetObjTypeData(CyberpunkServer.Models.NetObjType player)
+        {
+            var ret = new NetObjTypeData
+            {
+                id = player.id,
+                Name=player.Name,
+                Title=player.Title,
+                SVG=player.SVG
+                
+            };
+            
+            return ret;
+        }
+        public static ICollection<NetObjTypeData> ConvertList(ICollection<CyberpunkServer.Models.NetObjType> origs)
+        {
+            var ret = new HashSet<NetObjTypeData>();
+            foreach (var orig in origs)
+            {
+                var dest = (NetObjTypeData)orig;
+                ret.Add(dest);
+            }
+            return ret;
+        }
     }
 }

@@ -12,15 +12,15 @@ namespace CyberpunkServer.Models.DTO
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Data.Entity;
-    public partial class FortressCPUData
+    
+    public partial class FortressRemotesData
     {
-        public static ICollection<FortressCPUData> ConvertList(ICollection<CyberpunkServer.Models.FortressCPU> origs)
+        public static ICollection<FortressRemotesData> ConvertList(ICollection<CyberpunkServer.Models.FortressRemotes> origs)
         {
-            var ret = new HashSet<FortressCPUData>();
+            var ret = new HashSet<FortressRemotesData>();
             foreach (var orig in origs)
             {
-                var dest = new FortressCPUData();
+                var dest = new FortressRemotesData();
                 dest.xPos = orig.xPos;
                 dest.yPos = orig.yPos;
                 dest.FortressID = orig.FortressID;
@@ -31,12 +31,12 @@ namespace CyberpunkServer.Models.DTO
             }
             return ret;
         }
-        public static ICollection<CyberpunkServer.Models.FortressCPU> CopyProperties(ICollection<FortressCPUData> orig, ICollection<CyberpunkServer.Models.FortressCPU> dest, CyberpunkEntities db)
+        public static ICollection<CyberpunkServer.Models.FortressRemotes> CopyProperties(ICollection<FortressRemotesData> orig, ICollection<CyberpunkServer.Models.FortressRemotes> dest, CyberpunkEntities db)
         {
             if (orig.Any())
             {
-                Dictionary<int, CyberpunkServer.Models.FortressCPU> dictionary1 = new Dictionary<int, CyberpunkServer.Models.FortressCPU>();
-                Dictionary<int, FortressCPUData> dictionary2 = new Dictionary<int, FortressCPUData>();
+                Dictionary<int, CyberpunkServer.Models.FortressRemotes> dictionary1 = new Dictionary<int, CyberpunkServer.Models.FortressRemotes>();
+                Dictionary<int, FortressRemotesData> dictionary2 = new Dictionary<int, FortressRemotesData>();
                 if (dest.Any())
                 {
                     foreach (var obj in dest)
@@ -47,26 +47,26 @@ namespace CyberpunkServer.Models.DTO
                     if (dictionary1.ContainsKey(orig1.id))
                     {
                         var dest1 = dictionary1[orig1.id];
-                        FortressCPUData.CopyProperties(orig1, dest1, db);
+                        FortressRemotesData.CopyProperties(orig1, dest1, db);
                     }
                     else
                     {
-                        var dest2 = new Models.FortressCPU();
-                        dest.Add(FortressCPUData.CopyProperties(orig1, dest2, db));
+                        var dest2 = new Models.FortressRemotes();
+                        dest.Add(FortressRemotesData.CopyProperties(orig1, dest2, db));
                     }
                     dictionary2.Add(orig1.id, orig1);
                 }
-                foreach (KeyValuePair<int, Models.FortressCPU> keyValuePair in dictionary1)
+                foreach (KeyValuePair<int, Models.FortressRemotes> keyValuePair in dictionary1)
                 {
                     if (!dictionary2.ContainsKey(keyValuePair.Key))
                         dest.Remove(keyValuePair.Value);
                 }
             }
-            else if (dest != null && !orig.Any<FortressCPUData>())
+            else if (dest != null && !orig.Any<FortressRemotesData>())
                 dest.Clear();
             return dest;
         }
-        public static CyberpunkServer.Models.FortressCPU CopyProperties(FortressCPUData orig, CyberpunkServer.Models.FortressCPU dest, CyberpunkEntities db)
+        public static CyberpunkServer.Models.FortressRemotes CopyProperties(FortressRemotesData orig, CyberpunkServer.Models.FortressRemotes dest, CyberpunkEntities db)
         {
             dest.xPos = orig.xPos;
             dest.yPos = orig.yPos;
@@ -75,6 +75,6 @@ namespace CyberpunkServer.Models.DTO
             dest.Type = orig.Type;
             return null;
         }
+
     }
-    
 }

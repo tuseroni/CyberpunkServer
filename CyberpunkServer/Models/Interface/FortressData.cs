@@ -79,6 +79,7 @@ namespace CyberpunkServer.Models.DTO
             DTO.FortressCodeGatesData.CopyProperties(orig.FortressCodeGates, dest.FortressCodeGates, db);
             DTO.FortressMemoryData.CopyProperties(orig.FortressMemory, dest.FortressMemory, db);
             DTO.FortressWallsData.CopyProperties(orig.FortressWalls, dest.FortressWalls, db);
+            DTO.FortressRemotesData.CopyProperties(orig.FortressRemotes, dest.FortressRemotes, db);
             return dest;
         }
     }

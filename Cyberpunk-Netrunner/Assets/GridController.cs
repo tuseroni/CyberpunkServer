@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using CyberpunkServer.Models.DTO;
 public interface NetItem
 {
     GameObject Object
@@ -21,6 +21,7 @@ public class GridController : MonoBehaviour
     public int Height = 100;
     public int Width = 100;
     public GameObject FortressPrefab;
+    public PlayerController PlayerController;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,11 +29,20 @@ public class GridController : MonoBehaviour
 
     }
 
-    private void SignalrHandler_onJackInRequestAccepted(CyberpunkServer.Models.DTO.PlayerData player, CyberpunkServer.Models.DTO.SubgridData subgrid)
+    private void SignalrHandler_onJackInRequestAccepted(PlayerData player, CyberpunkServer.Models.DTO.SubgridData subgrid)
     {
         BuildGrid(subgrid);
+        placePlayer(player);
     }
-
+    public void placePlayer(PlayerData player)
+    {
+        var x = player.xPos;
+        var y = player.yPos;
+        var tileObj = gridTiles[y][x];
+        PlayerController.playerData = player;
+        PlayerController.MoveToTile(tileObj);
+    }
+    
     public void BuildGrid(CyberpunkServer.Models.DTO.SubgridData grid)
     {
         Height = grid.height;

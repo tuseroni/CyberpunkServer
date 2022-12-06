@@ -1,11 +1,54 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - My ASP.NET Application</title>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
+    <style>
+		.pagesTab {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			grid-gap: 0px 2px;
+		}
+
+		.tab {
+			background-color: lightgrey;
+			text-align: center;
+			border-style: solid;
+			border-width: 1px;
+			border-radius: 5px 5px 0px 0px;
+			border-bottom-style: none;
+			cursor:pointer;
+		}
+		.page label {
+			text-shadow: black 1px 0px 7px;
+			color: white;
+		}
+
+			.tab.active {
+				background-color: darkgray;
+			}
+
+		.page {
+			background-color: darkgray;
+			min-height: 50vh;
+			display: none;
+		}
+
+			.page.active {
+				display: block;
+			}
+		@@media screen and (max-width: 1200px) {
+			.pagesTab {
+				grid-template-columns: repeat(1, 1fr);
+			}
+		}
+
+    </style>
+
+	@RenderSection("PageStyle", required: false)
 
 </head>
 <body>
@@ -40,5 +83,21 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+	<script>
+		function changeTab(elem) {
+			var pagesArea = elem.parentElement;
+			var newTab = elem.dataset["tabname"];
+			pagesArea.querySelectorAll(".active").forEach(x => {
+				x.classList.remove("active");
+				document.getElementById(x.dataset["tabname"] + "Tab").classList.remove("active");
+			});
+			elem.classList.add("active");
+
+			document.getElementById(newTab + "Tab").classList.add("active");
+
+
+		}
+		document.querySelectorAll(".tab").forEach(x => x.addEventListener("click", function (event) { changeTab(this); }));
+	</script>
 </body>
 </html>

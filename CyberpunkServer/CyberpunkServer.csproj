@@ -256,6 +256,7 @@
     <Compile Include="Models\DTO\FortressCodeGatesData.cs" />
     <Compile Include="Models\DTO\FortressCPUData.cs" />
     <Compile Include="Models\DTO\FortressMemoryData.cs" />
+    <Compile Include="Models\DTO\FortressRemotes.cs" />
     <Compile Include="Models\DTO\FortressWallsData.cs" />
     <Compile Include="Models\DTO\NetObjTypeData.cs" />
     <Compile Include="Models\DTO\PlayerData.cs" />
@@ -285,6 +286,9 @@
     <Compile Include="Models\FortressMemory.cs">
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FortressRemotes.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FortressWalls.cs">
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
@@ -301,6 +305,7 @@
     <Compile Include="Models\Interface\FortressCPUData.cs" />
     <Compile Include="Models\Interface\FortressData.cs" />
     <Compile Include="Models\Interface\FortressMemoryData.cs" />
+    <Compile Include="Models\Interface\FortressRemotes.cs" />
     <Compile Include="Models\Interface\FortressWallsData.cs" />
     <Compile Include="Models\Interface\NetObjTypeData.cs" />
     <Compile Include="Models\Interface\PlayerArmorData.cs" />
@@ -400,6 +405,7 @@
       <DependentUpon>Cyberpunk.edmx</DependentUpon>
     </Content>
     <Content Include="Connections.config" />
+    <Content Include="Content\Theme.grey.css" />
     <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

@@ -22,10 +22,12 @@ namespace CyberpunkServer.Models.DTO
             this.FortressMemory = new HashSet<FortressMemoryData>();
             this.FortressWalls = new HashSet<FortressWallsData>();
         }
-    
+
         public int id { get; set; }
         public string Name { get; set; }
-    
+        public string Title { get; set; }
+        public string SVG { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FortressCodeGatesData> FortressCodeGates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

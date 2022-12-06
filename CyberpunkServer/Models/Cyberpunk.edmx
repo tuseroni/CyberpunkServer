@@ -136,6 +136,16 @@
           <Property Name="FortressID" Type="int" />
           <Property Name="Type" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="FortressRemotes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="xPos" Type="int" Nullable="false" />
+          <Property Name="yPos" Type="int" Nullable="false" />
+          <Property Name="FortressID" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="FortressWalls">
           <Key>
             <PropertyRef Name="id" />
@@ -152,6 +162,8 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Title" Type="nvarchar" MaxLength="255" />
+          <Property Name="SVG" Type="text" />
         </EntityType>
         <EntityType Name="Player">
           <Key>
@@ -677,6 +689,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_FortressRemotes_Fortress">
+          <End Role="Fortress" Type="Self.Fortress" Multiplicity="1" />
+          <End Role="FortressRemotes" Type="Self.FortressRemotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fortress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressRemotes">
+              <PropertyRef Name="FortressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FortressRemotes_NetObjType">
+          <End Role="NetObjType" Type="Self.NetObjType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FortressRemotes" Type="Self.FortressRemotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NetObjType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressRemotes">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Player_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Player" Type="Self.Player" Multiplicity="*" />
@@ -727,6 +765,7 @@
           <EntitySet Name="FortressCodeGates" EntityType="Self.FortressCodeGates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FortressCPU" EntityType="Self.FortressCPU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FortressMemory" EntityType="Self.FortressMemory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FortressRemotes" EntityType="Self.FortressRemotes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FortressWalls" EntityType="Self.FortressWalls" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NetObjType" EntityType="Self.NetObjType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
@@ -860,6 +899,14 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK_FortressRemotes_Fortress" Association="Self.FK_FortressRemotes_Fortress">
+            <End Role="Fortress" EntitySet="Fortress" />
+            <End Role="FortressRemotes" EntitySet="FortressRemotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FortressRemotes_NetObjType" Association="Self.FK_FortressRemotes_NetObjType">
+            <End Role="NetObjType" EntitySet="NetObjType" />
+            <End Role="FortressRemotes" EntitySet="FortressRemotes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Player_AspNetUsers" Association="Self.FK_Player_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Player" EntitySet="Player" />
@@ -925,6 +972,7 @@
           <NavigationProperty Name="FortressCodeGates" Relationship="Self.FK__FortressC__Fortr__6754599E" FromRole="Fortress" ToRole="FortressCodeGates" />
           <NavigationProperty Name="FortressMemory" Relationship="Self.FK__FortressM__Fortr__628FA481" FromRole="Fortress" ToRole="FortressMemory" />
           <NavigationProperty Name="FortressWalls" Relationship="Self.FK__FortressW__Fortr__59063A47" FromRole="Fortress" ToRole="FortressWalls" />
+          <NavigationProperty Name="FortressRemotes" Relationship="CyberpunkModel.FK_FortressRemotes_Fortress" FromRole="Fortress" ToRole="FortressRemotes" />
         </EntityType>
         <EntityType Name="FortressCodeGates">
           <Key>
@@ -985,6 +1033,9 @@
           <NavigationProperty Name="FortressCPU" Relationship="Self.FK__FortressCP__Type__5EBF139D" FromRole="NetObjType" ToRole="FortressCPU" />
           <NavigationProperty Name="FortressMemory" Relationship="Self.FK__FortressMe__Type__6383C8BA" FromRole="NetObjType" ToRole="FortressMemory" />
           <NavigationProperty Name="FortressWalls" Relationship="Self.FK__FortressWa__Type__59FA5E80" FromRole="NetObjType" ToRole="FortressWalls" />
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SVG" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FortressRemotes" Relationship="CyberpunkModel.FK_FortressRemotes_NetObjType" FromRole="NetObjType" ToRole="FortressRemotes" />
         </EntityType>
         <EntityType Name="Player">
           <Key>
@@ -1631,6 +1682,15 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Player" EntitySet="Player" />
           </AssociationSet>
+          <EntitySet Name="FortressRemotes" EntityType="CyberpunkModel.FortressRemotes" />
+          <AssociationSet Name="FK_FortressRemotes_Fortress" Association="CyberpunkModel.FK_FortressRemotes_Fortress">
+            <End Role="Fortress" EntitySet="Fortress" />
+            <End Role="FortressRemotes" EntitySet="FortressRemotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FortressRemotes_NetObjType" Association="CyberpunkModel.FK_FortressRemotes_NetObjType">
+            <End Role="NetObjType" EntitySet="NetObjType" />
+            <End Role="FortressRemotes" EntitySet="FortressRemotes" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Skill_Skill">
           <End Type="CyberpunkModel.Skill" Role="Skill" Multiplicity="1" />
@@ -1760,6 +1820,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FortressRemotes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="xPos" Type="Int32" Nullable="false" />
+          <Property Name="yPos" Type="Int32" Nullable="false" />
+          <Property Name="FortressID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FK_FortressRemotes_Fortress" FromRole="FortressRemotes" ToRole="Fortress" />
+          <NavigationProperty Name="NetObjType" Relationship="CyberpunkModel.FK_FortressRemotes_NetObjType" FromRole="FortressRemotes" ToRole="NetObjType" />
+        </EntityType>
+        <Association Name="FK_FortressRemotes_Fortress">
+          <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="1" />
+          <End Type="CyberpunkModel.FortressRemotes" Role="FortressRemotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fortress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressRemotes">
+              <PropertyRef Name="FortressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FortressRemotes_NetObjType">
+          <End Type="CyberpunkModel.NetObjType" Role="NetObjType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.FortressRemotes" Role="FortressRemotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NetObjType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressRemotes">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1857,6 +1955,8 @@
           <EntitySetMapping Name="NetObjType">
             <EntityTypeMapping TypeName="CyberpunkModel.NetObjType">
               <MappingFragment StoreEntitySet="NetObjType">
+                <ScalarProperty Name="SVG" ColumnName="SVG" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
@@ -2100,6 +2200,17 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="FortressRemotes">
+            <EntityTypeMapping TypeName="CyberpunkModel.FortressRemotes">
+              <MappingFragment StoreEntitySet="FortressRemotes">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
+                <ScalarProperty Name="yPos" ColumnName="yPos" />
+                <ScalarProperty Name="xPos" ColumnName="xPos" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

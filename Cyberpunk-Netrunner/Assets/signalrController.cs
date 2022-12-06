@@ -17,6 +17,8 @@ public static class SignalrHandler
     static IHubProxy myHub;
     public delegate void JackInRequestAccepted(PlayerData player, SubgridData subgrid);
     public static event JackInRequestAccepted onJackInRequestAccepted;
+    //public delegate void LoginSuccessful(PlayerData player);
+    //public static event LoginSuccessful onLoginSuccessful;
     public static void CreateConnection(string address,string hub)
     {
         connection = new HubConnection(address);
@@ -40,6 +42,22 @@ public static class SignalrHandler
                 onJackInRequestAccepted.Invoke(player, subgrid);
             });
         });
+        myHub.On<PlayerData>("JackInRequestRejected", (player) =>
+        {
+            Debug.Log($"Ref Says NO!!");
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+            Application.Quit();
+        });
+        //myHub.On<PlayerData>("LoginSuccess", (player) =>
+        //{
+        //    Debug.Log($"Player {player.Handle} has Jacked IN!");
+        //    UnityThread.executeInUpdate(() =>
+        //    {
+        //        onLoginSuccessful.Invoke(player);
+        //    });
+        //});
     }
     public static void InvokePlayerMove(int playerID, int x, int y)
     {
@@ -68,6 +86,19 @@ public static class SignalrHandler
             }
         });
     }
+    //public static void InvokeLogin()
+    //{
+    //    myHub.Invoke("Login", "tuseroni", "HELLO World ").ContinueWith(task => {
+    //        if (task.IsFaulted)
+    //        {
+    //            Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
+    //        }
+    //        else
+    //        {
+    //            Debug.Log("Send Complete.");
+    //        }
+    //    });
+    //}
     public static void InvokeJackInRequest(int PlayerID)
     {
         myHub.Invoke("JackInRequest", PlayerID).ContinueWith(task => {
@@ -103,14 +134,14 @@ public class signalrController : MonoBehaviour
     {
         UnityThread.initUnityThread();
 
-        if(isDebug)
-        {
-            connection = debugConnection;
-        }
-        else
-        {
-            connection = ProductionConnection;
-        }
+#if (UNITY_ANDROID)
+
+        connection = ProductionConnection;
+#else
+        connection = debugConnection;
+            
+        
+#endif
         SignalrHandler.CreateConnection(connection, "ComHub");
         //var connection = new HubConnection("https://www.cloudwranglersinc.com/com");
         //Make proxy to hub based on hub name on server
