@@ -40,6 +40,17 @@ namespace CyberpunkServer.Models.DTO
             return ret;
         }
 
+        public static List<PlayerData> ConvertList(ICollection<CyberpunkServer.Models.Player> origs)
+        {
+            var ret = new List<PlayerData>();
+            foreach (var orig in origs)
+            {
+                var dest = (PlayerData)orig;
+                ret.Add(dest);
+            }
+            return ret;
+        }
+
         public static CyberpunkServer.Models.Player CopyProperties(PlayerData player,Models.Player dest, CyberpunkEntities db)
         {
             dest.id = player.id;

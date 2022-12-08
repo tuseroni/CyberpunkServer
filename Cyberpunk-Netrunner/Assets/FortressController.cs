@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[System.Serializable]
-public class programData
-{
-    public FortObj[] Walls;
-    public FortObj[] CPU;
-    public FortObj[] Memory;
-    public CodeGate[] CodeGates;
-}
+//[System.Serializable]
+//public class programData
+//{
+//    public FortObj[] Walls;
+//    public FortObj[] CPU;
+//    public FortObj[] Memory;
+//    public CodeGate[] CodeGates;
+//}
 [System.Serializable]
 public enum NetObjType
 {

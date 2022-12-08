@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Web;
+using Microsoft.AspNet.Identity;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CyberpunkServer.SignalR.hubs
 {
@@ -26,6 +29,36 @@ namespace CyberpunkServer.SignalR.hubs
         public void RejectJackInRequest(Models.DTO.PlayerData player)
         {
             Clients.Others.JackInRequestRejected(player);
+        }
+        public void Login(string email,string password)
+        {
+            var user=db.AspNetUsers.Include(x=>x.Player)
+                .Include("Player.PlayerRoles")
+                .Include("Player.PlayerSkill")
+                .Include("Player.PlayerStat")
+                .Include("Player.PlayerSkill.Skill")
+                .Include("Player.PlayerSkill.Skill.SkillTypes")
+                .Include("Player.PlayerWeapon")
+                .Include("Player.PlayerArmor")
+                .Include("Player.PlayerCybernetics")
+                .Where(x => x.Email == email).FirstOrDefault();
+            if(user==null)
+            {
+                Clients.Caller.onLoginRejected("User Email or Password is Invalid");
+            }
+            else
+            {
+                
+                Clients.Caller.onLoginSuccessful(Models.DTO.PlayerData.ConvertList(user.Player));
+            }
+            //if(user.PasswordHash== SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(password + user.Id)).ToString())
+            //{
+            //    Clients.Caller.onLoginSuccessful(user.Player.First());
+            //}
+            //else
+            //{
+            //    Clients.Caller.onLoginRejected("User Email or Password is Invalid");
+            //}
         }
         public void JackInRequest(int id)
         {

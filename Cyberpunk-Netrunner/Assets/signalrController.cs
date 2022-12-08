@@ -7,6 +7,9 @@ using CyberpunkServer.Models.DTO;
 public static class ProgramData
 {
     public static PlayerData player;
+    public static SubgridData subgrid;
+
+
 
 }
 
@@ -16,9 +19,13 @@ public static class SignalrHandler
     static HubConnection connection;
     static IHubProxy myHub;
     public delegate void JackInRequestAccepted(PlayerData player, SubgridData subgrid);
+    public delegate void JackInRequestRejected(PlayerData player);
     public static event JackInRequestAccepted onJackInRequestAccepted;
-    //public delegate void LoginSuccessful(PlayerData player);
-    //public static event LoginSuccessful onLoginSuccessful;
+    public static event JackInRequestRejected onJackInRequestRejected;
+    public delegate void LoginSuccessful(List<PlayerData> player);
+    public delegate void LoginFailurel(string Message);
+    public static event LoginSuccessful onLoginSuccessful;
+    public static event LoginFailurel onLoginFailure;
     public static void CreateConnection(string address,string hub)
     {
         connection = new HubConnection(address);
@@ -44,20 +51,27 @@ public static class SignalrHandler
         });
         myHub.On<PlayerData>("JackInRequestRejected", (player) =>
         {
-            Debug.Log($"Ref Says NO!!");
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#endif
-            Application.Quit();
+
+            UnityThread.executeInUpdate(() =>
+            {
+                onJackInRequestRejected.Invoke(player);
+            });
+
         });
-        //myHub.On<PlayerData>("LoginSuccess", (player) =>
-        //{
-        //    Debug.Log($"Player {player.Handle} has Jacked IN!");
-        //    UnityThread.executeInUpdate(() =>
-        //    {
-        //        onLoginSuccessful.Invoke(player);
-        //    });
-        //});
+        myHub.On<List<PlayerData>>("onLoginSuccessful", (player) =>
+        {
+            UnityThread.executeInUpdate(() =>
+            {
+                onLoginSuccessful.Invoke(player);
+            });
+        });
+        myHub.On<string>("onLoginRejected", (message) =>
+        {
+            UnityThread.executeInUpdate(() =>
+            {
+                onLoginFailure.Invoke(message);
+            });
+        });
     }
     public static void InvokePlayerMove(int playerID, int x, int y)
     {
@@ -73,6 +87,21 @@ public static class SignalrHandler
             }
         });
     }
+    public static void InvokeLogin(string email, string password)
+    {
+        myHub.Invoke("Login", email, password).ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
+            }
+            else
+            {
+                Debug.Log("Send Complete.");
+            }
+        });
+    }
+
     public static void InvokeSend()
     {
         myHub.Invoke("Send", "tuseroni", "HELLO World ").ContinueWith(task => {
@@ -142,7 +171,7 @@ public class signalrController : MonoBehaviour
             
         
 #endif
-        SignalrHandler.CreateConnection(connection, "ComHub");
+        //SignalrHandler.CreateConnection(connection, "ComHub");
         //var connection = new HubConnection("https://www.cloudwranglersinc.com/com");
         //Make proxy to hub based on hub name on server
         //var myHub = connection.CreateHubProxy("ComHub");
@@ -156,7 +185,7 @@ public class signalrController : MonoBehaviour
 
         SignalrHandler.onJackInRequestAccepted += SignalrHandler_onJackInRequestAccepted;
         //connection.StateChanged += connection_StateChanged;
-        SignalrHandler.InvokeJackInRequest(3);
+        
         //myHub.Invoke("Send", "tuseroni", "HELLO World ").ContinueWith(task => {
         //    if (task.IsFaulted)
         //    {

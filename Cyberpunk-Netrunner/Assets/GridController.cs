@@ -25,15 +25,14 @@ public class GridController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SignalrHandler.onJackInRequestAccepted += SignalrHandler_onJackInRequestAccepted;
-
+        
     }
-
-    private void SignalrHandler_onJackInRequestAccepted(PlayerData player, CyberpunkServer.Models.DTO.SubgridData subgrid)
+    private void Awake()
     {
-        BuildGrid(subgrid);
-        placePlayer(player);
+        BuildGrid(ProgramData.subgrid);
+        placePlayer(ProgramData.player);
     }
+    
     public void placePlayer(PlayerData player)
     {
         var x = player.xPos;
