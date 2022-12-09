@@ -55,5 +55,23 @@ namespace CyberpunkServer.Models
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<FortressRemotes> FortressRemotes { get; set; }
+        public virtual DbSet<Computer> Computer { get; set; }
+        public virtual DbSet<ComputerImprovements> ComputerImprovements { get; set; }
+        public virtual DbSet<ComputerPeripherals> ComputerPeripherals { get; set; }
+        public virtual DbSet<ComputerPeripheralSkillModifiers> ComputerPeripheralSkillModifiers { get; set; }
+        public virtual DbSet<ComputerPeripheralStatModifiers> ComputerPeripheralStatModifiers { get; set; }
+        public virtual DbSet<Cyberdeck> Cyberdeck { get; set; }
+        public virtual DbSet<CyberdeckImprovements> CyberdeckImprovements { get; set; }
+        public virtual DbSet<CyberdeckOptions> CyberdeckOptions { get; set; }
+        public virtual DbSet<CyberdeckOptionsSkillModifiers> CyberdeckOptionsSkillModifiers { get; set; }
+        public virtual DbSet<CyberdeckOptionsStatModifiers> CyberdeckOptionsStatModifiers { get; set; }
+        public virtual DbSet<FortressSkills> FortressSkills { get; set; }
+        public virtual DbSet<PlayerComputer> PlayerComputer { get; set; }
+        public virtual DbSet<PlayerCyberdeck> PlayerCyberdeck { get; set; }
+        public virtual DbSet<Program> Program { get; set; }
+        public virtual DbSet<ProgramFunctions> ProgramFunctions { get; set; }
+        public virtual DbSet<ProgramOptions> ProgramOptions { get; set; }
+        public virtual DbSet<ProgramType> ProgramType { get; set; }
+        public virtual DbSet<Units> Units { get; set; }
     }
 }

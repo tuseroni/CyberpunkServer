@@ -22,15 +22,18 @@ namespace CyberpunkServer.Models
             this.PlayerSkill = new HashSet<PlayerSkill>();
             this.PlayerStat = new HashSet<PlayerStat>();
             this.PlayerWeapon = new HashSet<PlayerWeapon>();
+            this.PlayerComputer = new HashSet<PlayerComputer>();
+            this.PlayerCyberdeck = new HashSet<PlayerCyberdeck>();
+            this.Program = new HashSet<Program>();
         }
     
         public int id { get; set; }
         public string Handle { get; set; }
         public string SIN { get; set; }
-        public Nullable<int> IP { get; set; }
-        public Nullable<int> REP { get; set; }
-        public Nullable<int> Humanity { get; set; }
-        public Nullable<int> Dammage { get; set; }
+        public int IP { get; set; }
+        public int REP { get; set; }
+        public int Humanity { get; set; }
+        public int Dammage { get; set; }
         public Nullable<int> RoleID { get; set; }
         public string aspUserID { get; set; }
     
@@ -46,5 +49,11 @@ namespace CyberpunkServer.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlayerWeapon> PlayerWeapon { get; set; }
         public virtual AspNetUsers AspNetUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlayerComputer> PlayerComputer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlayerCyberdeck> PlayerCyberdeck { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Program> Program { get; set; }
     }
 }

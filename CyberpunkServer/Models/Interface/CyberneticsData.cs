@@ -11,8 +11,66 @@ namespace CyberpunkServer.Models.DTO
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
-    public partial class CyberneticsData
+    public partial class CyberneticsData : iConvert
     {
+        public static ICollection<CyberpunkServer.Models.Cybernetics> CopyProperties(ICollection<CyberneticsData> orig, ICollection<CyberpunkServer.Models.Cybernetics> dest, CyberpunkEntities db)
+        {
+            if (orig.Any())
+            {
+                Dictionary<int, CyberpunkServer.Models.Cybernetics> dictionary1 = new Dictionary<int, CyberpunkServer.Models.Cybernetics>();
+                Dictionary<int, CyberneticsData> dictionary2 = new Dictionary<int, CyberneticsData>();
+                if (dest.Any())
+                {
+                    foreach (var obj in dest)
+                        dictionary1.Add(obj.id, obj);
+                }
+                foreach (var orig1 in orig)
+                {
+                    if (dictionary1.ContainsKey(orig1.id))
+                    {
+                        var dest1 = dictionary1[orig1.id];
+                        CyberneticsData.CopyProperties(orig1, dest1, db);
+                    }
+                    else
+                    {
+                        var dest2 = new Models.Cybernetics();
+                        dest.Add(CyberneticsData.CopyProperties(orig1, dest2, db));
+                    }
+                    if (orig1.id != 0)
+                    {
+                        dictionary2.Add(orig1.id, orig1);
+                    }
+                }
+                foreach (KeyValuePair<int, Models.Cybernetics> keyValuePair in dictionary1)
+                {
+                    if (!dictionary2.ContainsKey(keyValuePair.Key))
+                        dest.Remove(keyValuePair.Value);
+                }
+            }
+            else if (dest != null && !orig.Any<CyberneticsData>())
+                dest.Clear();
+            return dest;
+        }
+        public static explicit operator CyberneticsData(CyberpunkServer.Models.Cybernetics Cybernetics)
+        {
+            var ret = Converter<CyberneticsData, Models.Cybernetics>.ConvertType(Cybernetics, new CyberneticsData());
+            return ret;
+        }
+
+        public static List<CyberneticsData> ConvertList(ICollection<CyberpunkServer.Models.Cybernetics> origs)
+        {
+
+            var ret = Converter<CyberneticsData, Cybernetics>.ConvertList(origs);
+            return ret;
+        }
+
+        public static CyberpunkServer.Models.Cybernetics CopyProperties(CyberneticsData Cybernetics, Models.Cybernetics dest, CyberpunkEntities db)
+        {
+            Converter<CyberneticsData, Cybernetics>.ConvertType<CyberneticsData>(Cybernetics, dest, "CopyProperties");
+            return dest;
+        }
+
     }
 }

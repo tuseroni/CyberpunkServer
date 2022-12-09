@@ -13,24 +13,8 @@ namespace CyberpunkServer.Models.DTO
     using System.Collections.Generic;
     using System.Linq;
     using System.Data.Entity;
-    public partial class FortressMemoryData
+    public partial class FortressMemoryData : iConvert
     {
-        public static ICollection<FortressMemoryData> ConvertList(ICollection<CyberpunkServer.Models.FortressMemory> origs)
-        {
-            var ret = new HashSet<FortressMemoryData>();
-            foreach (var orig in origs)
-            {
-                var dest = new FortressMemoryData();
-                dest.xPos = orig.xPos;
-                dest.yPos = orig.yPos;
-                dest.FortressID = orig.FortressID;
-                dest.id = orig.id;
-                dest.Type = orig.Type;
-                dest.NetObjType = (NetObjTypeData)orig.NetObjType;
-                ret.Add(dest);
-            }
-            return ret;
-        }
         public static ICollection<CyberpunkServer.Models.FortressMemory> CopyProperties(ICollection<FortressMemoryData> orig, ICollection<CyberpunkServer.Models.FortressMemory> dest, CyberpunkEntities db)
         {
             if (orig.Any())
@@ -54,7 +38,10 @@ namespace CyberpunkServer.Models.DTO
                         var dest2 = new Models.FortressMemory();
                         dest.Add(FortressMemoryData.CopyProperties(orig1, dest2, db));
                     }
-                    dictionary2.Add(orig1.id, orig1);
+                    if (orig1.id != 0)
+                    {
+                        dictionary2.Add(orig1.id, orig1);
+                    }
                 }
                 foreach (KeyValuePair<int, Models.FortressMemory> keyValuePair in dictionary1)
                 {
@@ -66,15 +53,25 @@ namespace CyberpunkServer.Models.DTO
                 dest.Clear();
             return dest;
         }
-        public static CyberpunkServer.Models.FortressMemory CopyProperties(FortressMemoryData orig, CyberpunkServer.Models.FortressMemory dest, CyberpunkEntities db)
+        public static explicit operator FortressMemoryData(CyberpunkServer.Models.FortressMemory FortressMemory)
         {
-            dest.xPos = orig.xPos;
-            dest.yPos = orig.yPos;
-            dest.FortressID = orig.FortressID;
-            dest.id = orig.id;
-            dest.Type = orig.Type;
-            return null;
+            var ret = Converter<FortressMemoryData, Models.FortressMemory>.ConvertType(FortressMemory, new FortressMemoryData());
+            return ret;
         }
+
+        public static List<FortressMemoryData> ConvertList(ICollection<CyberpunkServer.Models.FortressMemory> origs)
+        {
+
+            var ret = Converter<FortressMemoryData, FortressMemory>.ConvertList(origs);
+            return ret;
+        }
+
+        public static CyberpunkServer.Models.FortressMemory CopyProperties(FortressMemoryData FortressMemory, Models.FortressMemory dest, CyberpunkEntities db)
+        {
+            Converter<FortressMemoryData, FortressMemory>.ConvertType<FortressMemoryData>(FortressMemory, dest, "CopyProperties");
+            return dest;
+        }
+
     }
-    
+
 }

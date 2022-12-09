@@ -14,22 +14,8 @@ namespace CyberpunkServer.Models.DTO
     using System.Linq;
     using System.Data.Entity;
 
-    public partial class PlayerWeaponData
+    public partial class PlayerWeaponData : iConvert
     {
-      
-        public static ICollection<PlayerWeaponData> ConvertList(ICollection<CyberpunkServer.Models.PlayerWeapon> origs)
-        {
-            var ret = new HashSet<PlayerWeaponData>();
-            foreach (var orig in origs)
-            {
-                var dest = new PlayerWeaponData();
-                dest.id = orig.id;
-                dest.WeaponID = orig.WeaponID;
-                dest.PlayerID = orig.PlayerID;
-                ret.Add(dest);
-            }
-            return ret;
-        }
         public static ICollection<CyberpunkServer.Models.PlayerWeapon> CopyProperties(ICollection<PlayerWeaponData> orig, ICollection<CyberpunkServer.Models.PlayerWeapon> dest, CyberpunkEntities db)
         {
             if (orig.Any())
@@ -53,7 +39,10 @@ namespace CyberpunkServer.Models.DTO
                         var dest2 = new Models.PlayerWeapon();
                         dest.Add(PlayerWeaponData.CopyProperties(orig1, dest2, db));
                     }
-                    dictionary2.Add(orig1.id, orig1);
+                    if (orig1.id != 0)
+                    {
+                        dictionary2.Add(orig1.id, orig1);
+                    }
                 }
                 foreach (KeyValuePair<int, Models.PlayerWeapon> keyValuePair in dictionary1)
                 {
@@ -65,12 +54,24 @@ namespace CyberpunkServer.Models.DTO
                 dest.Clear();
             return dest;
         }
-        public static CyberpunkServer.Models.PlayerWeapon CopyProperties(PlayerWeaponData orig, CyberpunkServer.Models.PlayerWeapon dest, CyberpunkEntities db)
+        public static explicit operator PlayerWeaponData(CyberpunkServer.Models.PlayerWeapon PlayerWeapon)
         {
-            dest.id = orig.id;
-            dest.WeaponID = orig.WeaponID;
-            dest.PlayerID = orig.PlayerID;
-            return null;
+            var ret = Converter<PlayerWeaponData, Models.PlayerWeapon>.ConvertType(PlayerWeapon, new PlayerWeaponData());
+            return ret;
         }
+
+        public static List<PlayerWeaponData> ConvertList(ICollection<CyberpunkServer.Models.PlayerWeapon> origs)
+        {
+
+            var ret = Converter<PlayerWeaponData, PlayerWeapon>.ConvertList(origs);
+            return ret;
+        }
+
+        public static CyberpunkServer.Models.PlayerWeapon CopyProperties(PlayerWeaponData PlayerWeapon, Models.PlayerWeapon dest, CyberpunkEntities db)
+        {
+            Converter<PlayerWeaponData, PlayerWeapon>.ConvertType<PlayerWeaponData>(PlayerWeapon, dest, "CopyProperties");
+            return dest;
+        }
+
     }
 }

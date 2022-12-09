@@ -13,24 +13,8 @@ namespace CyberpunkServer.Models.DTO
     using System.Collections.Generic;
     using System.Linq;
     
-    public partial class FortressRemotesData
+    public partial class FortressRemotesData : iConvert
     {
-        public static ICollection<FortressRemotesData> ConvertList(ICollection<CyberpunkServer.Models.FortressRemotes> origs)
-        {
-            var ret = new HashSet<FortressRemotesData>();
-            foreach (var orig in origs)
-            {
-                var dest = new FortressRemotesData();
-                dest.xPos = orig.xPos;
-                dest.yPos = orig.yPos;
-                dest.FortressID = orig.FortressID;
-                dest.id = orig.id;
-                dest.Type = orig.Type;
-                dest.NetObjType = (NetObjTypeData)orig.NetObjType;
-                ret.Add(dest);
-            }
-            return ret;
-        }
         public static ICollection<CyberpunkServer.Models.FortressRemotes> CopyProperties(ICollection<FortressRemotesData> orig, ICollection<CyberpunkServer.Models.FortressRemotes> dest, CyberpunkEntities db)
         {
             if (orig.Any())
@@ -54,7 +38,10 @@ namespace CyberpunkServer.Models.DTO
                         var dest2 = new Models.FortressRemotes();
                         dest.Add(FortressRemotesData.CopyProperties(orig1, dest2, db));
                     }
-                    dictionary2.Add(orig1.id, orig1);
+                    if (orig1.id != 0)
+                    {
+                        dictionary2.Add(orig1.id, orig1);
+                    }
                 }
                 foreach (KeyValuePair<int, Models.FortressRemotes> keyValuePair in dictionary1)
                 {
@@ -66,14 +53,23 @@ namespace CyberpunkServer.Models.DTO
                 dest.Clear();
             return dest;
         }
-        public static CyberpunkServer.Models.FortressRemotes CopyProperties(FortressRemotesData orig, CyberpunkServer.Models.FortressRemotes dest, CyberpunkEntities db)
+        public static explicit operator FortressRemotesData(CyberpunkServer.Models.FortressRemotes FortressRemotes)
         {
-            dest.xPos = orig.xPos;
-            dest.yPos = orig.yPos;
-            dest.FortressID = orig.FortressID;
-            dest.id = orig.id;
-            dest.Type = orig.Type;
-            return null;
+            var ret = Converter<FortressRemotesData, Models.FortressRemotes>.ConvertType(FortressRemotes, new FortressRemotesData());
+            return ret;
+        }
+
+        public static List<FortressRemotesData> ConvertList(ICollection<CyberpunkServer.Models.FortressRemotes> origs)
+        {
+
+            var ret = Converter<FortressRemotesData, FortressRemotes>.ConvertList(origs);
+            return ret;
+        }
+
+        public static CyberpunkServer.Models.FortressRemotes CopyProperties(FortressRemotesData FortressRemotes, Models.FortressRemotes dest, CyberpunkEntities db)
+        {
+            Converter<FortressRemotesData, FortressRemotes>.ConvertType<FortressRemotesData>(FortressRemotes, dest, "CopyProperties");
+            return dest;
         }
 
     }

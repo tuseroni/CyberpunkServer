@@ -43,7 +43,7 @@
 	}
 
 	.SkillType {
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: 1fr 1fr minmax(0px,1fr);
 	}
 
 	.SkillHeader {
@@ -133,7 +133,7 @@
 			<div class="stat-block"><label>Damage:</label><input type="number" name="Dammage" value="@Model.Dammage"></div>
 			<div class="stat-block"><label>REP:</label><input type="number" name="REP" value="@Model.REP"></div>
 			<div class="stat-block"><label>HL:</label><input type="number" name="Humanity" value="@Model.Humanity"></div>
-			<div class="stat-block calculated" title="Humanity=(Empathy(base)*10)-floor(HL/10)"><label>Humanity:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["EMP"].Base*10) - (Math.Floor((Model.Humanity.Value/10.0))*10) )"></div>
+			<div class="stat-block calculated" title="Humanity=(Empathy(base)*10)-floor(HL/10)"><label>Humanity:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["EMP"].Base*10) - (Math.Floor((Model.Humanity/10.0))*10) )"></div>
 			<div class="stat-block calculated" title="RUN=(BT)*3"><label>RUN:</label><input disabled="disabled" type="number" value="@(Model.StatLookup["BT"].Base * 3)"></div>
 			<div class="stat-block calculated" title="LEAP=(BT)*3/4"><label>LEAP:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["BT"].Base * 3) / 4)"></div>
 			<div class="stat-block calculated" title="LIFT=(BT)*10"><label>LIFT:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["BT"].Base * 10))"></div>

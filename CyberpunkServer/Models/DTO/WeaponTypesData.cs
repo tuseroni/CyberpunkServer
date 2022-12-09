@@ -14,17 +14,15 @@ namespace CyberpunkServer.Models.DTO
 
     public partial class WeaponTypesData
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        
         public WeaponTypesData()
         {
-            this.Weapons = new HashSet<WeaponsData>();
+            
         }
     
         public int id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WeaponsData> Weapons { get; set; }
     }
 }

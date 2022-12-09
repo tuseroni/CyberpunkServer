@@ -14,26 +14,8 @@ namespace CyberpunkServer.Models.DTO
     using System.Linq;
     using System.Data.Entity;
 
-    public partial class PlayerArmorData
+    public partial class PlayerArmorData : iConvert
     {
-        public static ICollection<PlayerArmorData> ConvertList(ICollection<CyberpunkServer.Models.PlayerArmor> origs)
-        {
-            var ret = new HashSet<PlayerArmorData>();
-            foreach (var orig in origs)
-            {
-                var dest = new PlayerArmorData();
-                dest.id = orig.id;
-                dest.Name = orig.Name;
-                dest.SP = orig.SP;
-                dest.LocationID = orig.LocationID;
-                dest.CurrentSP = orig.CurrentSP;
-                dest.Encumberance = orig.Encumberance;
-                dest.Description = orig.Description;
-                dest.PlayerID = orig.PlayerID;
-                ret.Add(dest);
-            }
-            return ret;
-        }
         public static ICollection<CyberpunkServer.Models.PlayerArmor> CopyProperties(ICollection<PlayerArmorData> orig, ICollection<CyberpunkServer.Models.PlayerArmor> dest, CyberpunkEntities db)
         {
             if (orig.Any())
@@ -57,7 +39,10 @@ namespace CyberpunkServer.Models.DTO
                         var dest2 = new Models.PlayerArmor();
                         dest.Add(PlayerArmorData.CopyProperties(orig1, dest2, db));
                     }
-                    dictionary2.Add(orig1.id, orig1);
+                    if (orig1.id != 0)
+                    {
+                        dictionary2.Add(orig1.id, orig1);
+                    }
                 }
                 foreach (KeyValuePair<int, Models.PlayerArmor> keyValuePair in dictionary1)
                 {
@@ -69,17 +54,24 @@ namespace CyberpunkServer.Models.DTO
                 dest.Clear();
             return dest;
         }
-        public static CyberpunkServer.Models.PlayerArmor CopyProperties(PlayerArmorData orig, CyberpunkServer.Models.PlayerArmor dest, CyberpunkEntities db)
+        public static explicit operator PlayerArmorData(CyberpunkServer.Models.PlayerArmor PlayerArmor)
         {
-            dest.id = orig.id;
-            dest.Name = orig.Name;
-            dest.SP = orig.SP;
-            dest.LocationID = orig.LocationID;
-            dest.CurrentSP = orig.CurrentSP;
-            dest.Encumberance = orig.Encumberance;
-            dest.Description = orig.Description;
-            dest.PlayerID = orig.PlayerID;
-            return null;
+            var ret = Converter<PlayerArmorData, Models.PlayerArmor>.ConvertType(PlayerArmor, new PlayerArmorData());
+            return ret;
         }
+
+        public static List<PlayerArmorData> ConvertList(ICollection<CyberpunkServer.Models.PlayerArmor> origs)
+        {
+
+            var ret = Converter<PlayerArmorData, PlayerArmor>.ConvertList(origs);
+            return ret;
+        }
+
+        public static CyberpunkServer.Models.PlayerArmor CopyProperties(PlayerArmorData PlayerArmor, Models.PlayerArmor dest, CyberpunkEntities db)
+        {
+            Converter<PlayerArmorData, PlayerArmor>.ConvertType<PlayerArmorData>(PlayerArmor, dest, "CopyProperties");
+            return dest;
+        }
+
     }
 }

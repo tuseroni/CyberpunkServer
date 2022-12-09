@@ -14,7 +14,7 @@ namespace CyberpunkServer.Models.DTO
 
     public partial class FortressData
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        
         public FortressData()
         {
             this.FortressCPU = new List<FortressCPUData>();
@@ -22,24 +22,21 @@ namespace CyberpunkServer.Models.DTO
             this.FortressMemory = new List<FortressMemoryData>();
             this.FortressWalls = new List<FortressWallsData>();
             this.FortressRemotes = new List<FortressRemotesData>();
+            this.FortressSkills = new List<FortressSkillsData>();
+            this.Program = new List<ProgramData>();
         }
     
         public int id { get; set; }
         public Nullable<int> subgridID { get; set; }
         public Nullable<int> WallStrength { get; set; }
         public Nullable<int> Int { get; set; }
-    
-        public virtual SubgridData Subgrid { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<FortressCPUData> FortressCPU { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<FortressCodeGatesData> FortressCodeGates { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<FortressMemoryData> FortressMemory { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<FortressWallsData> FortressWalls { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<FortressRemotesData> FortressRemotes { get; set; }
+        public virtual List<FortressSkillsData> FortressSkills { get; set; }
+        public virtual List<ProgramData> Program { get; set; }
 
 
     }

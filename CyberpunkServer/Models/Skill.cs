@@ -18,6 +18,9 @@ namespace CyberpunkServer.Models
         public Skill()
         {
             this.PlayerSkill = new HashSet<PlayerSkill>();
+            this.ComputerPeripheralSkillModifiers = new HashSet<ComputerPeripheralSkillModifiers>();
+            this.CyberdeckOptionsSkillModifiers = new HashSet<CyberdeckOptionsSkillModifiers>();
+            this.FortressSkills = new HashSet<FortressSkills>();
         }
     
         public int id { get; set; }
@@ -31,5 +34,11 @@ namespace CyberpunkServer.Models
         public virtual ICollection<PlayerSkill> PlayerSkill { get; set; }
         public virtual Stat Stat { get; set; }
         public virtual SkillTypes SkillTypes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ComputerPeripheralSkillModifiers> ComputerPeripheralSkillModifiers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CyberdeckOptionsSkillModifiers> CyberdeckOptionsSkillModifiers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FortressSkills> FortressSkills { get; set; }
     }
 }

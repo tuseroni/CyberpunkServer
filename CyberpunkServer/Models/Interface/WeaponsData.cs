@@ -11,9 +11,66 @@ namespace CyberpunkServer.Models.DTO
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
-    public partial class WeaponsData
+    public partial class WeaponsData : iConvert
     {
-        
+        public static ICollection<CyberpunkServer.Models.Weapons> CopyProperties(ICollection<WeaponsData> orig, ICollection<CyberpunkServer.Models.Weapons> dest, CyberpunkEntities db)
+        {
+            if (orig.Any())
+            {
+                Dictionary<int, CyberpunkServer.Models.Weapons> dictionary1 = new Dictionary<int, CyberpunkServer.Models.Weapons>();
+                Dictionary<int, WeaponsData> dictionary2 = new Dictionary<int, WeaponsData>();
+                if (dest.Any())
+                {
+                    foreach (var obj in dest)
+                        dictionary1.Add(obj.id, obj);
+                }
+                foreach (var orig1 in orig)
+                {
+                    if (dictionary1.ContainsKey(orig1.id))
+                    {
+                        var dest1 = dictionary1[orig1.id];
+                        WeaponsData.CopyProperties(orig1, dest1, db);
+                    }
+                    else
+                    {
+                        var dest2 = new Models.Weapons();
+                        dest.Add(WeaponsData.CopyProperties(orig1, dest2, db));
+                    }
+                    if (orig1.id != 0)
+                    {
+                        dictionary2.Add(orig1.id, orig1);
+                    }
+                }
+                foreach (KeyValuePair<int, Models.Weapons> keyValuePair in dictionary1)
+                {
+                    if (!dictionary2.ContainsKey(keyValuePair.Key))
+                        dest.Remove(keyValuePair.Value);
+                }
+            }
+            else if (dest != null && !orig.Any<WeaponsData>())
+                dest.Clear();
+            return dest;
+        }
+        public static explicit operator WeaponsData(CyberpunkServer.Models.Weapons Weapons)
+        {
+            var ret = Converter<WeaponsData, Models.Weapons>.ConvertType(Weapons, new WeaponsData());
+            return ret;
+        }
+
+        public static List<WeaponsData> ConvertList(ICollection<CyberpunkServer.Models.Weapons> origs)
+        {
+
+            var ret = Converter<WeaponsData, Weapons>.ConvertList(origs);
+            return ret;
+        }
+
+        public static CyberpunkServer.Models.Weapons CopyProperties(WeaponsData Weapons, Models.Weapons dest, CyberpunkEntities db)
+        {
+            Converter<WeaponsData, Weapons>.ConvertType<WeaponsData>(Weapons, dest, "CopyProperties");
+            return dest;
+        }
+
     }
 }

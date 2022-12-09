@@ -13,26 +13,8 @@ namespace CyberpunkServer.Models.DTO
     using System.Collections.Generic;
     using System.Linq;
     using System.Data.Entity;
-    public partial class PlayerSkillData
+    public partial class PlayerSkillData : iConvert
     {
-        
-        public static ICollection<PlayerSkillData> ConvertList(ICollection<CyberpunkServer.Models.PlayerSkill> origs)
-        {
-            var ret = new HashSet<PlayerSkillData>();
-            foreach (var orig in origs)
-            {
-                var dest = new PlayerSkillData();
-                dest.id = orig.id;
-                dest.Ranks = orig.Ranks;
-                dest.Bonus = orig.Bonus;
-                dest.CurrentIP = orig.CurrentIP;
-                dest.PlayerID = orig.PlayerID;
-                dest.SkillID = orig.SkillID;
-                dest.Skill = (SkillData)orig.Skill;
-                ret.Add(dest);
-            }
-            return ret;
-        }
         public static ICollection<CyberpunkServer.Models.PlayerSkill> CopyProperties(ICollection<PlayerSkillData> orig, ICollection<CyberpunkServer.Models.PlayerSkill> dest, CyberpunkEntities db)
         {
             if (orig.Any())
@@ -71,27 +53,24 @@ namespace CyberpunkServer.Models.DTO
                 dest.Clear();
             return dest;
         }
-        public static CyberpunkServer.Models.PlayerSkill CopyProperties(PlayerSkillData orig, CyberpunkServer.Models.PlayerSkill dest, CyberpunkEntities db)
+        public static explicit operator PlayerSkillData(CyberpunkServer.Models.PlayerSkill PlayerSkill)
         {
-            dest.Ranks = orig.Ranks;
-            dest.Bonus = orig.Bonus;
-            dest.CurrentIP = orig.CurrentIP;
-            dest.id = orig.id;
-            dest.PlayerID = orig.PlayerID;
-            dest.SkillID = orig.SkillID;
+            var ret = Converter<PlayerSkillData, Models.PlayerSkill>.ConvertType(PlayerSkill, new PlayerSkillData());
+            return ret;
+        }
+
+        public static List<PlayerSkillData> ConvertList(ICollection<CyberpunkServer.Models.PlayerSkill> origs)
+        {
+
+            var ret = Converter<PlayerSkillData, PlayerSkill>.ConvertList(origs);
+            return ret;
+        }
+
+        public static CyberpunkServer.Models.PlayerSkill CopyProperties(PlayerSkillData PlayerSkill, Models.PlayerSkill dest, CyberpunkEntities db)
+        {
+            Converter<PlayerSkillData, PlayerSkill>.ConvertType<PlayerSkillData>(PlayerSkill, dest, "CopyProperties");
             return dest;
         }
-        public static explicit operator PlayerSkillData(CyberpunkServer.Models.PlayerSkill orig)
-        {
-            var dest = new PlayerSkillData();
-            dest.id = orig.id;
-            dest.Ranks = orig.Ranks;
-            dest.Bonus = orig.Bonus;
-            dest.CurrentIP = orig.CurrentIP;
-            dest.PlayerID = orig.PlayerID;
-            dest.SkillID = orig.SkillID;
-            dest.Skill = (SkillData)orig.Skill;
-            return dest;
-        }
+
     }
 }

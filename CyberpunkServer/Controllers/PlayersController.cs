@@ -96,6 +96,9 @@ namespace CyberpunkServer.Controllers
                 .Include(p => p.PlayerWeapon)
                 .Include(p => p.PlayerArmor)
                 .Include(p => p.PlayerCybernetics)
+                .Include(p => p.Program)
+                .Include(p => p.PlayerCyberdeck)
+                .Include(p => p.PlayerComputer)
                 .Include(p => p.AspNetUsers)
                 .AsNoTracking()
                 .Where(p => p.id == id).Single();
@@ -131,6 +134,9 @@ namespace CyberpunkServer.Controllers
                 .Include(p => p.PlayerWeapon)
                 .Include(p => p.PlayerArmor)
                 .Include(p => p.PlayerCybernetics)
+                .Include(p => p.Program)
+                .Include(p => p.PlayerCyberdeck)
+                .Include(p => p.PlayerComputer)
                 .Include(p => p.AspNetUsers)
                 .Where(p => p.id == player.id).Single();
 
@@ -154,6 +160,9 @@ namespace CyberpunkServer.Controllers
                 .Include(p => p.PlayerWeapon)
                 .Include(p => p.PlayerArmor)
                 .Include(p => p.PlayerCybernetics)
+                .Include(p => p.Program)
+                .Include(p => p.PlayerCyberdeck)
+                .Include(p => p.PlayerComputer)
                 .Include(p => p.AspNetUsers)
                 .AsNoTracking()
                 .Where(p => p.id == id).Single();

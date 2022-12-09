@@ -18,13 +18,11 @@ namespace CyberpunkServer.Models.DTO
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PlayerRolesData()
         {
-            this.Player = new HashSet<PlayerData>();
+            
         }
     
         public int id { get; set; }
         public string Name { get; set; }
-        [JsonIgnore]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerData> Player { get; set; }
+        
     }
 }

@@ -68,6 +68,52 @@
         <EntityTypeShape EntityType="CyberpunkModel.FortressRemotes" Width="1.5" PointX="18.25" PointY="5.5" />
         <AssociationConnector Association="CyberpunkModel.FK_FortressRemotes_Fortress" />
         <AssociationConnector Association="CyberpunkModel.FK_FortressRemotes_NetObjType" />
+        <EntityTypeShape EntityType="CyberpunkModel.Computer" Width="1.5" PointX="10.625" PointY="35" />
+        <EntityTypeShape EntityType="CyberpunkModel.ComputerImprovements" Width="1.5" PointX="10.625" PointY="39.875" />
+        <EntityTypeShape EntityType="CyberpunkModel.ComputerPeripherals" Width="1.5" PointX="10.625" PointY="30.625" />
+        <EntityTypeShape EntityType="CyberpunkModel.ComputerPeripheralSkillModifiers" Width="1.5" PointX="15.875" PointY="23" />
+        <EntityTypeShape EntityType="CyberpunkModel.ComputerPeripheralStatModifiers" Width="1.5" PointX="18.875" PointY="19" />
+        <EntityTypeShape EntityType="CyberpunkModel.Cyberdeck" Width="1.5" PointX="10.625" PointY="16.875" />
+        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckImprovements" Width="1.5" PointX="10.625" PointY="20.375" />
+        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckOptions" Width="1.5" PointX="10.625" PointY="27" />
+        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckOptionsSkillModifiers" Width="1.5" PointX="15.875" PointY="19.125" />
+        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckOptionsStatModifiers" Width="1.5" PointX="12.875" PointY="22.125" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressSkills" Width="1.5" PointX="18.25" PointY="2.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerComputer" Width="1.5" PointX="12.875" PointY="25.375" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerCyberdeck" Width="1.5" PointX="12.875" PointY="18.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.Program" Width="1.5" PointX="18.25" PointY="13.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.ProgramFunctions" Width="1.5" PointX="20.5" PointY="13" />
+        <EntityTypeShape EntityType="CyberpunkModel.ProgramOptions" Width="1.5" PointX="20.5" PointY="15.75" />
+        <EntityTypeShape EntityType="CyberpunkModel.ProgramType" Width="1.5" PointX="16" PointY="26.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.Units" Width="1.5" PointX="8.375" PointY="29.375" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCom__Compu__7167D3BD" />
+        <AssociationConnector Association="CyberpunkModel.FK__ComputerP__Compu__02C769E9" />
+        <AssociationConnector Association="CyberpunkModel.FK__ComputerP__Compu__078C1F06" />
+        <AssociationConnector Association="CyberpunkModel.FK__ComputerP__UnitT__7E02B4CC" />
+        <AssociationConnector Association="CyberpunkModel.FK__ComputerP__Skill__01D345B0" />
+        <AssociationConnector Association="CyberpunkModel.FK__ComputerP__StatI__0697FACD" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Cyber__65F62111" />
+        <AssociationConnector Association="CyberpunkModel.FK__Cyberdeck__Cyber__607251E5" />
+        <AssociationConnector Association="CyberpunkModel.FK__Cyberdeck__Cyber__65370702" />
+        <AssociationConnector Association="CyberpunkModel.FK__Cyberdeck__UnitT__5BAD9CC8" />
+        <AssociationConnector Association="CyberpunkModel.FK__Cyberdeck__Skill__5F7E2DAC" />
+        <AssociationConnector Association="CyberpunkModel.FK__Cyberdeck__StatI__6442E2C9" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressS__Fortr__4B422AD5" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressS__Skill__4C364F0E" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCom__Playe__725BF7F6" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Playe__66EA454A" />
+        <AssociationConnector Association="CyberpunkModel.FK__Program__Program__53D770D6" />
+        <AssociationConnector Association="CyberpunkModel.FortressPrograms" />
+        <AssociationConnector Association="CyberpunkModel.PlayerComputerImprovements" />
+        <AssociationConnector Association="CyberpunkModel.PlayerComputerOptions" />
+        <AssociationConnector Association="CyberpunkModel.PlayerComputerPrograms" />
+        <AssociationConnector Association="CyberpunkModel.PlayerCyberdeckImprovements" />
+        <AssociationConnector Association="CyberpunkModel.PlayerCyberdeckOptions" />
+        <AssociationConnector Association="CyberpunkModel.PlayerCyberdeckPrograms" />
+        <AssociationConnector Association="CyberpunkModel.ProgramProgramFunctions" />
+        <AssociationConnector Association="CyberpunkModel.ProgramProgramOptions" />
+        <AssociationConnector Association="CyberpunkModel.ProgramSubroutines" />
+        <AssociationConnector Association="CyberpunkModel.PlayerPrograms" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

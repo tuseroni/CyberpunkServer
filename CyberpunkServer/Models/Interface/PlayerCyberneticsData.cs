@@ -14,25 +14,8 @@ namespace CyberpunkServer.Models.DTO
     using System.Linq;
     using System.Data.Entity;
 
-    public partial class PlayerCyberneticsData
+    public partial class PlayerCyberneticsData : iConvert
     {
-        
-        public static ICollection<PlayerCyberneticsData> ConvertList(ICollection<CyberpunkServer.Models.PlayerCybernetics> origs)
-        {
-            var ret = new HashSet<PlayerCyberneticsData>();
-            foreach (var orig in origs)
-            {
-                var dest = new PlayerCyberneticsData();
-                dest.id = orig.id;
-                dest.HL = orig.HL;
-                dest.CyberneticID = orig.CyberneticID;
-                dest.Cost = orig.Cost;
-                dest.PlayerID = orig.PlayerID;
-                ret.Add(dest);
-            }
-            return ret;
-        }
-
         public static ICollection<CyberpunkServer.Models.PlayerCybernetics> CopyProperties(ICollection<PlayerCyberneticsData> orig, ICollection<CyberpunkServer.Models.PlayerCybernetics> dest, CyberpunkEntities db)
         {
             if (orig.Any())
@@ -56,7 +39,10 @@ namespace CyberpunkServer.Models.DTO
                         var dest2 = new Models.PlayerCybernetics();
                         dest.Add(PlayerCyberneticsData.CopyProperties(orig1, dest2, db));
                     }
-                    dictionary2.Add(orig1.id, orig1);
+                    if (orig1.id != 0)
+                    {
+                        dictionary2.Add(orig1.id, orig1);
+                    }
                 }
                 foreach (KeyValuePair<int, Models.PlayerCybernetics> keyValuePair in dictionary1)
                 {
@@ -68,14 +54,24 @@ namespace CyberpunkServer.Models.DTO
                 dest.Clear();
             return dest;
         }
-        public static CyberpunkServer.Models.PlayerCybernetics CopyProperties(PlayerCyberneticsData orig, CyberpunkServer.Models.PlayerCybernetics dest, CyberpunkEntities db)
+        public static explicit operator PlayerCyberneticsData(CyberpunkServer.Models.PlayerCybernetics PlayerCybernetics)
         {
-            dest.id = orig.id;
-            dest.HL = orig.HL;
-            dest.CyberneticID = orig.CyberneticID;
-            dest.Cost = orig.Cost;
-            dest.PlayerID = orig.PlayerID;
-            return null;
+            var ret = Converter<PlayerCyberneticsData, Models.PlayerCybernetics>.ConvertType(PlayerCybernetics, new PlayerCyberneticsData());
+            return ret;
         }
+
+        public static List<PlayerCyberneticsData> ConvertList(ICollection<CyberpunkServer.Models.PlayerCybernetics> origs)
+        {
+
+            var ret = Converter<PlayerCyberneticsData, PlayerCybernetics>.ConvertList(origs);
+            return ret;
+        }
+
+        public static CyberpunkServer.Models.PlayerCybernetics CopyProperties(PlayerCyberneticsData PlayerCybernetics, Models.PlayerCybernetics dest, CyberpunkEntities db)
+        {
+            Converter<PlayerCyberneticsData, PlayerCybernetics>.ConvertType<PlayerCyberneticsData>(PlayerCybernetics, dest, "CopyProperties");
+            return dest;
+        }
+
     }
 }

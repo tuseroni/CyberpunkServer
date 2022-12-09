@@ -11,31 +11,66 @@ namespace CyberpunkServer.Models.DTO
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
-    public partial class NetObjTypeData
+    public partial class NetObjTypeData : iConvert
     {
-        public static explicit operator NetObjTypeData(CyberpunkServer.Models.NetObjType player)
+        public static ICollection<CyberpunkServer.Models.NetObjType> CopyProperties(ICollection<NetObjTypeData> orig, ICollection<CyberpunkServer.Models.NetObjType> dest, CyberpunkEntities db)
         {
-            var ret = new NetObjTypeData
+            if (orig.Any())
             {
-                id = player.id,
-                Name=player.Name,
-                Title=player.Title,
-                SVG=player.SVG
-                
-            };
-            
-            return ret;
-        }
-        public static ICollection<NetObjTypeData> ConvertList(ICollection<CyberpunkServer.Models.NetObjType> origs)
-        {
-            var ret = new HashSet<NetObjTypeData>();
-            foreach (var orig in origs)
-            {
-                var dest = (NetObjTypeData)orig;
-                ret.Add(dest);
+                Dictionary<int, CyberpunkServer.Models.NetObjType> dictionary1 = new Dictionary<int, CyberpunkServer.Models.NetObjType>();
+                Dictionary<int, NetObjTypeData> dictionary2 = new Dictionary<int, NetObjTypeData>();
+                if (dest.Any())
+                {
+                    foreach (var obj in dest)
+                        dictionary1.Add(obj.id, obj);
+                }
+                foreach (var orig1 in orig)
+                {
+                    if (dictionary1.ContainsKey(orig1.id))
+                    {
+                        var dest1 = dictionary1[orig1.id];
+                        NetObjTypeData.CopyProperties(orig1, dest1, db);
+                    }
+                    else
+                    {
+                        var dest2 = new Models.NetObjType();
+                        dest.Add(NetObjTypeData.CopyProperties(orig1, dest2, db));
+                    }
+                    if (orig1.id != 0)
+                    {
+                        dictionary2.Add(orig1.id, orig1);
+                    }
+                }
+                foreach (KeyValuePair<int, Models.NetObjType> keyValuePair in dictionary1)
+                {
+                    if (!dictionary2.ContainsKey(keyValuePair.Key))
+                        dest.Remove(keyValuePair.Value);
+                }
             }
+            else if (dest != null && !orig.Any<NetObjTypeData>())
+                dest.Clear();
+            return dest;
+        }
+        public static explicit operator NetObjTypeData(CyberpunkServer.Models.NetObjType NetObjType)
+        {
+            var ret = Converter<NetObjTypeData, Models.NetObjType>.ConvertType(NetObjType, new NetObjTypeData());
             return ret;
         }
+
+        public static List<NetObjTypeData> ConvertList(ICollection<CyberpunkServer.Models.NetObjType> origs)
+        {
+
+            var ret = Converter<NetObjTypeData, NetObjType>.ConvertList(origs);
+            return ret;
+        }
+
+        public static CyberpunkServer.Models.NetObjType CopyProperties(NetObjTypeData NetObjType, Models.NetObjType dest, CyberpunkEntities db)
+        {
+            Converter<NetObjTypeData, NetObjType>.ConvertType<NetObjTypeData>(NetObjType, dest, "CopyProperties");
+            return dest;
+        }
+
     }
 }

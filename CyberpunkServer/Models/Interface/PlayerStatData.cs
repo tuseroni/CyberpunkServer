@@ -14,10 +14,8 @@ namespace CyberpunkServer.Models.DTO
     using System.Linq;
     using System.Data.Entity;
 
-    public partial class PlayerStatData
+    public partial class PlayerStatData : iConvert
     {
-        
-
         public static ICollection<CyberpunkServer.Models.PlayerStat> CopyProperties(ICollection<PlayerStatData> orig, ICollection<CyberpunkServer.Models.PlayerStat> dest, CyberpunkEntities db)
         {
             if (orig.Any())
@@ -56,49 +54,24 @@ namespace CyberpunkServer.Models.DTO
                 dest.Clear();
             return dest;
         }
-
-
-        public static CyberpunkServer.Models.PlayerStat CopyProperties(PlayerStatData orig, CyberpunkServer.Models.PlayerStat dest, CyberpunkEntities db)
+        public static explicit operator PlayerStatData(CyberpunkServer.Models.PlayerStat PlayerStat)
         {
-            dest.id = orig.id;
-            dest.Base = orig.Base;
-            dest.Bonus = orig.Bonus;
-            dest.Current = orig.Current;
-            dest.PlayerID = orig.PlayerID;
-            dest.StatID = orig.StatID;
-            dest.Stat = (CyberpunkServer.Models.Stat)dest.Stat;
-            return dest;
-        }
-
-        public static ICollection<PlayerStatData> ConvertList(ICollection<CyberpunkServer.Models.PlayerStat> origs)
-        {
-            var ret = new HashSet<PlayerStatData>();
-            foreach (var orig in origs)
-            {
-                var dest = new PlayerStatData();
-                dest.Base = orig.Base;
-                dest.Bonus = orig.Bonus;
-                dest.Current = orig.Current;
-                dest.id = orig.id;
-                dest.PlayerID = orig.PlayerID;
-                dest.StatID = orig.StatID;
-                dest.Stat = (StatData)orig.Stat;
-                ret.Add(dest);
-            }
+            var ret = Converter<PlayerStatData, Models.PlayerStat>.ConvertType(PlayerStat, new PlayerStatData());
             return ret;
         }
-        public static explicit operator PlayerStatData(CyberpunkServer.Models.PlayerStat orig)
+
+        public static List<PlayerStatData> ConvertList(ICollection<CyberpunkServer.Models.PlayerStat> origs)
         {
-            var dest = new PlayerStatData();
-            dest.id = orig.id;
-            dest.StatID = orig.StatID;
-            dest.Base = orig.Base;
-            dest.Bonus = orig.Bonus;
-            dest.Current = orig.Current;
-            dest.PlayerID = orig.PlayerID;
-            dest.Stat = (StatData)orig.Stat;
-            dest.Current = orig.Current;
+
+            var ret = Converter<PlayerStatData, PlayerStat>.ConvertList(origs);
+            return ret;
+        }
+
+        public static CyberpunkServer.Models.PlayerStat CopyProperties(PlayerStatData PlayerStat, Models.PlayerStat dest, CyberpunkEntities db)
+        {
+            Converter<PlayerStatData, PlayerStat>.ConvertType<PlayerStatData>(PlayerStat, dest, "CopyProperties");
             return dest;
         }
+
     }
 }

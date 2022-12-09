@@ -15,14 +15,17 @@ namespace CyberpunkServer.Models.DTO
 
     public partial class PlayerData
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        
         public PlayerData()
         {
-            this.PlayerArmor = new HashSet<PlayerArmorData>();
-            this.PlayerCybernetics = new HashSet<PlayerCyberneticsData>();
+            this.PlayerArmor = new List<PlayerArmorData>();
+            this.PlayerCybernetics = new List<PlayerCyberneticsData>();
             this.PlayerSkill = new List<PlayerSkillData>();
             this.PlayerStat = new List<PlayerStatData>();
-            this.PlayerWeapon = new HashSet<PlayerWeaponData>();
+            this.PlayerWeapon = new List<PlayerWeaponData>();
+            this.PlayerComputer = new List<PlayerComputerData>();
+            this.PlayerCyberdeck = new List<PlayerCyberdeckData>();
+            this.Program = new List<ProgramData>();
         }
         public Dictionary<int,PlayerSkillData> SkillLookup { get; set; }
         public Dictionary<string, PlayerStatData> StatLookup { get; set; }
@@ -32,26 +35,24 @@ namespace CyberpunkServer.Models.DTO
         public int id { get; set; }
         public string Handle { get; set; }
         public string SIN { get; set; }
-        public Nullable<int> IP { get; set; }
-        public Nullable<int> REP { get; set; }
-        public Nullable<int> Humanity { get; set; }
-        public Nullable<int> Dammage { get; set; }
-        public Nullable<int> RoleID { get; set; }
+        public int IP { get; set; }
+        public int REP { get; set; }
+        public int Humanity { get; set; }
+        public int Dammage { get; set; }
+        public int RoleID { get; set; }
         public string aspUserID { get; set; }
         public int xPos { get; set; }
         public int yPos { get; set; }
 
         public virtual PlayerRolesData PlayerRoles { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerArmorData> PlayerArmor { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerCyberneticsData> PlayerCybernetics { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual List<PlayerArmorData> PlayerArmor { get; set; }
+        public virtual List<PlayerCyberneticsData> PlayerCybernetics { get; set; }
         public virtual List<PlayerSkillData> PlayerSkill { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<PlayerStatData> PlayerStat { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerWeaponData> PlayerWeapon { get; set; }
+        public virtual List<PlayerWeaponData> PlayerWeapon { get; set; }
+        public virtual List<PlayerComputerData> PlayerComputer { get; set; }
+        public virtual List<PlayerCyberdeckData> PlayerCyberdeck { get; set; }
+        public virtual List<ProgramData> Program { get; set; }
         [Newtonsoft.Json.JsonIgnore]
         public virtual AspNetUsersData AspNetUsers { get; set; }
     }

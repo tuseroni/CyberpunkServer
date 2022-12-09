@@ -19,6 +19,8 @@ namespace CyberpunkServer.Models
         {
             this.PlayerStat = new HashSet<PlayerStat>();
             this.Skill = new HashSet<Skill>();
+            this.ComputerPeripheralStatModifiers = new HashSet<ComputerPeripheralStatModifiers>();
+            this.CyberdeckOptionsStatModifiers = new HashSet<CyberdeckOptionsStatModifiers>();
         }
     
         public int id { get; set; }
@@ -30,5 +32,9 @@ namespace CyberpunkServer.Models
         public virtual ICollection<PlayerStat> PlayerStat { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Skill> Skill { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ComputerPeripheralStatModifiers> ComputerPeripheralStatModifiers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CyberdeckOptionsStatModifiers> CyberdeckOptionsStatModifiers { get; set; }
     }
 }

@@ -22,12 +22,15 @@ namespace CyberpunkServer.Models
             this.FortressMemory = new HashSet<FortressMemory>();
             this.FortressWalls = new HashSet<FortressWalls>();
             this.FortressRemotes = new HashSet<FortressRemotes>();
+            this.FortressSkills = new HashSet<FortressSkills>();
+            this.Program = new HashSet<Program>();
         }
     
         public int id { get; set; }
         public Nullable<int> subgridID { get; set; }
         public Nullable<int> WallStrength { get; set; }
         public Nullable<int> Int { get; set; }
+        public string Name { get; set; }
     
         public virtual Subgrid Subgrid { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -40,5 +43,9 @@ namespace CyberpunkServer.Models
         public virtual ICollection<FortressWalls> FortressWalls { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FortressRemotes> FortressRemotes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FortressSkills> FortressSkills { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Program> Program { get; set; }
     }
 }

@@ -14,10 +14,10 @@ namespace CyberpunkServer.Models.DTO
 
     public partial class WeaponsData
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        
         public WeaponsData()
         {
-            this.PlayerWeapon = new HashSet<PlayerWeaponData>();
+            
         }
     
         public int id { get; set; }
@@ -33,10 +33,6 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> Shots2 { get; set; }
         public Nullable<int> Range { get; set; }
         public string Description { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        [Newtonsoft.Json.JsonIgnore]
-        public virtual ICollection<PlayerWeaponData> PlayerWeapon { get; set; }
         public virtual WeaponConcTypesData WeaponConcTypes { get; set; }
         public virtual WeaponTypesData WeaponTypes { get; set; }
     }

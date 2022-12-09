@@ -41,6 +41,9 @@ namespace CyberpunkServer.SignalR.hubs
                 .Include("Player.PlayerWeapon")
                 .Include("Player.PlayerArmor")
                 .Include("Player.PlayerCybernetics")
+                .Include("Player.Program")
+                .Include("Player.PlayerCyberdeck")
+                .Include("Player.PlayerComputer")
                 .Where(x => x.Email == email).FirstOrDefault();
             if(user==null)
             {
@@ -71,6 +74,9 @@ namespace CyberpunkServer.SignalR.hubs
                 .Include(p => p.PlayerWeapon)
                 .Include(p => p.PlayerArmor)
                 .Include(p => p.PlayerCybernetics)
+                .Include(p => p.Program)
+                .Include(p => p.PlayerCyberdeck)
+                .Include(p => p.PlayerComputer)
                 .Include(p => p.AspNetUsers)
                 .AsNoTracking()
                 .Where(p => p.id == id).Single();
