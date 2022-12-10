@@ -103,8 +103,9 @@
           <Property Name="ImprovementAmount" Type="int" Nullable="false" />
           <Property Name="CostLow" Type="float" Nullable="false" />
           <Property Name="CostHigh" Type="float" Nullable="false" />
-          <Property Name="CostPercent" Type="float" Nullable="false" />
+          <Property Name="UnitTypeID" Type="int" Nullable="false" />
           <Property Name="Description" Type="text" />
+          <Property Name="Slots" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="ComputerPeripherals">
           <Key>
@@ -112,10 +113,12 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="255" />
-          <Property Name="CostPerUinitLow" Type="float" Nullable="false" />
-          <Property Name="CostPerUinitHigh" Type="float" Nullable="false" />
+          <Property Name="CostPerUnitLow" Type="float" Nullable="false" />
+          <Property Name="CostPerUnitHigh" Type="float" Nullable="false" />
           <Property Name="UnitTypeID" Type="int" />
-          <Property Name="Units" Type="int" Nullable="false" />
+          <Property Name="MU" Type="int" />
+          <Property Name="Bonus" Type="int" />
+          <Property Name="Description" Type="text" />
         </EntityType>
         <EntityType Name="ComputerPeripheralSkillModifiers">
           <Key>
@@ -171,7 +174,7 @@
           <Property Name="CostPerUinitLow" Type="float" Nullable="false" />
           <Property Name="CostPerUinitHigh" Type="float" Nullable="false" />
           <Property Name="UnitTypeID" Type="int" />
-          <Property Name="Units" Type="int" Nullable="false" />
+          <Property Name="Description" Type="text" />
         </EntityType>
         <EntityType Name="CyberdeckOptionsSkillModifiers">
           <Key>
@@ -381,6 +384,7 @@
           </Key>
           <Property Name="PlayerCyberdeckID" Type="int" Nullable="false" />
           <Property Name="CyberdeckImprovementsID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerCyberdeckOptions">
           <Key>
@@ -1456,6 +1460,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ComputerImprovements_Units">
+          <End Role="Units" Type="Self.Units" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ComputerImprovements" Type="Self.ComputerImprovements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Units">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ComputerImprovements">
+              <PropertyRef Name="UnitTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1890,6 +1908,10 @@
           <AssociationSet Name="FK__Weapons__Type__44FF419A" Association="Self.FK__Weapons__Type__44FF419A">
             <End Role="WeaponTypes" EntitySet="WeaponTypes" />
             <End Role="Weapons" EntitySet="Weapons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComputerImprovements_Units" Association="Self.FK_ComputerImprovements_Units">
+            <End Role="Units" EntitySet="Units" />
+            <End Role="ComputerImprovements" EntitySet="ComputerImprovements" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -2840,6 +2862,10 @@
             <End Role="Player" EntitySet="Player" />
             <End Role="Program" EntitySet="Program" />
           </AssociationSet>
+          <AssociationSet Name="FK_ComputerImprovements_Units" Association="CyberpunkModel.FK_ComputerImprovements_Units">
+            <End Role="Units" EntitySet="Units" />
+            <End Role="ComputerImprovements" EntitySet="ComputerImprovements" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Skill_Skill">
           <End Type="CyberpunkModel.Skill" Role="Skill" Multiplicity="1" />
@@ -3041,6 +3067,9 @@
           <Property Name="CostPercent" Type="Double" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.PlayerComputerImprovements" FromRole="ComputerImprovements" ToRole="PlayerComputer" />
+          <Property Name="UnitTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Slots" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Units" Relationship="CyberpunkModel.FK_ComputerImprovements_Units" FromRole="ComputerImprovements" ToRole="Units" />
         </EntityType>
         <EntityType Name="ComputerPeripherals">
           <Key>
@@ -3056,6 +3085,11 @@
           <NavigationProperty Name="ComputerPeripheralStatModifiers" Relationship="CyberpunkModel.FK__ComputerP__Compu__078C1F06" FromRole="ComputerPeripherals" ToRole="ComputerPeripheralStatModifiers" />
           <NavigationProperty Name="Units1" Relationship="CyberpunkModel.FK__ComputerP__UnitT__7E02B4CC" FromRole="ComputerPeripherals" ToRole="Units" />
           <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.PlayerComputerOptions" FromRole="ComputerPeripherals" ToRole="PlayerComputer" />
+          <Property Name="CostPerUnitLow" Type="Double" Nullable="false" />
+          <Property Name="CostPerUnitHigh" Type="Double" Nullable="false" />
+          <Property Name="MU" Type="Int32" />
+          <Property Name="Bonus" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ComputerPeripheralSkillModifiers">
           <Key>
@@ -3122,6 +3156,7 @@
           <NavigationProperty Name="CyberdeckOptionsStatModifiers" Relationship="CyberpunkModel.FK__Cyberdeck__Cyber__65370702" FromRole="CyberdeckOptions" ToRole="CyberdeckOptionsStatModifiers" />
           <NavigationProperty Name="Units1" Relationship="CyberpunkModel.FK__Cyberdeck__UnitT__5BAD9CC8" FromRole="CyberdeckOptions" ToRole="Units" />
           <NavigationProperty Name="PlayerCyberdeck" Relationship="CyberpunkModel.PlayerCyberdeckOptions" FromRole="CyberdeckOptions" ToRole="PlayerCyberdeck" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CyberdeckOptionsSkillModifiers">
           <Key>
@@ -3246,6 +3281,7 @@
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ComputerPeripherals" Relationship="CyberpunkModel.FK__ComputerP__UnitT__7E02B4CC" FromRole="Units" ToRole="ComputerPeripherals" />
           <NavigationProperty Name="CyberdeckOptions" Relationship="CyberpunkModel.FK__Cyberdeck__UnitT__5BAD9CC8" FromRole="Units" ToRole="CyberdeckOptions" />
+          <NavigationProperty Name="ComputerImprovements" Relationship="CyberpunkModel.FK_ComputerImprovements_Units" FromRole="Units" ToRole="ComputerImprovements" />
         </EntityType>
         <Association Name="FK__PlayerCom__Compu__7167D3BD">
           <End Type="CyberpunkModel.Computer" Role="Computer" Multiplicity="0..1">
@@ -3524,6 +3560,20 @@
         <Association Name="PlayerPrograms">
           <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="*" />
           <End Type="CyberpunkModel.Program" Role="Program" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_ComputerImprovements_Units">
+          <End Type="CyberpunkModel.Units" Role="Units" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.ComputerImprovements" Role="ComputerImprovements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Units">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ComputerImprovements">
+              <PropertyRef Name="UnitTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -3903,8 +3953,9 @@
           <EntitySetMapping Name="ComputerImprovements">
             <EntityTypeMapping TypeName="CyberpunkModel.ComputerImprovements">
               <MappingFragment StoreEntitySet="ComputerImprovements">
+                <ScalarProperty Name="Slots" ColumnName="Slots" />
+                <ScalarProperty Name="UnitTypeID" ColumnName="UnitTypeID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="CostPercent" ColumnName="CostPercent" />
                 <ScalarProperty Name="CostHigh" ColumnName="CostHigh" />
                 <ScalarProperty Name="CostLow" ColumnName="CostLow" />
                 <ScalarProperty Name="ImprovementAmount" ColumnName="ImprovementAmount" />
@@ -3917,10 +3968,12 @@
           <EntitySetMapping Name="ComputerPeripherals">
             <EntityTypeMapping TypeName="CyberpunkModel.ComputerPeripherals">
               <MappingFragment StoreEntitySet="ComputerPeripherals">
-                <ScalarProperty Name="Units" ColumnName="Units" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Bonus" ColumnName="Bonus" />
+                <ScalarProperty Name="MU" ColumnName="MU" />
+                <ScalarProperty Name="CostPerUnitHigh" ColumnName="CostPerUnitHigh" />
+                <ScalarProperty Name="CostPerUnitLow" ColumnName="CostPerUnitLow" />
                 <ScalarProperty Name="UnitTypeID" ColumnName="UnitTypeID" />
-                <ScalarProperty Name="CostPerUinitHigh" ColumnName="CostPerUinitHigh" />
-                <ScalarProperty Name="CostPerUinitLow" ColumnName="CostPerUinitLow" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
@@ -3978,7 +4031,7 @@
           <EntitySetMapping Name="CyberdeckOptions">
             <EntityTypeMapping TypeName="CyberpunkModel.CyberdeckOptions">
               <MappingFragment StoreEntitySet="CyberdeckOptions">
-                <ScalarProperty Name="Units" ColumnName="Units" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="UnitTypeID" ColumnName="UnitTypeID" />
                 <ScalarProperty Name="CostPerUinitHigh" ColumnName="CostPerUinitHigh" />
                 <ScalarProperty Name="CostPerUinitLow" ColumnName="CostPerUinitLow" />

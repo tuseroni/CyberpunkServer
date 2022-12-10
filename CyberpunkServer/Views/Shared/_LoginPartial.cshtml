@@ -1,22 +1,30 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
-
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
-    }
+	using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+	{
+		@Html.AntiForgeryToken()
+		<div class="nav-item dropdown">
+			<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+				<span class="d-none d-lg-inline-flex">@User.Identity.GetUserName()</span>
+			</a>
+			<div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+				<!--<a href="#" class="dropdown-item">My Profile</a>
+				<a href="#" class="dropdown-item">Settings</a>-->
+				<a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Log Out</a>
+			</div>
+		</div>
+	}
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+	<div class="nav-item dropdown">
+		<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+			<span class="d-none d-lg-inline-flex">Register/Login</span>
+		</a>
+		<div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+			@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "dropdown-item" })
+			@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "dropdown-item" })
+		</div>
+	</div>
 }

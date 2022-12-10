@@ -19,6 +19,7 @@ namespace CyberpunkServer.Models
         {
             this.ComputerPeripherals = new HashSet<ComputerPeripherals>();
             this.CyberdeckOptions = new HashSet<CyberdeckOptions>();
+            this.ComputerImprovements = new HashSet<ComputerImprovements>();
         }
     
         public int id { get; set; }
@@ -28,5 +29,7 @@ namespace CyberpunkServer.Models
         public virtual ICollection<ComputerPeripherals> ComputerPeripherals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CyberdeckOptions> CyberdeckOptions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ComputerImprovements> ComputerImprovements { get; set; }
     }
 }

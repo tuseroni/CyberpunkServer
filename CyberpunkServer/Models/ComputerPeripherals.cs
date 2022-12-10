@@ -28,6 +28,11 @@ namespace CyberpunkServer.Models
         public double CostPerUinitHigh { get; set; }
         public Nullable<int> UnitTypeID { get; set; }
         public int Units { get; set; }
+        public double CostPerUnitLow { get; set; }
+        public double CostPerUnitHigh { get; set; }
+        public Nullable<int> MU { get; set; }
+        public Nullable<int> Bonus { get; set; }
+        public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ComputerPeripheralSkillModifiers> ComputerPeripheralSkillModifiers { get; set; }

@@ -114,6 +114,7 @@
         <AssociationConnector Association="CyberpunkModel.ProgramProgramOptions" />
         <AssociationConnector Association="CyberpunkModel.ProgramSubroutines" />
         <AssociationConnector Association="CyberpunkModel.PlayerPrograms" />
+        <AssociationConnector Association="CyberpunkModel.FK_ComputerImprovements_Units" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

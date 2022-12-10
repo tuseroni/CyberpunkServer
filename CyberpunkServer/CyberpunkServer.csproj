@@ -470,6 +470,31 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\Images\cyberpunk2020%281%29.png" />
+    <Content Include="Content\Images\cyberpunk2020.png" />
+    <Content Include="Content\lib\chart\chart.min.js" />
+    <Content Include="Content\lib\easing\easing.js" />
+    <Content Include="Content\lib\easing\easing.min.js" />
+    <Content Include="Content\lib\owlcarousel\assets\ajax-loader.gif" />
+    <Content Include="Content\lib\owlcarousel\assets\owl.carousel.css" />
+    <Content Include="Content\lib\owlcarousel\assets\owl.carousel.min.css" />
+    <Content Include="Content\lib\owlcarousel\assets\owl.theme.default.css" />
+    <Content Include="Content\lib\owlcarousel\assets\owl.theme.default.min.css" />
+    <Content Include="Content\lib\owlcarousel\assets\owl.theme.green.css" />
+    <Content Include="Content\lib\owlcarousel\assets\owl.theme.green.min.css" />
+    <Content Include="Content\lib\owlcarousel\assets\owl.video.play.png" />
+    <Content Include="Content\lib\owlcarousel\owl.carousel.js" />
+    <Content Include="Content\lib\owlcarousel\owl.carousel.min.js" />
+    <Content Include="Content\lib\tempusdominus\css\tempusdominus-bootstrap-4.css" />
+    <Content Include="Content\lib\tempusdominus\css\tempusdominus-bootstrap-4.min.css" />
+    <Content Include="Content\lib\tempusdominus\js\moment-timezone.min.js" />
+    <Content Include="Content\lib\tempusdominus\js\moment.min.js" />
+    <Content Include="Content\lib\tempusdominus\js\tempusdominus-bootstrap-4.js" />
+    <Content Include="Content\lib\tempusdominus\js\tempusdominus-bootstrap-4.min.js" />
+    <Content Include="Content\lib\waypoints\links.php" />
+    <Content Include="Content\lib\waypoints\waypoints.min.js" />
+    <Content Include="Content\Site_New.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -495,6 +520,7 @@
     </Content>
     <Content Include="Connections.config" />
     <Content Include="Content\Theme.grey.css" />
+    <Content Include="Content\lib\owlcarousel\LICENSE" />
     <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -508,7 +534,9 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\main.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\signalR.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -558,6 +586,7 @@
     <Content Include="Views\Subgrids\Details.cshtml" />
     <Content Include="Views\Subgrids\Edit.cshtml" />
     <Content Include="Views\Subgrids\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout_new.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

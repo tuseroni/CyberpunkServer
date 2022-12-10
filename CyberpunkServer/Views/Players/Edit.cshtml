@@ -1,12 +1,13 @@
 ﻿@model CyberpunkServer.Models.DTO.PlayerData
 
 @{
-	ViewBag.Title = "Edit";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Edit Player Info";
+	Layout = "~/Views/Shared/_Layout_new.cshtml";
 }
 @section PageStyle
 {
-<style>
+
+	<style>
 
 	.PlayerStats, .PlayerSkill, .playerInfo, .SkillType {
 		display: grid;
@@ -49,22 +50,23 @@
 	.SkillHeader {
 		grid-column: span 3;
 		text-align: center;
-		background: lightgrey;
+		background: var(--primary);
+		cursor:pointer;
 	}
 
-	.SkillType.collapsed .chevron::before {
-		content: "\e080";
-	}
+		.SkillType.collapsed .chevron::before {
+			content: "\f054";
+		}
 
-	.SkillType.expanded .chevron::before {
-		content: "\e114";
-	}
+		.SkillType.expanded .chevron::before {
+			content: "\f078";
+		}
 
 	.SkillType.collapsed .stat-block {
 		display: none;
 	}
 
-	
+
 	@@media screen and (max-width: 1200px) {
 		.SkillHeader {
 			grid-column: unset;
@@ -94,17 +96,14 @@
 			grid-template-columns: minmax(0px,1fr);
 		}
 
-		
-	}
-</style>
-	}
-<h2>Edit</h2>
 
+	}
+	</style>
+}
 
 @using (Html.BeginForm())
 {
 	@Html.AntiForgeryToken()
-	<h4>@Model.Handle</h4>
 	<hr />
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 	@Html.HiddenFor(model => model.id)
@@ -153,7 +152,7 @@
 			{
 				<div class="PlayerSkill">
 					<div class="SkillType expanded">
-						<h2 class="SkillHeader" onclick="toggleCollapse(this.parentElement.parentElement)">@stat.First().Skill.SkillTypes.Name<span class="glyphicon chevron"></span></h2>
+						<h2 class="SkillHeader" onclick="toggleCollapse(this.parentElement.parentElement)">@stat.First().Skill.SkillTypes.Name<span class="fa chevron"></span></h2>
 						@foreach (var elem in stat)
 						{
 							<div class="stat-block" style="--ranks:@elem.Ranks; --currentIP:@elem.CurrentIP; --multiplier:@elem.Skill.Multiplier">
@@ -212,6 +211,6 @@
 			var newIP = elem.value;
 
 		}
-		
+
 	</script>
 }
