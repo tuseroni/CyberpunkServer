@@ -20,10 +20,10 @@ namespace CyberpunkServer.Models
             this.FortressCPU = new HashSet<FortressCPU>();
             this.FortressCodeGates = new HashSet<FortressCodeGates>();
             this.FortressMemory = new HashSet<FortressMemory>();
+            this.FortressPrograms = new HashSet<FortressPrograms>();
             this.FortressSkills = new HashSet<FortressSkills>();
             this.FortressWalls = new HashSet<FortressWalls>();
             this.FortressRemotes = new HashSet<FortressRemotes>();
-            this.Program = new HashSet<Program>();
         }
     
         public int id { get; set; }
@@ -40,12 +40,12 @@ namespace CyberpunkServer.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FortressMemory> FortressMemory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FortressPrograms> FortressPrograms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FortressSkills> FortressSkills { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FortressWalls> FortressWalls { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FortressRemotes> FortressRemotes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Program> Program { get; set; }
     }
 }

@@ -18,8 +18,8 @@ namespace CyberpunkServer.Models
         public PlayerCyberdeck()
         {
             this.PlayerCyberdeckImprovements = new HashSet<PlayerCyberdeckImprovements>();
-            this.CyberdeckOptions = new HashSet<CyberdeckOptions>();
-            this.Program = new HashSet<Program>();
+            this.PlayerCyberdeckOptions = new HashSet<PlayerCyberdeckOptions>();
+            this.PlayerCyberdeckPrograms = new HashSet<PlayerCyberdeckPrograms>();
         }
     
         public int id { get; set; }
@@ -33,8 +33,8 @@ namespace CyberpunkServer.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlayerCyberdeckImprovements> PlayerCyberdeckImprovements { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CyberdeckOptions> CyberdeckOptions { get; set; }
+        public virtual ICollection<PlayerCyberdeckOptions> PlayerCyberdeckOptions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Program> Program { get; set; }
+        public virtual ICollection<PlayerCyberdeckPrograms> PlayerCyberdeckPrograms { get; set; }
     }
 }

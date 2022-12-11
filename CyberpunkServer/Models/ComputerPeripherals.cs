@@ -19,7 +19,7 @@ namespace CyberpunkServer.Models
         {
             this.ComputerPeripheralSkillModifiers = new HashSet<ComputerPeripheralSkillModifiers>();
             this.ComputerPeripheralStatModifiers = new HashSet<ComputerPeripheralStatModifiers>();
-            this.PlayerComputer = new HashSet<PlayerComputer>();
+            this.PlayerComputerOptions = new HashSet<PlayerComputerOptions>();
         }
     
         public int id { get; set; }
@@ -37,6 +37,6 @@ namespace CyberpunkServer.Models
         public virtual ICollection<ComputerPeripheralStatModifiers> ComputerPeripheralStatModifiers { get; set; }
         public virtual Units Units { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerComputer> PlayerComputer { get; set; }
+        public virtual ICollection<PlayerComputerOptions> PlayerComputerOptions { get; set; }
     }
 }

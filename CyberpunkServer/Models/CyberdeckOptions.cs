@@ -19,7 +19,7 @@ namespace CyberpunkServer.Models
         {
             this.CyberdeckOptionsSkillModifiers = new HashSet<CyberdeckOptionsSkillModifiers>();
             this.CyberdeckOptionsStatModifiers = new HashSet<CyberdeckOptionsStatModifiers>();
-            this.PlayerCyberdeck = new HashSet<PlayerCyberdeck>();
+            this.PlayerCyberdeckOptions = new HashSet<PlayerCyberdeckOptions>();
         }
     
         public int id { get; set; }
@@ -35,6 +35,6 @@ namespace CyberpunkServer.Models
         public virtual ICollection<CyberdeckOptionsStatModifiers> CyberdeckOptionsStatModifiers { get; set; }
         public virtual Units Units { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerCyberdeck> PlayerCyberdeck { get; set; }
+        public virtual ICollection<PlayerCyberdeckOptions> PlayerCyberdeckOptions { get; set; }
     }
 }

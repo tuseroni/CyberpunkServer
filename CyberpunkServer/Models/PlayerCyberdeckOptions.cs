@@ -12,14 +12,13 @@ namespace CyberpunkServer.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PlayerCyberdeckImprovements
+    public partial class PlayerCyberdeckOptions
     {
         public int id { get; set; }
         public Nullable<int> PlayerCyberdeckID { get; set; }
-        public Nullable<int> CyberdeckImprovementsID { get; set; }
-        public Nullable<int> Quantity { get; set; }
+        public Nullable<int> CyberdeckOptionsID { get; set; }
     
-        public virtual CyberdeckImprovements CyberdeckImprovements { get; set; }
+        public virtual CyberdeckOptions CyberdeckOptions { get; set; }
         public virtual PlayerCyberdeck PlayerCyberdeck { get; set; }
     }
 }

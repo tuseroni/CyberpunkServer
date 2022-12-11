@@ -17,7 +17,7 @@ namespace CyberpunkServer.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ComputerImprovements()
         {
-            this.PlayerComputer = new HashSet<PlayerComputer>();
+            this.PlayerComputerImprovements = new HashSet<PlayerComputerImprovements>();
         }
     
         public int id { get; set; }
@@ -30,8 +30,8 @@ namespace CyberpunkServer.Models
         public string Description { get; set; }
         public double Slots { get; set; }
     
-        public virtual Units Units { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerComputer> PlayerComputer { get; set; }
+        public virtual ICollection<PlayerComputerImprovements> PlayerComputerImprovements { get; set; }
+        public virtual Units Units { get; set; }
     }
 }

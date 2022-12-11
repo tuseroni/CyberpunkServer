@@ -6,70 +6,80 @@
     <edmx:Diagrams>
       <Diagram DiagramId="9233e4e25f394b5fac3804be9f16f32e" Name="Diagram1" ZoomLevel="98">
         <EntityTypeShape EntityType="CyberpunkModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CyberpunkModel.ArmorLocations" Width="1.5" PointX="8.25" PointY="12.375" />
-        <EntityTypeShape EntityType="CyberpunkModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="16.375" />
-        <EntityTypeShape EntityType="CyberpunkModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="22.875" />
-        <EntityTypeShape EntityType="CyberpunkModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="15" />
-        <EntityTypeShape EntityType="CyberpunkModel.AspNetUsers" Width="1.5" PointX="3" PointY="15.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.Computer" Width="1.5" PointX="8.25" PointY="21.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.ComputerImprovements" Width="1.5" PointX="8.25" PointY="7.25" />
-        <EntityTypeShape EntityType="CyberpunkModel.ComputerPeripherals" Width="1.5" PointX="8.25" PointY="3.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.ComputerPeripheralSkillModifiers" Width="1.5" PointX="16.5" PointY="19.375" />
-        <EntityTypeShape EntityType="CyberpunkModel.ComputerPeripheralStatModifiers" Width="1.5" PointX="15.25" PointY="22.75" />
-        <EntityTypeShape EntityType="CyberpunkModel.Cyberdeck" Width="1.5" PointX="8.25" PointY="26" />
-        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckImprovements" Width="1.5" PointX="10.5" PointY="24" />
-        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckOptions" Width="1.5" PointX="8.25" PointY="29.5" />
-        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckOptionsSkillModifiers" Width="1.5" PointX="13.5" PointY="32.625" />
-        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckOptionsStatModifiers" Width="1.5" PointX="11.25" PointY="30.875" />
-        <EntityTypeShape EntityType="CyberpunkModel.Cybernetics" Width="1.5" PointX="11.25" PointY="46.5" />
-        <EntityTypeShape EntityType="CyberpunkModel.CyberneticTypes" Width="1.5" PointX="9" PointY="45.375" />
-        <EntityTypeShape EntityType="CyberpunkModel.Fortress" Width="1.5" PointX="13.5" PointY="1.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.FortressCodeGates" Width="1.5" PointX="21" PointY="16" />
-        <EntityTypeShape EntityType="CyberpunkModel.FortressCPU" Width="1.5" PointX="21" PointY="12.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.FortressMemory" Width="1.5" PointX="24" PointY="12.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.FortressRemotes" Width="1.5" PointX="24" PointY="16.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.FortressSkills" Width="1.5" PointX="18.75" PointY="18.5" />
-        <EntityTypeShape EntityType="CyberpunkModel.FortressWalls" Width="1.5" PointX="21" PointY="8.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.NetObjType" Width="1.5" PointX="18.75" PointY="22.75" />
-        <EntityTypeShape EntityType="CyberpunkModel.Player" Width="1.5" PointX="8.25" PointY="14.875" />
-        <EntityTypeShape EntityType="CyberpunkModel.PlayerArmor" Width="1.5" PointX="10.5" PointY="15.75" />
-        <EntityTypeShape EntityType="CyberpunkModel.PlayerComputer" Width="1.5" PointX="10.5" PointY="11.75" />
-        <EntityTypeShape EntityType="CyberpunkModel.PlayerCyberdeck" Width="1.5" PointX="10.5" PointY="19.75" />
-        <EntityTypeShape EntityType="CyberpunkModel.PlayerCyberdeckImprovements" Width="1.5" PointX="12.75" PointY="22.25" />
-        <EntityTypeShape EntityType="CyberpunkModel.PlayerCybernetics" Width="1.5" PointX="13.5" PointY="19" />
-        <EntityTypeShape EntityType="CyberpunkModel.PlayerRoles" Width="1.5" PointX="6" PointY="18.375" />
-        <EntityTypeShape EntityType="CyberpunkModel.PlayerSkill" Width="1.5" PointX="13.5" PointY="13" />
-        <EntityTypeShape EntityType="CyberpunkModel.PlayerStat" Width="1.5" PointX="16.5" PointY="16" />
-        <EntityTypeShape EntityType="CyberpunkModel.PlayerWeapon" Width="1.5" PointX="13.5" PointY="16.25" />
-        <EntityTypeShape EntityType="CyberpunkModel.Program" Width="1.5" PointX="15.75" PointY="10.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.ProgramFunctions" Width="1.5" PointX="18" PointY="9.875" />
-        <EntityTypeShape EntityType="CyberpunkModel.ProgramOptions" Width="1.5" PointX="18" PointY="12.625" />
-        <EntityTypeShape EntityType="CyberpunkModel.ProgramType" Width="1.5" PointX="13.5" PointY="5.625" />
-        <EntityTypeShape EntityType="CyberpunkModel.Skill" Width="1.5" PointX="11.25" PointY="34.375" />
-        <EntityTypeShape EntityType="CyberpunkModel.SkillTypes" Width="1.5" PointX="9" PointY="33.75" />
-        <EntityTypeShape EntityType="CyberpunkModel.Stat" Width="1.5" PointX="9" PointY="36.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.Subgrid" Width="1.5" PointX="11.25" PointY="1.875" />
-        <EntityTypeShape EntityType="CyberpunkModel.SurgicalCode" Width="1.5" PointX="9" PointY="47.875" />
-        <EntityTypeShape EntityType="CyberpunkModel.Units" Width="1.5" PointX="6" PointY="7.75" />
-        <EntityTypeShape EntityType="CyberpunkModel.WeaponConcTypes" Width="1.5" PointX="9" PointY="40.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.Weapons" Width="1.5" PointX="11.25" PointY="40.125" />
-        <EntityTypeShape EntityType="CyberpunkModel.WeaponTypes" Width="1.5" PointX="9" PointY="42.625" />
+        <EntityTypeShape EntityType="CyberpunkModel.ArmorLocations" Width="1.5" PointX="11.25" PointY="41.75" />
+        <EntityTypeShape EntityType="CyberpunkModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="22.75" />
+        <EntityTypeShape EntityType="CyberpunkModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="29.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="21.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.AspNetUsers" Width="1.5" PointX="3" PointY="21.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.Computer" Width="1.5" PointX="11.25" PointY="9.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.ComputerImprovements" Width="1.5" PointX="16.5" PointY="26" />
+        <EntityTypeShape EntityType="CyberpunkModel.ComputerPeripherals" Width="1.5" PointX="13.5" PointY="4.875" />
+        <EntityTypeShape EntityType="CyberpunkModel.ComputerPeripheralSkillModifiers" Width="1.5" PointX="19.5" PointY="24.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.ComputerPeripheralStatModifiers" Width="1.5" PointX="21.75" PointY="23.75" />
+        <EntityTypeShape EntityType="CyberpunkModel.Cyberdeck" Width="1.5" PointX="8.25" PointY="17.125" />
+        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckImprovements" Width="1.5" PointX="16.5" PointY="30.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckOptions" Width="1.5" PointX="10.5" PointY="1.125" />
+        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckOptionsSkillModifiers" Width="1.5" PointX="21.5" PointY="20.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.CyberdeckOptionsStatModifiers" Width="1.5" PointX="21.25" PointY="16.875" />
+        <EntityTypeShape EntityType="CyberpunkModel.Cybernetics" Width="1.5" PointX="8.25" PointY="11.75" />
+        <EntityTypeShape EntityType="CyberpunkModel.CyberneticTypes" Width="1.5" PointX="6" PointY="14.625" />
+        <EntityTypeShape EntityType="CyberpunkModel.Fortress" Width="1.5" PointX="23" PointY="10.625" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressCodeGates" Width="1.5" PointX="28.25" PointY="15.125" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressCPU" Width="1.5" PointX="25.25" PointY="14.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressMemory" Width="1.5" PointX="28.25" PointY="11.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressPrograms" Width="1.5" PointX="25.25" PointY="10.125" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressRemotes" Width="1.5" PointX="25.25" PointY="6.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressSkills" Width="1.5" PointX="25.25" PointY="21.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.FortressWalls" Width="1.5" PointX="28.25" PointY="7.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.NetObjType" Width="1.5" PointX="23" PointY="6" />
+        <EntityTypeShape EntityType="CyberpunkModel.Player" Width="1.5" PointX="8.25" PointY="21.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerArmor" Width="1.5" PointX="13.5" PointY="26.125" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerComputer" Width="1.5" PointX="13.5" PointY="18" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerComputerImprovements" Width="1.5" PointX="18.75" PointY="18.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerComputerOptions" Width="1.5" PointX="15.75" PointY="16.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerComputerPrograms" Width="1.5" PointX="18.75" PointY="15.375" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerCyberdeck" Width="1.5" PointX="10.5" PointY="18.125" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerCyberdeckImprovements" Width="1.5" PointX="18.75" PointY="21.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerCyberdeckOptions" Width="1.5" PointX="12.75" PointY="14.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerCyberdeckPrograms" Width="1.5" PointX="15.75" PointY="13.375" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerCybernetics" Width="1.5" PointX="10.5" PointY="22.375" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerPrograms" Width="1.5" PointX="13.5" PointY="22.375" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerRoles" Width="1.5" PointX="6" PointY="24.75" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerSkill" Width="1.5" PointX="16.5" PointY="19.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerStat" Width="1.5" PointX="10.5" PointY="26.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerWeapon" Width="1.5" PointX="16.5" PointY="22.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.Program" Width="1.5" PointX="16.5" PointY="8.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.ProgramFunctions" Width="1.5" PointX="18.75" PointY="8.25" />
+        <EntityTypeShape EntityType="CyberpunkModel.ProgramOptions" Width="1.5" PointX="18.75" PointY="4.875" />
+        <EntityTypeShape EntityType="CyberpunkModel.ProgramType" Width="1.5" PointX="14.25" PointY="9.625" />
+        <EntityTypeShape EntityType="CyberpunkModel.Skill" Width="1.5" PointX="14.25" PointY="30.75" />
+        <EntityTypeShape EntityType="CyberpunkModel.SkillTypes" Width="1.5" PointX="12" PointY="30.125" />
+        <EntityTypeShape EntityType="CyberpunkModel.Stat" Width="1.5" PointX="12" PointY="32.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.Subgrid" Width="1.5" PointX="20.75" PointY="11.375" />
+        <EntityTypeShape EntityType="CyberpunkModel.SurgicalCode" Width="1.5" PointX="6" PointY="10.75" />
+        <EntityTypeShape EntityType="CyberpunkModel.Units" Width="1.5" PointX="11.25" PointY="5.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.WeaponConcTypes" Width="1.5" PointX="12" PointY="38.875" />
+        <EntityTypeShape EntityType="CyberpunkModel.Weapons" Width="1.5" PointX="14.25" PointY="36.5" />
+        <EntityTypeShape EntityType="CyberpunkModel.WeaponTypes" Width="1.5" PointX="12" PointY="36.375" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerArm__Locat__72C60C4A" />
         <AssociationConnector Association="CyberpunkModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="CyberpunkModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="CyberpunkModel.FK_Player_AspNetUsers" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerCom__Compu__7167D3BD" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCom__Compu__6B79F03D" />
         <AssociationConnector Association="CyberpunkModel.FK_ComputerImprovements_Units" />
         <AssociationConnector Association="CyberpunkModel.FK__ComputerP__Compu__02C769E9" />
         <AssociationConnector Association="CyberpunkModel.FK__ComputerP__Compu__078C1F06" />
         <AssociationConnector Association="CyberpunkModel.FK__ComputerP__UnitT__7E02B4CC" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCom__Compu__6F4A8121" />
         <AssociationConnector Association="CyberpunkModel.FK__ComputerP__Skill__01D345B0" />
         <AssociationConnector Association="CyberpunkModel.FK__ComputerP__StatI__0697FACD" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Cyber__65F62111" />
-        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Cyber__6ABAD62E" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Cyber__61F08603" />
         <AssociationConnector Association="CyberpunkModel.FK__Cyberdeck__Cyber__607251E5" />
         <AssociationConnector Association="CyberpunkModel.FK__Cyberdeck__Cyber__65370702" />
         <AssociationConnector Association="CyberpunkModel.FK__Cyberdeck__UnitT__5BAD9CC8" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Cyber__65C116E7" />
         <AssociationConnector Association="CyberpunkModel.FK__Cyberdeck__Skill__5F7E2DAC" />
         <AssociationConnector Association="CyberpunkModel.FK__Cyberdeck__StatI__6442E2C9" />
         <AssociationConnector Association="CyberpunkModel.FK__Cyberneti__SurgT__49C3F6B7" />
@@ -79,12 +89,14 @@
         <AssociationConnector Association="CyberpunkModel.FK__FortressC__Fortr__5DCAEF64" />
         <AssociationConnector Association="CyberpunkModel.FK__FortressC__Fortr__6754599E" />
         <AssociationConnector Association="CyberpunkModel.FK__FortressM__Fortr__628FA481" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressP__Fortr__7D98A078" />
         <AssociationConnector Association="CyberpunkModel.FK__FortressS__Fortr__4B422AD5" />
         <AssociationConnector Association="CyberpunkModel.FK__FortressW__Fortr__59063A47" />
         <AssociationConnector Association="CyberpunkModel.FK_FortressRemotes_Fortress" />
         <AssociationConnector Association="CyberpunkModel.FK__FortressCo__Type__68487DD7" />
         <AssociationConnector Association="CyberpunkModel.FK__FortressCP__Type__5EBF139D" />
         <AssociationConnector Association="CyberpunkModel.FK__FortressMe__Type__6383C8BA" />
+        <AssociationConnector Association="CyberpunkModel.FK__FortressP__Progr__7CA47C3F" />
         <AssociationConnector Association="CyberpunkModel.FK_FortressRemotes_NetObjType" />
         <AssociationConnector Association="CyberpunkModel.FK__FortressS__Skill__4C364F0E" />
         <AssociationConnector Association="CyberpunkModel.FK__FortressWa__Type__59FA5E80" />
@@ -93,10 +105,19 @@
         <AssociationConnector Association="CyberpunkModel.FK__PlayerCom__Playe__725BF7F6" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Playe__66EA454A" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Playe__7E37BEF6" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerPro__Playe__025D5595" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerSki__Playe__7A672E12" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerSta__Playe__6E01572D" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerWea__Playe__75A278F5" />
-        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Playe__69C6B1F5" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCom__Playe__6A85CC04" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCom__Playe__6E565CE8" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCom__Playe__78D3EB5B" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCom__Progr__77DFC722" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Playe__60FC61CA" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Playe__64CCF2AE" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Playe__740F363E" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerCyb__Progr__731B1205" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerPro__Progr__0169315C" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerSki__Skill__797309D9" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerSta__StatI__6EF57B66" />
         <AssociationConnector Association="CyberpunkModel.FK__PlayerWea__Weapo__76969D2E" />
@@ -107,13 +128,6 @@
         <AssociationConnector Association="CyberpunkModel.FK__Weapons__Conc__45F365D3" />
         <AssociationConnector Association="CyberpunkModel.FK__Weapons__Type__44FF419A" />
         <AssociationConnector Association="CyberpunkModel.AspNetUserRoles" />
-        <AssociationConnector Association="CyberpunkModel.FortressPrograms" />
-        <AssociationConnector Association="CyberpunkModel.PlayerComputerImprovements" />
-        <AssociationConnector Association="CyberpunkModel.PlayerComputerOptions" />
-        <AssociationConnector Association="CyberpunkModel.PlayerComputerPrograms" />
-        <AssociationConnector Association="CyberpunkModel.PlayerCyberdeckOptions" />
-        <AssociationConnector Association="CyberpunkModel.PlayerCyberdeckPrograms" />
-        <AssociationConnector Association="CyberpunkModel.PlayerPrograms" />
         <AssociationConnector Association="CyberpunkModel.ProgramProgramFunctions" />
         <AssociationConnector Association="CyberpunkModel.ProgramProgramOptions" />
         <AssociationConnector Association="CyberpunkModel.ProgramSubroutines" />

@@ -27,7 +27,7 @@ namespace CyberpunkServer.Models
         public int Int { get; set; }
         public int NumCPU { get; set; }
         public bool IsPortable { get; set; }
-        public bool IsCyberEnabled { get; set; }
+        public bool IsCyberAvailable { get; set; }
         public double BateryHours { get; set; }
         public int WallStrength { get; set; }
         public double PriceLow { get; set; }

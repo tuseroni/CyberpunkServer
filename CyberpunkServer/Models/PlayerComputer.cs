@@ -17,9 +17,9 @@ namespace CyberpunkServer.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PlayerComputer()
         {
-            this.ComputerImprovements = new HashSet<ComputerImprovements>();
-            this.ComputerPeripherals = new HashSet<ComputerPeripherals>();
-            this.Program = new HashSet<Program>();
+            this.PlayerComputerImprovements = new HashSet<PlayerComputerImprovements>();
+            this.PlayerComputerOptions = new HashSet<PlayerComputerOptions>();
+            this.PlayerComputerPrograms = new HashSet<PlayerComputerPrograms>();
         }
     
         public int id { get; set; }
@@ -27,14 +27,15 @@ namespace CyberpunkServer.Models
         public Nullable<int> ComputerID { get; set; }
         public Nullable<int> PlayerID { get; set; }
         public string description { get; set; }
+        public bool isCyberEnabled { get; set; }
     
         public virtual Computer Computer { get; set; }
         public virtual Player Player { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ComputerImprovements> ComputerImprovements { get; set; }
+        public virtual ICollection<PlayerComputerImprovements> PlayerComputerImprovements { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ComputerPeripherals> ComputerPeripherals { get; set; }
+        public virtual ICollection<PlayerComputerOptions> PlayerComputerOptions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Program> Program { get; set; }
+        public virtual ICollection<PlayerComputerPrograms> PlayerComputerPrograms { get; set; }
     }
 }

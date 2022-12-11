@@ -29,8 +29,7 @@ namespace CyberpunkServer.Models.DTO
 
         public virtual CyberdeckData Cyberdeck { get; set; }
         public virtual PlayerData Player { get; set; }
-        public virtual List<CyberdeckImprovementsData> CyberdeckImprovements { get; set; }
-        public virtual List<CyberdeckOptionsData> CyberdeckOptions { get; set; }
+        public virtual List<PlayerCyberdeckOptionsData> CyberdeckOptions { get; set; }
         public virtual List<PlayerCyberdeckImprovementsData> PlayerCyberdeckImprovements { get; set; }
         public virtual ICollection<ProgramData> Program { get; set; }
     }

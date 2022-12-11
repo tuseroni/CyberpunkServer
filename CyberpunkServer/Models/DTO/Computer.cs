@@ -19,7 +19,7 @@ namespace CyberpunkServer.Models.DTO
         {
             
         }
-    
+
         public int id { get; set; }
         public string name { get; set; }
         public int Memory { get; set; }
@@ -27,7 +27,7 @@ namespace CyberpunkServer.Models.DTO
         public int Int { get; set; }
         public int NumCPU { get; set; }
         public bool IsPortable { get; set; }
-        public bool IsCyberEnabled { get; set; }
+        public bool IsCyberAvailable { get; set; }
         public double BateryHours { get; set; }
         public int WallStrength { get; set; }
         public double PriceLow { get; set; }
@@ -35,6 +35,6 @@ namespace CyberpunkServer.Models.DTO
         public int NumSlots { get; set; }
         public int Chipslots { get; set; }
         public string Description { get; set; }
-    
+
     }
 }

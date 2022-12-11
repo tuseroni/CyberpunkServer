@@ -17,10 +17,10 @@ namespace CyberpunkServer.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Program()
         {
-            this.Fortress = new HashSet<Fortress>();
-            this.PlayerComputer = new HashSet<PlayerComputer>();
-            this.PlayerCyberdeck = new HashSet<PlayerCyberdeck>();
-            this.Player = new HashSet<Player>();
+            this.FortressPrograms = new HashSet<FortressPrograms>();
+            this.PlayerComputerPrograms = new HashSet<PlayerComputerPrograms>();
+            this.PlayerCyberdeckPrograms = new HashSet<PlayerCyberdeckPrograms>();
+            this.PlayerPrograms = new HashSet<PlayerPrograms>();
             this.ProgramFunctions = new HashSet<ProgramFunctions>();
             this.ProgramOptions = new HashSet<ProgramOptions>();
             this.Program1 = new HashSet<Program>();
@@ -35,15 +35,15 @@ namespace CyberpunkServer.Models
         public int MU { get; set; }
         public string Description { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FortressPrograms> FortressPrograms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlayerComputerPrograms> PlayerComputerPrograms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlayerCyberdeckPrograms> PlayerCyberdeckPrograms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlayerPrograms> PlayerPrograms { get; set; }
         public virtual ProgramType ProgramType { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Fortress> Fortress { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerComputer> PlayerComputer { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerCyberdeck> PlayerCyberdeck { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Player> Player { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProgramFunctions> ProgramFunctions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

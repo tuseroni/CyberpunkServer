@@ -20,6 +20,5 @@ namespace CyberpunkServer.Models
         public int Quantity { get; set; }
     
         public virtual CyberdeckImprovementsData PlayerCyberdeckImprovements { get; set; }
-        public virtual PlayerCyberdeckData PlayerCyberdeck { get; set; }
     }
 }

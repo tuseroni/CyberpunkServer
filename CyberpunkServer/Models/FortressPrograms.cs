@@ -12,14 +12,15 @@ namespace CyberpunkServer.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PlayerCyberdeckImprovements
+    public partial class FortressPrograms
     {
         public int id { get; set; }
-        public Nullable<int> PlayerCyberdeckID { get; set; }
-        public Nullable<int> CyberdeckImprovementsID { get; set; }
-        public Nullable<int> Quantity { get; set; }
+        public Nullable<int> ProgramID { get; set; }
+        public Nullable<int> FortressID { get; set; }
+        public bool Rezzed { get; set; }
+        public Nullable<int> Strength { get; set; }
     
-        public virtual CyberdeckImprovements CyberdeckImprovements { get; set; }
-        public virtual PlayerCyberdeck PlayerCyberdeck { get; set; }
+        public virtual Fortress Fortress { get; set; }
+        public virtual Program Program { get; set; }
     }
 }

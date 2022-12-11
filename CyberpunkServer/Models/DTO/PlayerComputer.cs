@@ -17,9 +17,9 @@ namespace CyberpunkServer.Models.DTO
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PlayerComputerData()
         {
-            this.ComputerImprovements = new List<ComputerImprovementsData>();
-            this.ComputerPeripherals = new List<ComputerPeripheralsData>();
-            this.Program = new List<ProgramData>();
+            this.PlayerComputerImprovements = new List<PlayerComputerImprovementsData>();
+            this.PlayerComputerOptions = new List<PlayerComputerOptionsData>();
+            this.PlayerComputerPrograms = new List<PlayerComputerProgramsData>();
         }
     
         public int id { get; set; }
@@ -30,11 +30,10 @@ namespace CyberpunkServer.Models.DTO
     
         public virtual ComputerData Computer { get; set; }
         public virtual PlayerData Player { get; set; }
+        public bool isCyberEnabled { get; set; }
+        public virtual List<PlayerComputerImprovementsData> PlayerComputerImprovements { get; set; }
+        public virtual List<PlayerComputerOptionsData> PlayerComputerOptions { get; set; }
+        public virtual List<PlayerComputerProgramsData> PlayerComputerPrograms { get; set; }
         
-        public virtual List<ComputerImprovementsData> ComputerImprovements { get; set; }
-        
-        public virtual List<ComputerPeripheralsData> ComputerPeripherals { get; set; }
-        
-        public virtual List<ProgramData> Program { get; set; }
     }
 }

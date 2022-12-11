@@ -296,16 +296,22 @@
     <Compile Include="Models\DTO\FortressCodeGatesData.cs" />
     <Compile Include="Models\DTO\FortressCPUData.cs" />
     <Compile Include="Models\DTO\FortressMemoryData.cs" />
+    <Compile Include="Models\DTO\FortressProgramsData.cs" />
     <Compile Include="Models\DTO\FortressRemotes.cs" />
     <Compile Include="Models\DTO\FortressSkills.cs" />
     <Compile Include="Models\DTO\FortressWallsData.cs" />
     <Compile Include="Models\DTO\NetObjTypeData.cs" />
     <Compile Include="Models\DTO\PlayerComputer.cs" />
+    <Compile Include="Models\DTO\PlayerComputerImprovementsData.cs" />
+    <Compile Include="Models\DTO\PlayerComputerOptionsData.cs" />
+    <Compile Include="Models\DTO\PlayerComputerProgramsData.cs" />
     <Compile Include="Models\DTO\PlayerCyberdeck.cs" />
     <Compile Include="Models\DTO\PlayerCyberdeckImprovementsData.cs" />
+    <Compile Include="Models\DTO\PlayerCyberdeckOptionsData.cs" />
     <Compile Include="Models\DTO\PlayerData.cs" />
     <Compile Include="Models\DTO\PlayerArmorData.cs" />
     <Compile Include="Models\DTO\PlayerCyberneticsData.cs" />
+    <Compile Include="Models\DTO\PlayerProgramsData.cs" />
     <Compile Include="Models\DTO\PlayerRolesData.cs" />
     <Compile Include="Models\DTO\PlayerSkillData.cs" />
     <Compile Include="Models\DTO\PlayerStatData.cs" />
@@ -333,6 +339,9 @@
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FortressMemory.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FortressPrograms.cs">
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FortressRemotes.cs">
@@ -405,13 +414,31 @@
     <Compile Include="Models\PlayerComputer.cs">
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PlayerComputerImprovements.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PlayerComputerOptions.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PlayerComputerPrograms.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PlayerCyberdeck.cs">
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlayerCyberdeckImprovements.cs">
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PlayerCyberdeckOptions.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PlayerCyberdeckPrograms.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PlayerCybernetics.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PlayerPrograms.cs">
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlayerRoles.cs">

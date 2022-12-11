@@ -47,6 +47,7 @@ namespace CyberpunkServer.Models
         public virtual DbSet<FortressCodeGates> FortressCodeGates { get; set; }
         public virtual DbSet<FortressCPU> FortressCPU { get; set; }
         public virtual DbSet<FortressMemory> FortressMemory { get; set; }
+        public virtual DbSet<FortressPrograms> FortressPrograms { get; set; }
         public virtual DbSet<FortressRemotes> FortressRemotes { get; set; }
         public virtual DbSet<FortressSkills> FortressSkills { get; set; }
         public virtual DbSet<FortressWalls> FortressWalls { get; set; }
@@ -54,9 +55,15 @@ namespace CyberpunkServer.Models
         public virtual DbSet<Player> Player { get; set; }
         public virtual DbSet<PlayerArmor> PlayerArmor { get; set; }
         public virtual DbSet<PlayerComputer> PlayerComputer { get; set; }
+        public virtual DbSet<PlayerComputerImprovements> PlayerComputerImprovements { get; set; }
+        public virtual DbSet<PlayerComputerOptions> PlayerComputerOptions { get; set; }
+        public virtual DbSet<PlayerComputerPrograms> PlayerComputerPrograms { get; set; }
         public virtual DbSet<PlayerCyberdeck> PlayerCyberdeck { get; set; }
         public virtual DbSet<PlayerCyberdeckImprovements> PlayerCyberdeckImprovements { get; set; }
+        public virtual DbSet<PlayerCyberdeckOptions> PlayerCyberdeckOptions { get; set; }
+        public virtual DbSet<PlayerCyberdeckPrograms> PlayerCyberdeckPrograms { get; set; }
         public virtual DbSet<PlayerCybernetics> PlayerCybernetics { get; set; }
+        public virtual DbSet<PlayerPrograms> PlayerPrograms { get; set; }
         public virtual DbSet<PlayerRoles> PlayerRoles { get; set; }
         public virtual DbSet<PlayerSkill> PlayerSkill { get; set; }
         public virtual DbSet<PlayerStat> PlayerStat { get; set; }

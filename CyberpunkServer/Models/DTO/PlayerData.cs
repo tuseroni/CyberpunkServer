@@ -52,7 +52,7 @@ namespace CyberpunkServer.Models.DTO
         public virtual List<PlayerWeaponData> PlayerWeapon { get; set; }
         public virtual List<PlayerComputerData> PlayerComputer { get; set; }
         public virtual List<PlayerCyberdeckData> PlayerCyberdeck { get; set; }
-        public virtual List<ProgramData> Program { get; set; }
+        public virtual List<PlayerProgramsData> PlayerPrograms { get; set; }
         [Newtonsoft.Json.JsonIgnore]
         public virtual AspNetUsersData AspNetUsers { get; set; }
     }
