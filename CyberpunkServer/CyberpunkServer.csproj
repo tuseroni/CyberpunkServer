@@ -302,6 +302,7 @@
     <Compile Include="Models\DTO\NetObjTypeData.cs" />
     <Compile Include="Models\DTO\PlayerComputer.cs" />
     <Compile Include="Models\DTO\PlayerCyberdeck.cs" />
+    <Compile Include="Models\DTO\PlayerCyberdeckImprovementsData.cs" />
     <Compile Include="Models\DTO\PlayerData.cs" />
     <Compile Include="Models\DTO\PlayerArmorData.cs" />
     <Compile Include="Models\DTO\PlayerCyberneticsData.cs" />
@@ -405,6 +406,9 @@
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlayerCyberdeck.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PlayerCyberdeckImprovements.cs">
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlayerCybernetics.cs">

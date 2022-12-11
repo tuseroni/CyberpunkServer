@@ -18,12 +18,12 @@ namespace CyberpunkServer.Models
         public Player()
         {
             this.PlayerArmor = new HashSet<PlayerArmor>();
+            this.PlayerComputer = new HashSet<PlayerComputer>();
+            this.PlayerCyberdeck = new HashSet<PlayerCyberdeck>();
             this.PlayerCybernetics = new HashSet<PlayerCybernetics>();
             this.PlayerSkill = new HashSet<PlayerSkill>();
             this.PlayerStat = new HashSet<PlayerStat>();
             this.PlayerWeapon = new HashSet<PlayerWeapon>();
-            this.PlayerComputer = new HashSet<PlayerComputer>();
-            this.PlayerCyberdeck = new HashSet<PlayerCyberdeck>();
             this.Program = new HashSet<Program>();
         }
     
@@ -37,9 +37,14 @@ namespace CyberpunkServer.Models
         public Nullable<int> RoleID { get; set; }
         public string aspUserID { get; set; }
     
+        public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual PlayerRoles PlayerRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlayerArmor> PlayerArmor { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlayerComputer> PlayerComputer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlayerCyberdeck> PlayerCyberdeck { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlayerCybernetics> PlayerCybernetics { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -48,11 +53,6 @@ namespace CyberpunkServer.Models
         public virtual ICollection<PlayerStat> PlayerStat { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlayerWeapon> PlayerWeapon { get; set; }
-        public virtual AspNetUsers AspNetUsers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerComputer> PlayerComputer { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerCyberdeck> PlayerCyberdeck { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Program> Program { get; set; }
     }

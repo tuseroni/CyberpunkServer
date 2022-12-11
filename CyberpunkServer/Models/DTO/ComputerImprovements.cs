@@ -19,15 +19,16 @@ namespace CyberpunkServer.Models.DTO
         {
             
         }
-    
+
         public int id { get; set; }
         public string name { get; set; }
         public string ImprovementFor { get; set; }
         public int ImprovementAmount { get; set; }
         public double CostLow { get; set; }
         public double CostHigh { get; set; }
-        public double CostPercent { get; set; }
+        public int UnitTypeID { get; set; }
         public string Description { get; set; }
-    
+        public double Slots { get; set; }
+
     }
 }

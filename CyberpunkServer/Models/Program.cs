@@ -20,11 +20,11 @@ namespace CyberpunkServer.Models
             this.Fortress = new HashSet<Fortress>();
             this.PlayerComputer = new HashSet<PlayerComputer>();
             this.PlayerCyberdeck = new HashSet<PlayerCyberdeck>();
+            this.Player = new HashSet<Player>();
             this.ProgramFunctions = new HashSet<ProgramFunctions>();
             this.ProgramOptions = new HashSet<ProgramOptions>();
             this.Program1 = new HashSet<Program>();
             this.Program2 = new HashSet<Program>();
-            this.Player = new HashSet<Player>();
         }
     
         public int id { get; set; }
@@ -43,6 +43,8 @@ namespace CyberpunkServer.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlayerCyberdeck> PlayerCyberdeck { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Player> Player { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProgramFunctions> ProgramFunctions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProgramOptions> ProgramOptions { get; set; }
@@ -50,7 +52,5 @@ namespace CyberpunkServer.Models
         public virtual ICollection<Program> Program1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Program> Program2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Player> Player { get; set; }
     }
 }

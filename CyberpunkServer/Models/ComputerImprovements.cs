@@ -26,13 +26,12 @@ namespace CyberpunkServer.Models
         public int ImprovementAmount { get; set; }
         public double CostLow { get; set; }
         public double CostHigh { get; set; }
-        public double CostPercent { get; set; }
-        public string Description { get; set; }
         public int UnitTypeID { get; set; }
+        public string Description { get; set; }
         public double Slots { get; set; }
     
+        public virtual Units Units { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlayerComputer> PlayerComputer { get; set; }
-        public virtual Units Units { get; set; }
     }
 }

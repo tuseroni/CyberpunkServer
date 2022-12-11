@@ -24,7 +24,7 @@ namespace CyberpunkServer.Models.DTO
             this.ProgramOptions = new List<ProgramOptionsData>();
             this.Subroutines = new List<ProgramData>();
         }
-    
+
         public int id { get; set; }
         public string name { get; set; }
         public int Strength { get; set; }
@@ -32,7 +32,7 @@ namespace CyberpunkServer.Models.DTO
         public double cost { get; set; }
         public int MU { get; set; }
         public string Description { get; set; }
-    
+
         public virtual ProgramTypeData ProgramType { get; set; }
         public virtual List<FortressData> Fortress { get; set; }
         public virtual List<PlayerComputerData> PlayerComputer { get; set; }

@@ -17,7 +17,7 @@ namespace CyberpunkServer.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CyberdeckImprovements()
         {
-            this.PlayerCyberdeck = new HashSet<PlayerCyberdeck>();
+            this.PlayerCyberdeckImprovements = new HashSet<PlayerCyberdeckImprovements>();
         }
     
         public int id { get; set; }
@@ -29,6 +29,6 @@ namespace CyberpunkServer.Models
         public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlayerCyberdeck> PlayerCyberdeck { get; set; }
+        public virtual ICollection<PlayerCyberdeckImprovements> PlayerCyberdeckImprovements { get; set; }
     }
 }

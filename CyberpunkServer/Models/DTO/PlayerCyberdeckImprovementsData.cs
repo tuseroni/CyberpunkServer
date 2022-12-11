@@ -7,20 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CyberpunkServer.Models.DTO
+namespace CyberpunkServer.Models
 {
+    using CyberpunkServer.Models.DTO;
     using System;
     using System.Collections.Generic;
     
-    public partial class UnitsData
+    public partial class PlayerCyberdeckImprovementsData
     {
-        public UnitsData()
-        {
-            
-        }
-
-        public int id { get; set; }
-        public string name { get; set; }
-
+        public int PlayerCyberdeckID { get; set; }
+        public int CyberdeckImprovementsID { get; set; }
+        public int Quantity { get; set; }
+    
+        public virtual CyberdeckImprovementsData PlayerCyberdeckImprovements { get; set; }
+        public virtual PlayerCyberdeckData PlayerCyberdeck { get; set; }
     }
 }

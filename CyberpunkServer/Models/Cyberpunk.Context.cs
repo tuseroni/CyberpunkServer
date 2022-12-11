@@ -25,36 +25,12 @@ namespace CyberpunkServer.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ArmorLocations> ArmorLocations { get; set; }
-        public virtual DbSet<Cybernetics> Cybernetics { get; set; }
-        public virtual DbSet<CyberneticTypes> CyberneticTypes { get; set; }
-        public virtual DbSet<Fortress> Fortress { get; set; }
-        public virtual DbSet<FortressCodeGates> FortressCodeGates { get; set; }
-        public virtual DbSet<FortressCPU> FortressCPU { get; set; }
-        public virtual DbSet<FortressMemory> FortressMemory { get; set; }
-        public virtual DbSet<FortressWalls> FortressWalls { get; set; }
-        public virtual DbSet<NetObjType> NetObjType { get; set; }
-        public virtual DbSet<Player> Player { get; set; }
-        public virtual DbSet<PlayerArmor> PlayerArmor { get; set; }
-        public virtual DbSet<PlayerCybernetics> PlayerCybernetics { get; set; }
-        public virtual DbSet<PlayerRoles> PlayerRoles { get; set; }
-        public virtual DbSet<PlayerSkill> PlayerSkill { get; set; }
-        public virtual DbSet<PlayerStat> PlayerStat { get; set; }
-        public virtual DbSet<PlayerWeapon> PlayerWeapon { get; set; }
-        public virtual DbSet<Skill> Skill { get; set; }
-        public virtual DbSet<SkillTypes> SkillTypes { get; set; }
-        public virtual DbSet<Stat> Stat { get; set; }
-        public virtual DbSet<Subgrid> Subgrid { get; set; }
-        public virtual DbSet<SurgicalCode> SurgicalCode { get; set; }
-        public virtual DbSet<WeaponConcTypes> WeaponConcTypes { get; set; }
-        public virtual DbSet<Weapons> Weapons { get; set; }
-        public virtual DbSet<WeaponTypes> WeaponTypes { get; set; }
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+        public virtual DbSet<ArmorLocations> ArmorLocations { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<FortressRemotes> FortressRemotes { get; set; }
         public virtual DbSet<Computer> Computer { get; set; }
         public virtual DbSet<ComputerImprovements> ComputerImprovements { get; set; }
         public virtual DbSet<ComputerPeripherals> ComputerPeripherals { get; set; }
@@ -65,13 +41,38 @@ namespace CyberpunkServer.Models
         public virtual DbSet<CyberdeckOptions> CyberdeckOptions { get; set; }
         public virtual DbSet<CyberdeckOptionsSkillModifiers> CyberdeckOptionsSkillModifiers { get; set; }
         public virtual DbSet<CyberdeckOptionsStatModifiers> CyberdeckOptionsStatModifiers { get; set; }
+        public virtual DbSet<Cybernetics> Cybernetics { get; set; }
+        public virtual DbSet<CyberneticTypes> CyberneticTypes { get; set; }
+        public virtual DbSet<Fortress> Fortress { get; set; }
+        public virtual DbSet<FortressCodeGates> FortressCodeGates { get; set; }
+        public virtual DbSet<FortressCPU> FortressCPU { get; set; }
+        public virtual DbSet<FortressMemory> FortressMemory { get; set; }
+        public virtual DbSet<FortressRemotes> FortressRemotes { get; set; }
         public virtual DbSet<FortressSkills> FortressSkills { get; set; }
+        public virtual DbSet<FortressWalls> FortressWalls { get; set; }
+        public virtual DbSet<NetObjType> NetObjType { get; set; }
+        public virtual DbSet<Player> Player { get; set; }
+        public virtual DbSet<PlayerArmor> PlayerArmor { get; set; }
         public virtual DbSet<PlayerComputer> PlayerComputer { get; set; }
         public virtual DbSet<PlayerCyberdeck> PlayerCyberdeck { get; set; }
+        public virtual DbSet<PlayerCyberdeckImprovements> PlayerCyberdeckImprovements { get; set; }
+        public virtual DbSet<PlayerCybernetics> PlayerCybernetics { get; set; }
+        public virtual DbSet<PlayerRoles> PlayerRoles { get; set; }
+        public virtual DbSet<PlayerSkill> PlayerSkill { get; set; }
+        public virtual DbSet<PlayerStat> PlayerStat { get; set; }
+        public virtual DbSet<PlayerWeapon> PlayerWeapon { get; set; }
         public virtual DbSet<Program> Program { get; set; }
         public virtual DbSet<ProgramFunctions> ProgramFunctions { get; set; }
         public virtual DbSet<ProgramOptions> ProgramOptions { get; set; }
         public virtual DbSet<ProgramType> ProgramType { get; set; }
+        public virtual DbSet<Skill> Skill { get; set; }
+        public virtual DbSet<SkillTypes> SkillTypes { get; set; }
+        public virtual DbSet<Stat> Stat { get; set; }
+        public virtual DbSet<Subgrid> Subgrid { get; set; }
+        public virtual DbSet<SurgicalCode> SurgicalCode { get; set; }
         public virtual DbSet<Units> Units { get; set; }
+        public virtual DbSet<WeaponConcTypes> WeaponConcTypes { get; set; }
+        public virtual DbSet<Weapons> Weapons { get; set; }
+        public virtual DbSet<WeaponTypes> WeaponTypes { get; set; }
     }
 }

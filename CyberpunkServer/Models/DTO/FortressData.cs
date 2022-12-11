@@ -25,11 +25,12 @@ namespace CyberpunkServer.Models.DTO
             this.FortressSkills = new List<FortressSkillsData>();
             this.Program = new List<ProgramData>();
         }
-    
+
         public int id { get; set; }
         public Nullable<int> subgridID { get; set; }
         public Nullable<int> WallStrength { get; set; }
         public Nullable<int> Int { get; set; }
+        public string Name { get; set; }
         public virtual List<FortressCPUData> FortressCPU { get; set; }
         public virtual List<FortressCodeGatesData> FortressCodeGates { get; set; }
         public virtual List<FortressMemoryData> FortressMemory { get; set; }

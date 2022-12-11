@@ -19,13 +19,13 @@ namespace CyberpunkServer.Models.DTO
             this.CyberdeckOptionsSkillModifiers = new List<CyberdeckOptionsSkillModifiersData>();
             this.CyberdeckOptionsStatModifiers = new List<CyberdeckOptionsStatModifiersData>();
         }
-    
+
         public int id { get; set; }
         public string name { get; set; }
         public double CostPerUinitLow { get; set; }
         public double CostPerUinitHigh { get; set; }
         public Nullable<int> UnitTypeID { get; set; }
-        public int Units { get; set; }
+        public string Description { get; set; }
         public virtual List<CyberdeckOptionsSkillModifiersData> CyberdeckOptionsSkillModifiers { get; set; }
         public virtual List<CyberdeckOptionsStatModifiersData> CyberdeckOptionsStatModifiers { get; set; }
         public virtual UnitsData Units1 { get; set; }

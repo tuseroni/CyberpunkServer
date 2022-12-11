@@ -1954,784 +1954,13 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CyberpunkModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="ArmorLocations">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="PlayerArmor" Relationship="Self.FK__PlayerArm__Locat__72C60C4A" FromRole="ArmorLocations" ToRole="PlayerArmor" />
-        </EntityType>
-        <EntityType Name="Cybernetics">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="NumDice" Type="Int32" />
-          <Property Name="DiceType" Type="Int32" />
-          <Property Name="Bonus" Type="Int32" />
-          <Property Name="HL" Type="Int32" />
-          <Property Name="Cost" Type="Double" />
-          <Property Name="Type" Type="Int32" />
-          <Property Name="SurgType" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="SurgicalCode" Relationship="Self.FK__Cyberneti__SurgT__49C3F6B7" FromRole="Cybernetics" ToRole="SurgicalCode" />
-          <NavigationProperty Name="CyberneticTypes" Relationship="Self.FK__Cybernetic__Type__48CFD27E" FromRole="Cybernetics" ToRole="CyberneticTypes" />
-          <NavigationProperty Name="PlayerCybernetics" Relationship="Self.FK__PlayerCyb__Cyber__7D439ABD" FromRole="Cybernetics" ToRole="PlayerCybernetics" />
-        </EntityType>
-        <EntityType Name="CyberneticTypes">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Cybernetics" Relationship="Self.FK__Cybernetic__Type__48CFD27E" FromRole="CyberneticTypes" ToRole="Cybernetics" />
-        </EntityType>
-        <EntityType Name="Fortress">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="subgridID" Type="Int32" />
-          <Property Name="WallStrength" Type="Int32" />
-          <Property Name="Int" Type="Int32" />
-          <NavigationProperty Name="Subgrid" Relationship="Self.FK__Fortress__subgri__5535A963" FromRole="Fortress" ToRole="Subgrid" />
-          <NavigationProperty Name="FortressCPU" Relationship="Self.FK__FortressC__Fortr__5DCAEF64" FromRole="Fortress" ToRole="FortressCPU" />
-          <NavigationProperty Name="FortressCodeGates" Relationship="Self.FK__FortressC__Fortr__6754599E" FromRole="Fortress" ToRole="FortressCodeGates" />
-          <NavigationProperty Name="FortressMemory" Relationship="Self.FK__FortressM__Fortr__628FA481" FromRole="Fortress" ToRole="FortressMemory" />
-          <NavigationProperty Name="FortressWalls" Relationship="Self.FK__FortressW__Fortr__59063A47" FromRole="Fortress" ToRole="FortressWalls" />
-          <NavigationProperty Name="FortressRemotes" Relationship="CyberpunkModel.FK_FortressRemotes_Fortress" FromRole="Fortress" ToRole="FortressRemotes" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="FortressSkills" Relationship="CyberpunkModel.FK__FortressS__Fortr__4B422AD5" FromRole="Fortress" ToRole="FortressSkills" />
-          <NavigationProperty Name="Program" Relationship="CyberpunkModel.FortressPrograms" FromRole="Fortress" ToRole="Program" />
-        </EntityType>
-        <EntityType Name="FortressCodeGates">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="xPos" Type="Int32" />
-          <Property Name="yPos" Type="Int32" />
-          <Property Name="WallStrength" Type="Int32" />
-          <Property Name="FortressID" Type="Int32" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Fortress" Relationship="Self.FK__FortressC__Fortr__6754599E" FromRole="FortressCodeGates" ToRole="Fortress" />
-          <NavigationProperty Name="NetObjType" Relationship="Self.FK__FortressCo__Type__68487DD7" FromRole="FortressCodeGates" ToRole="NetObjType" />
-        </EntityType>
-        <EntityType Name="FortressCPU">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="xPos" Type="Int32" />
-          <Property Name="yPos" Type="Int32" />
-          <Property Name="FortressID" Type="Int32" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Fortress" Relationship="Self.FK__FortressC__Fortr__5DCAEF64" FromRole="FortressCPU" ToRole="Fortress" />
-          <NavigationProperty Name="NetObjType" Relationship="Self.FK__FortressCP__Type__5EBF139D" FromRole="FortressCPU" ToRole="NetObjType" />
-        </EntityType>
-        <EntityType Name="FortressMemory">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="xPos" Type="Int32" />
-          <Property Name="yPos" Type="Int32" />
-          <Property Name="FortressID" Type="Int32" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Fortress" Relationship="Self.FK__FortressM__Fortr__628FA481" FromRole="FortressMemory" ToRole="Fortress" />
-          <NavigationProperty Name="NetObjType" Relationship="Self.FK__FortressMe__Type__6383C8BA" FromRole="FortressMemory" ToRole="NetObjType" />
-        </EntityType>
-        <EntityType Name="FortressWalls">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="xPos" Type="Int32" />
-          <Property Name="yPos" Type="Int32" />
-          <Property Name="FortressID" Type="Int32" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Fortress" Relationship="Self.FK__FortressW__Fortr__59063A47" FromRole="FortressWalls" ToRole="Fortress" />
-          <NavigationProperty Name="NetObjType" Relationship="Self.FK__FortressWa__Type__59FA5E80" FromRole="FortressWalls" ToRole="NetObjType" />
-        </EntityType>
-        <EntityType Name="NetObjType">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="FortressCodeGates" Relationship="Self.FK__FortressCo__Type__68487DD7" FromRole="NetObjType" ToRole="FortressCodeGates" />
-          <NavigationProperty Name="FortressCPU" Relationship="Self.FK__FortressCP__Type__5EBF139D" FromRole="NetObjType" ToRole="FortressCPU" />
-          <NavigationProperty Name="FortressMemory" Relationship="Self.FK__FortressMe__Type__6383C8BA" FromRole="NetObjType" ToRole="FortressMemory" />
-          <NavigationProperty Name="FortressWalls" Relationship="Self.FK__FortressWa__Type__59FA5E80" FromRole="NetObjType" ToRole="FortressWalls" />
-          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SVG" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="FortressRemotes" Relationship="CyberpunkModel.FK_FortressRemotes_NetObjType" FromRole="NetObjType" ToRole="FortressRemotes" />
-        </EntityType>
-        <EntityType Name="Player">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Handle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SIN" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="IP" Type="Int32" Nullable="false" />
-          <Property Name="REP" Type="Int32" Nullable="false" />
-          <Property Name="Humanity" Type="Int32" Nullable="false" />
-          <Property Name="Dammage" Type="Int32" Nullable="false" />
-          <Property Name="RoleID" Type="Int32" />
-          <NavigationProperty Name="PlayerRoles" Relationship="Self.FK__Player__RoleID__6B24EA82" FromRole="Player" ToRole="PlayerRoles" />
-          <NavigationProperty Name="PlayerArmor" Relationship="Self.FK__PlayerArm__Playe__71D1E811" FromRole="Player" ToRole="PlayerArmor" />
-          <NavigationProperty Name="PlayerCybernetics" Relationship="Self.FK__PlayerCyb__Playe__7E37BEF6" FromRole="Player" ToRole="PlayerCybernetics" />
-          <NavigationProperty Name="PlayerSkill" Relationship="Self.FK__PlayerSki__Playe__7A672E12" FromRole="Player" ToRole="PlayerSkill" />
-          <NavigationProperty Name="PlayerStat" Relationship="Self.FK__PlayerSta__Playe__6E01572D" FromRole="Player" ToRole="PlayerStat" />
-          <NavigationProperty Name="PlayerWeapon" Relationship="Self.FK__PlayerWea__Playe__75A278F5" FromRole="Player" ToRole="PlayerWeapon" />
-          <Property Name="aspUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="CyberpunkModel.FK_Player_AspNetUsers" FromRole="Player" ToRole="AspNetUsers" />
-          <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.FK__PlayerCom__Playe__725BF7F6" FromRole="Player" ToRole="PlayerComputer" />
-          <NavigationProperty Name="PlayerCyberdeck" Relationship="CyberpunkModel.FK__PlayerCyb__Playe__66EA454A" FromRole="Player" ToRole="PlayerCyberdeck" />
-          <NavigationProperty Name="Program" Relationship="CyberpunkModel.PlayerPrograms" FromRole="Player" ToRole="Program" />
-        </EntityType>
-        <EntityType Name="PlayerArmor">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SP" Type="Int32" />
-          <Property Name="LocationID" Type="Int32" />
-          <Property Name="CurrentSP" Type="Int32" />
-          <Property Name="Encumberance" Type="Int32" />
-          <Property Name="PlayerID" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ArmorLocations" Relationship="Self.FK__PlayerArm__Locat__72C60C4A" FromRole="PlayerArmor" ToRole="ArmorLocations" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__PlayerArm__Playe__71D1E811" FromRole="PlayerArmor" ToRole="Player" />
-        </EntityType>
-        <EntityType Name="PlayerCybernetics">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HL" Type="Int32" />
-          <Property Name="Cost" Type="Int32" />
-          <Property Name="CyberneticID" Type="Int32" />
-          <Property Name="PlayerID" Type="Int32" />
-          <NavigationProperty Name="Cybernetics" Relationship="Self.FK__PlayerCyb__Cyber__7D439ABD" FromRole="PlayerCybernetics" ToRole="Cybernetics" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__PlayerCyb__Playe__7E37BEF6" FromRole="PlayerCybernetics" ToRole="Player" />
-        </EntityType>
-        <EntityType Name="PlayerRoles">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__Player__RoleID__6B24EA82" FromRole="PlayerRoles" ToRole="Player" />
-        </EntityType>
-        <EntityType Name="PlayerSkill">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Ranks" Type="Int32" />
-          <Property Name="Bonus" Type="Int32" />
-          <Property Name="CurrentIP" Type="Int32" />
-          <Property Name="PlayerID" Type="Int32" />
-          <Property Name="SkillID" Type="Int32" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__PlayerSki__Playe__7A672E12" FromRole="PlayerSkill" ToRole="Player" />
-          <NavigationProperty Name="Skill" Relationship="Self.FK__PlayerSki__Skill__797309D9" FromRole="PlayerSkill" ToRole="Skill" />
-        </EntityType>
-        <EntityType Name="PlayerStat">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StatID" Type="Int32" />
-          <Property Name="Base" Type="Int32" />
-          <Property Name="Bonus" Type="Int32" />
-          <Property Name="Current" Type="Int32" />
-          <Property Name="PlayerID" Type="Int32" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__PlayerSta__Playe__6E01572D" FromRole="PlayerStat" ToRole="Player" />
-          <NavigationProperty Name="Stat" Relationship="Self.FK__PlayerSta__StatI__6EF57B66" FromRole="PlayerStat" ToRole="Stat" />
-        </EntityType>
-        <EntityType Name="PlayerWeapon">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WeaponID" Type="Int32" />
-          <Property Name="PlayerID" Type="Int32" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__PlayerWea__Playe__75A278F5" FromRole="PlayerWeapon" ToRole="Player" />
-          <NavigationProperty Name="Weapons" Relationship="Self.FK__PlayerWea__Weapo__76969D2E" FromRole="PlayerWeapon" ToRole="Weapons" />
-        </EntityType>
-        <EntityType Name="Skill">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SkillType" Type="Int32" />
-          <Property Name="StatID" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="PlayerSkill" Relationship="Self.FK__PlayerSki__Skill__797309D9" FromRole="Skill" ToRole="PlayerSkill" />
-          <NavigationProperty Name="Stat" Relationship="Self.FK__Skill__StatID__4E88ABD4" FromRole="Skill" ToRole="Stat" />
-          <NavigationProperty Name="SkillTypes" Relationship="CyberpunkModel.FK_Skill_SkillTypes" FromRole="Skill" ToRole="SkillTypes" />
-          <Property Name="Multiplier" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ComputerPeripheralSkillModifiers" Relationship="CyberpunkModel.FK__ComputerP__Skill__01D345B0" FromRole="Skill" ToRole="ComputerPeripheralSkillModifiers" />
-          <NavigationProperty Name="CyberdeckOptionsSkillModifiers" Relationship="CyberpunkModel.FK__Cyberdeck__Skill__5F7E2DAC" FromRole="Skill" ToRole="CyberdeckOptionsSkillModifiers" />
-          <NavigationProperty Name="FortressSkills" Relationship="CyberpunkModel.FK__FortressS__Skill__4C364F0E" FromRole="Skill" ToRole="FortressSkills" />
-        </EntityType>
-        <EntityType Name="SkillTypes">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Skill" Relationship="CyberpunkModel.FK_Skill_SkillTypes" FromRole="SkillTypes" ToRole="Skill" />
-        </EntityType>
-        <EntityType Name="Stat">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="PlayerStat" Relationship="Self.FK__PlayerSta__StatI__6EF57B66" FromRole="Stat" ToRole="PlayerStat" />
-          <NavigationProperty Name="Skill" Relationship="Self.FK__Skill__StatID__4E88ABD4" FromRole="Stat" ToRole="Skill" />
-          <Property Name="ABBR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ComputerPeripheralStatModifiers" Relationship="CyberpunkModel.FK__ComputerP__StatI__0697FACD" FromRole="Stat" ToRole="ComputerPeripheralStatModifiers" />
-          <NavigationProperty Name="CyberdeckOptionsStatModifiers" Relationship="CyberpunkModel.FK__Cyberdeck__StatI__6442E2C9" FromRole="Stat" ToRole="CyberdeckOptionsStatModifiers" />
-        </EntityType>
-        <EntityType Name="Subgrid">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="width" Type="Int32" Nullable="false" />
-          <Property Name="height" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Fortress" Relationship="Self.FK__Fortress__subgri__5535A963" FromRole="Subgrid" ToRole="Fortress" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="SurgicalCode">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="time" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="NumDamageDice" Type="Int32" />
-          <Property Name="DamageDiceType" Type="Int32" />
-          <Property Name="DamageBonus" Type="Int32" />
-          <Property Name="SurgicalCost" Type="Int32" />
-          <Property Name="DIFF" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Cybernetics" Relationship="Self.FK__Cyberneti__SurgT__49C3F6B7" FromRole="SurgicalCode" ToRole="Cybernetics" />
-        </EntityType>
-        <EntityType Name="WeaponConcTypes">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Weapons" Relationship="Self.FK__Weapons__Conc__45F365D3" FromRole="WeaponConcTypes" ToRole="Weapons" />
-        </EntityType>
-        <EntityType Name="Weapons">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="NumDice" Type="Int32" />
-          <Property Name="DiceType" Type="Int32" />
-          <Property Name="Bonus" Type="Int32" />
-          <Property Name="ROF" Type="Int32" />
-          <Property Name="REL" Type="Int32" />
-          <Property Name="Type" Type="Int32" />
-          <Property Name="Conc" Type="Int32" />
-          <Property Name="Shots1" Type="Int32" />
-          <Property Name="Shots2" Type="Int32" />
-          <Property Name="Range" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="PlayerWeapon" Relationship="Self.FK__PlayerWea__Weapo__76969D2E" FromRole="Weapons" ToRole="PlayerWeapon" />
-          <NavigationProperty Name="WeaponConcTypes" Relationship="Self.FK__Weapons__Conc__45F365D3" FromRole="Weapons" ToRole="WeaponConcTypes" />
-          <NavigationProperty Name="WeaponTypes" Relationship="Self.FK__Weapons__Type__44FF419A" FromRole="Weapons" ToRole="WeaponTypes" />
-        </EntityType>
-        <EntityType Name="WeaponTypes">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Weapons" Relationship="Self.FK__Weapons__Type__44FF419A" FromRole="WeaponTypes" ToRole="Weapons" />
-        </EntityType>
-        <Association Name="FK__PlayerArm__Locat__72C60C4A">
-          <End Role="ArmorLocations" Type="Self.ArmorLocations" Multiplicity="0..1" />
-          <End Role="PlayerArmor" Type="Self.PlayerArmor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ArmorLocations">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PlayerArmor">
-              <PropertyRef Name="LocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Cyberneti__SurgT__49C3F6B7">
-          <End Role="SurgicalCode" Type="Self.SurgicalCode" Multiplicity="0..1" />
-          <End Role="Cybernetics" Type="Self.Cybernetics" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SurgicalCode">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Cybernetics">
-              <PropertyRef Name="SurgType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Cybernetic__Type__48CFD27E">
-          <End Role="CyberneticTypes" Type="Self.CyberneticTypes" Multiplicity="0..1" />
-          <End Role="Cybernetics" Type="Self.Cybernetics" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CyberneticTypes">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Cybernetics">
-              <PropertyRef Name="Type" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PlayerCyb__Cyber__7D439ABD">
-          <End Role="Cybernetics" Type="Self.Cybernetics" Multiplicity="0..1" />
-          <End Role="PlayerCybernetics" Type="Self.PlayerCybernetics" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cybernetics">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PlayerCybernetics">
-              <PropertyRef Name="CyberneticID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Fortress__subgri__5535A963">
-          <End Role="Subgrid" Type="Self.Subgrid" Multiplicity="0..1" />
-          <End Role="Fortress" Type="Self.Fortress" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Subgrid">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Fortress">
-              <PropertyRef Name="subgridID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FortressC__Fortr__5DCAEF64">
-          <End Role="Fortress" Type="Self.Fortress" Multiplicity="0..1" />
-          <End Role="FortressCPU" Type="Self.FortressCPU" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Fortress">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="FortressCPU">
-              <PropertyRef Name="FortressID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FortressC__Fortr__6754599E">
-          <End Role="Fortress" Type="Self.Fortress" Multiplicity="0..1" />
-          <End Role="FortressCodeGates" Type="Self.FortressCodeGates" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Fortress">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="FortressCodeGates">
-              <PropertyRef Name="FortressID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FortressM__Fortr__628FA481">
-          <End Role="Fortress" Type="Self.Fortress" Multiplicity="0..1" />
-          <End Role="FortressMemory" Type="Self.FortressMemory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Fortress">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="FortressMemory">
-              <PropertyRef Name="FortressID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FortressW__Fortr__59063A47">
-          <End Role="Fortress" Type="Self.Fortress" Multiplicity="0..1" />
-          <End Role="FortressWalls" Type="Self.FortressWalls" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Fortress">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="FortressWalls">
-              <PropertyRef Name="FortressID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FortressCo__Type__68487DD7">
-          <End Role="NetObjType" Type="Self.NetObjType" Multiplicity="1" />
-          <End Role="FortressCodeGates" Type="Self.FortressCodeGates" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NetObjType">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="FortressCodeGates">
-              <PropertyRef Name="Type" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FortressCP__Type__5EBF139D">
-          <End Role="NetObjType" Type="Self.NetObjType" Multiplicity="1" />
-          <End Role="FortressCPU" Type="Self.FortressCPU" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NetObjType">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="FortressCPU">
-              <PropertyRef Name="Type" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FortressMe__Type__6383C8BA">
-          <End Role="NetObjType" Type="Self.NetObjType" Multiplicity="1" />
-          <End Role="FortressMemory" Type="Self.FortressMemory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NetObjType">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="FortressMemory">
-              <PropertyRef Name="Type" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FortressWa__Type__59FA5E80">
-          <End Role="NetObjType" Type="Self.NetObjType" Multiplicity="1" />
-          <End Role="FortressWalls" Type="Self.FortressWalls" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NetObjType">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="FortressWalls">
-              <PropertyRef Name="Type" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Player__RoleID__6B24EA82">
-          <End Role="PlayerRoles" Type="Self.PlayerRoles" Multiplicity="0..1" />
-          <End Role="Player" Type="Self.Player" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PlayerRoles">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Player">
-              <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PlayerArm__Playe__71D1E811">
-          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
-          <End Role="PlayerArmor" Type="Self.PlayerArmor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PlayerArmor">
-              <PropertyRef Name="PlayerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PlayerCyb__Playe__7E37BEF6">
-          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
-          <End Role="PlayerCybernetics" Type="Self.PlayerCybernetics" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PlayerCybernetics">
-              <PropertyRef Name="PlayerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PlayerSki__Playe__7A672E12">
-          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
-          <End Role="PlayerSkill" Type="Self.PlayerSkill" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PlayerSkill">
-              <PropertyRef Name="PlayerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PlayerSta__Playe__6E01572D">
-          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
-          <End Role="PlayerStat" Type="Self.PlayerStat" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PlayerStat">
-              <PropertyRef Name="PlayerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PlayerWea__Playe__75A278F5">
-          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
-          <End Role="PlayerWeapon" Type="Self.PlayerWeapon" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PlayerWeapon">
-              <PropertyRef Name="PlayerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PlayerSki__Skill__797309D9">
-          <End Role="Skill" Type="Self.Skill" Multiplicity="0..1" />
-          <End Role="PlayerSkill" Type="Self.PlayerSkill" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Skill">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PlayerSkill">
-              <PropertyRef Name="SkillID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PlayerSta__StatI__6EF57B66">
-          <End Role="Stat" Type="Self.Stat" Multiplicity="0..1" />
-          <End Role="PlayerStat" Type="Self.PlayerStat" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Stat">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PlayerStat">
-              <PropertyRef Name="StatID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PlayerWea__Weapo__76969D2E">
-          <End Role="Weapons" Type="Self.Weapons" Multiplicity="0..1" />
-          <End Role="PlayerWeapon" Type="Self.PlayerWeapon" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Weapons">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PlayerWeapon">
-              <PropertyRef Name="WeaponID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Skill__StatID__4E88ABD4">
-          <End Role="Stat" Type="Self.Stat" Multiplicity="0..1" />
-          <End Role="Skill" Type="Self.Skill" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Stat">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Skill">
-              <PropertyRef Name="StatID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Weapons__Conc__45F365D3">
-          <End Role="WeaponConcTypes" Type="Self.WeaponConcTypes" Multiplicity="0..1" />
-          <End Role="Weapons" Type="Self.Weapons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WeaponConcTypes">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Weapons">
-              <PropertyRef Name="Conc" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Weapons__Type__44FF419A">
-          <End Role="WeaponTypes" Type="Self.WeaponTypes" Multiplicity="0..1" />
-          <End Role="Weapons" Type="Self.Weapons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WeaponTypes">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Weapons">
-              <PropertyRef Name="Type" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="CyberpunkEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ArmorLocations" EntityType="Self.ArmorLocations" />
-          <EntitySet Name="Cybernetics" EntityType="Self.Cybernetics" />
-          <EntitySet Name="CyberneticTypes" EntityType="Self.CyberneticTypes" />
-          <EntitySet Name="Fortress" EntityType="Self.Fortress" />
-          <EntitySet Name="FortressCodeGates" EntityType="Self.FortressCodeGates" />
-          <EntitySet Name="FortressCPU" EntityType="Self.FortressCPU" />
-          <EntitySet Name="FortressMemory" EntityType="Self.FortressMemory" />
-          <EntitySet Name="FortressWalls" EntityType="Self.FortressWalls" />
-          <EntitySet Name="NetObjType" EntityType="Self.NetObjType" />
-          <EntitySet Name="Player" EntityType="Self.Player" />
-          <EntitySet Name="PlayerArmor" EntityType="Self.PlayerArmor" />
-          <EntitySet Name="PlayerCybernetics" EntityType="Self.PlayerCybernetics" />
-          <EntitySet Name="PlayerRoles" EntityType="Self.PlayerRoles" />
-          <EntitySet Name="PlayerSkill" EntityType="Self.PlayerSkill" />
-          <EntitySet Name="PlayerStat" EntityType="Self.PlayerStat" />
-          <EntitySet Name="PlayerWeapon" EntityType="Self.PlayerWeapon" />
-          <EntitySet Name="Skill" EntityType="Self.Skill" />
-          <EntitySet Name="SkillTypes" EntityType="Self.SkillTypes" />
-          <EntitySet Name="Stat" EntityType="Self.Stat" />
-          <EntitySet Name="Subgrid" EntityType="Self.Subgrid" />
-          <EntitySet Name="SurgicalCode" EntityType="Self.SurgicalCode" />
-          <EntitySet Name="WeaponConcTypes" EntityType="Self.WeaponConcTypes" />
-          <EntitySet Name="Weapons" EntityType="Self.Weapons" />
-          <EntitySet Name="WeaponTypes" EntityType="Self.WeaponTypes" />
-          <AssociationSet Name="FK__PlayerArm__Locat__72C60C4A" Association="Self.FK__PlayerArm__Locat__72C60C4A">
-            <End Role="ArmorLocations" EntitySet="ArmorLocations" />
-            <End Role="PlayerArmor" EntitySet="PlayerArmor" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Cyberneti__SurgT__49C3F6B7" Association="Self.FK__Cyberneti__SurgT__49C3F6B7">
-            <End Role="SurgicalCode" EntitySet="SurgicalCode" />
-            <End Role="Cybernetics" EntitySet="Cybernetics" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Cybernetic__Type__48CFD27E" Association="Self.FK__Cybernetic__Type__48CFD27E">
-            <End Role="CyberneticTypes" EntitySet="CyberneticTypes" />
-            <End Role="Cybernetics" EntitySet="Cybernetics" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PlayerCyb__Cyber__7D439ABD" Association="Self.FK__PlayerCyb__Cyber__7D439ABD">
-            <End Role="Cybernetics" EntitySet="Cybernetics" />
-            <End Role="PlayerCybernetics" EntitySet="PlayerCybernetics" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Fortress__subgri__5535A963" Association="Self.FK__Fortress__subgri__5535A963">
-            <End Role="Subgrid" EntitySet="Subgrid" />
-            <End Role="Fortress" EntitySet="Fortress" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FortressC__Fortr__5DCAEF64" Association="Self.FK__FortressC__Fortr__5DCAEF64">
-            <End Role="Fortress" EntitySet="Fortress" />
-            <End Role="FortressCPU" EntitySet="FortressCPU" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FortressC__Fortr__6754599E" Association="Self.FK__FortressC__Fortr__6754599E">
-            <End Role="Fortress" EntitySet="Fortress" />
-            <End Role="FortressCodeGates" EntitySet="FortressCodeGates" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FortressM__Fortr__628FA481" Association="Self.FK__FortressM__Fortr__628FA481">
-            <End Role="Fortress" EntitySet="Fortress" />
-            <End Role="FortressMemory" EntitySet="FortressMemory" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FortressW__Fortr__59063A47" Association="Self.FK__FortressW__Fortr__59063A47">
-            <End Role="Fortress" EntitySet="Fortress" />
-            <End Role="FortressWalls" EntitySet="FortressWalls" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FortressCo__Type__68487DD7" Association="Self.FK__FortressCo__Type__68487DD7">
-            <End Role="NetObjType" EntitySet="NetObjType" />
-            <End Role="FortressCodeGates" EntitySet="FortressCodeGates" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FortressCP__Type__5EBF139D" Association="Self.FK__FortressCP__Type__5EBF139D">
-            <End Role="NetObjType" EntitySet="NetObjType" />
-            <End Role="FortressCPU" EntitySet="FortressCPU" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FortressMe__Type__6383C8BA" Association="Self.FK__FortressMe__Type__6383C8BA">
-            <End Role="NetObjType" EntitySet="NetObjType" />
-            <End Role="FortressMemory" EntitySet="FortressMemory" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FortressWa__Type__59FA5E80" Association="Self.FK__FortressWa__Type__59FA5E80">
-            <End Role="NetObjType" EntitySet="NetObjType" />
-            <End Role="FortressWalls" EntitySet="FortressWalls" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Player__RoleID__6B24EA82" Association="Self.FK__Player__RoleID__6B24EA82">
-            <End Role="PlayerRoles" EntitySet="PlayerRoles" />
-            <End Role="Player" EntitySet="Player" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PlayerArm__Playe__71D1E811" Association="Self.FK__PlayerArm__Playe__71D1E811">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="PlayerArmor" EntitySet="PlayerArmor" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PlayerCyb__Playe__7E37BEF6" Association="Self.FK__PlayerCyb__Playe__7E37BEF6">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="PlayerCybernetics" EntitySet="PlayerCybernetics" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PlayerSki__Playe__7A672E12" Association="Self.FK__PlayerSki__Playe__7A672E12">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="PlayerSkill" EntitySet="PlayerSkill" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PlayerSta__Playe__6E01572D" Association="Self.FK__PlayerSta__Playe__6E01572D">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="PlayerStat" EntitySet="PlayerStat" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PlayerWea__Playe__75A278F5" Association="Self.FK__PlayerWea__Playe__75A278F5">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="PlayerWeapon" EntitySet="PlayerWeapon" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PlayerSki__Skill__797309D9" Association="Self.FK__PlayerSki__Skill__797309D9">
-            <End Role="Skill" EntitySet="Skill" />
-            <End Role="PlayerSkill" EntitySet="PlayerSkill" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PlayerSta__StatI__6EF57B66" Association="Self.FK__PlayerSta__StatI__6EF57B66">
-            <End Role="Stat" EntitySet="Stat" />
-            <End Role="PlayerStat" EntitySet="PlayerStat" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PlayerWea__Weapo__76969D2E" Association="Self.FK__PlayerWea__Weapo__76969D2E">
-            <End Role="Weapons" EntitySet="Weapons" />
-            <End Role="PlayerWeapon" EntitySet="PlayerWeapon" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Skill__StatID__4E88ABD4" Association="Self.FK__Skill__StatID__4E88ABD4">
-            <End Role="Stat" EntitySet="Stat" />
-            <End Role="Skill" EntitySet="Skill" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Weapons__Conc__45F365D3" Association="Self.FK__Weapons__Conc__45F365D3">
-            <End Role="WeaponConcTypes" EntitySet="WeaponConcTypes" />
-            <End Role="Weapons" EntitySet="Weapons" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Weapons__Type__44FF419A" Association="Self.FK__Weapons__Type__44FF419A">
-            <End Role="WeaponTypes" EntitySet="WeaponTypes" />
-            <End Role="Weapons" EntitySet="Weapons" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Skill_Skill" Association="CyberpunkModel.FK_Skill_Skill">
-            <End Role="Skill" EntitySet="Skill" />
-            <End Role="Skill1" EntitySet="Skill" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Skill_SkillTypes" Association="CyberpunkModel.FK_Skill_SkillTypes">
-            <End Role="SkillTypes" EntitySet="SkillTypes" />
-            <End Role="Skill" EntitySet="Skill" />
-          </AssociationSet>
           <EntitySet Name="C__MigrationHistory" EntityType="CyberpunkModel.C__MigrationHistory" />
+          <EntitySet Name="ArmorLocations" EntityType="CyberpunkModel.ArmorLocations" />
           <EntitySet Name="AspNetRoles" EntityType="CyberpunkModel.AspNetRoles" />
           <EntitySet Name="AspNetUserClaims" EntityType="CyberpunkModel.AspNetUserClaims" />
           <EntitySet Name="AspNetUserLogins" EntityType="CyberpunkModel.AspNetUserLogins" />
           <EntitySet Name="AspNetUsers" EntityType="CyberpunkModel.AspNetUsers" />
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="CyberpunkModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="CyberpunkModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="CyberpunkModel.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Player_AspNetUsers" Association="CyberpunkModel.FK_Player_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Player" EntitySet="Player" />
-          </AssociationSet>
-          <EntitySet Name="FortressRemotes" EntityType="CyberpunkModel.FortressRemotes" />
-          <AssociationSet Name="FK_FortressRemotes_Fortress" Association="CyberpunkModel.FK_FortressRemotes_Fortress">
-            <End Role="Fortress" EntitySet="Fortress" />
-            <End Role="FortressRemotes" EntitySet="FortressRemotes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FortressRemotes_NetObjType" Association="CyberpunkModel.FK_FortressRemotes_NetObjType">
-            <End Role="NetObjType" EntitySet="NetObjType" />
-            <End Role="FortressRemotes" EntitySet="FortressRemotes" />
-          </AssociationSet>
           <EntitySet Name="Computer" EntityType="CyberpunkModel.Computer" />
           <EntitySet Name="ComputerImprovements" EntityType="CyberpunkModel.ComputerImprovements" />
           <EntitySet Name="ComputerPeripherals" EntityType="CyberpunkModel.ComputerPeripherals" />
@@ -2742,17 +1971,62 @@
           <EntitySet Name="CyberdeckOptions" EntityType="CyberpunkModel.CyberdeckOptions" />
           <EntitySet Name="CyberdeckOptionsSkillModifiers" EntityType="CyberpunkModel.CyberdeckOptionsSkillModifiers" />
           <EntitySet Name="CyberdeckOptionsStatModifiers" EntityType="CyberpunkModel.CyberdeckOptionsStatModifiers" />
+          <EntitySet Name="Cybernetics" EntityType="CyberpunkModel.Cybernetics" />
+          <EntitySet Name="CyberneticTypes" EntityType="CyberpunkModel.CyberneticTypes" />
+          <EntitySet Name="Fortress" EntityType="CyberpunkModel.Fortress" />
+          <EntitySet Name="FortressCodeGates" EntityType="CyberpunkModel.FortressCodeGates" />
+          <EntitySet Name="FortressCPU" EntityType="CyberpunkModel.FortressCPU" />
+          <EntitySet Name="FortressMemory" EntityType="CyberpunkModel.FortressMemory" />
+          <EntitySet Name="FortressRemotes" EntityType="CyberpunkModel.FortressRemotes" />
           <EntitySet Name="FortressSkills" EntityType="CyberpunkModel.FortressSkills" />
+          <EntitySet Name="FortressWalls" EntityType="CyberpunkModel.FortressWalls" />
+          <EntitySet Name="NetObjType" EntityType="CyberpunkModel.NetObjType" />
+          <EntitySet Name="Player" EntityType="CyberpunkModel.Player" />
+          <EntitySet Name="PlayerArmor" EntityType="CyberpunkModel.PlayerArmor" />
           <EntitySet Name="PlayerComputer" EntityType="CyberpunkModel.PlayerComputer" />
           <EntitySet Name="PlayerCyberdeck" EntityType="CyberpunkModel.PlayerCyberdeck" />
+          <EntitySet Name="PlayerCyberdeckImprovements" EntityType="CyberpunkModel.PlayerCyberdeckImprovements" />
+          <EntitySet Name="PlayerCybernetics" EntityType="CyberpunkModel.PlayerCybernetics" />
+          <EntitySet Name="PlayerRoles" EntityType="CyberpunkModel.PlayerRoles" />
+          <EntitySet Name="PlayerSkill" EntityType="CyberpunkModel.PlayerSkill" />
+          <EntitySet Name="PlayerStat" EntityType="CyberpunkModel.PlayerStat" />
+          <EntitySet Name="PlayerWeapon" EntityType="CyberpunkModel.PlayerWeapon" />
           <EntitySet Name="Program" EntityType="CyberpunkModel.Program" />
           <EntitySet Name="ProgramFunctions" EntityType="CyberpunkModel.ProgramFunctions" />
           <EntitySet Name="ProgramOptions" EntityType="CyberpunkModel.ProgramOptions" />
           <EntitySet Name="ProgramType" EntityType="CyberpunkModel.ProgramType" />
+          <EntitySet Name="Skill" EntityType="CyberpunkModel.Skill" />
+          <EntitySet Name="SkillTypes" EntityType="CyberpunkModel.SkillTypes" />
+          <EntitySet Name="Stat" EntityType="CyberpunkModel.Stat" />
+          <EntitySet Name="Subgrid" EntityType="CyberpunkModel.Subgrid" />
+          <EntitySet Name="SurgicalCode" EntityType="CyberpunkModel.SurgicalCode" />
           <EntitySet Name="Units" EntityType="CyberpunkModel.Units" />
+          <EntitySet Name="WeaponConcTypes" EntityType="CyberpunkModel.WeaponConcTypes" />
+          <EntitySet Name="Weapons" EntityType="CyberpunkModel.Weapons" />
+          <EntitySet Name="WeaponTypes" EntityType="CyberpunkModel.WeaponTypes" />
+          <AssociationSet Name="FK__PlayerArm__Locat__72C60C4A" Association="CyberpunkModel.FK__PlayerArm__Locat__72C60C4A">
+            <End Role="ArmorLocations" EntitySet="ArmorLocations" />
+            <End Role="PlayerArmor" EntitySet="PlayerArmor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="CyberpunkModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="CyberpunkModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player_AspNetUsers" Association="CyberpunkModel.FK_Player_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
           <AssociationSet Name="FK__PlayerCom__Compu__7167D3BD" Association="CyberpunkModel.FK__PlayerCom__Compu__7167D3BD">
             <End Role="Computer" EntitySet="Computer" />
             <End Role="PlayerComputer" EntitySet="PlayerComputer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComputerImprovements_Units" Association="CyberpunkModel.FK_ComputerImprovements_Units">
+            <End Role="Units" EntitySet="Units" />
+            <End Role="ComputerImprovements" EntitySet="ComputerImprovements" />
           </AssociationSet>
           <AssociationSet Name="FK__ComputerP__Compu__02C769E9" Association="CyberpunkModel.FK__ComputerP__Compu__02C769E9">
             <End Role="ComputerPeripherals" EntitySet="ComputerPeripherals" />
@@ -2778,6 +2052,10 @@
             <End Role="Cyberdeck" EntitySet="Cyberdeck" />
             <End Role="PlayerCyberdeck" EntitySet="PlayerCyberdeck" />
           </AssociationSet>
+          <AssociationSet Name="FK__PlayerCyb__Cyber__6ABAD62E" Association="CyberpunkModel.FK__PlayerCyb__Cyber__6ABAD62E">
+            <End Role="CyberdeckImprovements" EntitySet="CyberdeckImprovements" />
+            <End Role="PlayerCyberdeckImprovements" EntitySet="PlayerCyberdeckImprovements" />
+          </AssociationSet>
           <AssociationSet Name="FK__Cyberdeck__Cyber__607251E5" Association="CyberpunkModel.FK__Cyberdeck__Cyber__607251E5">
             <End Role="CyberdeckOptions" EntitySet="CyberdeckOptions" />
             <End Role="CyberdeckOptionsSkillModifiers" EntitySet="CyberdeckOptionsSkillModifiers" />
@@ -2798,13 +2076,77 @@
             <End Role="Stat" EntitySet="Stat" />
             <End Role="CyberdeckOptionsStatModifiers" EntitySet="CyberdeckOptionsStatModifiers" />
           </AssociationSet>
+          <AssociationSet Name="FK__Cyberneti__SurgT__49C3F6B7" Association="CyberpunkModel.FK__Cyberneti__SurgT__49C3F6B7">
+            <End Role="SurgicalCode" EntitySet="SurgicalCode" />
+            <End Role="Cybernetics" EntitySet="Cybernetics" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cybernetic__Type__48CFD27E" Association="CyberpunkModel.FK__Cybernetic__Type__48CFD27E">
+            <End Role="CyberneticTypes" EntitySet="CyberneticTypes" />
+            <End Role="Cybernetics" EntitySet="Cybernetics" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerCyb__Cyber__7D439ABD" Association="CyberpunkModel.FK__PlayerCyb__Cyber__7D439ABD">
+            <End Role="Cybernetics" EntitySet="Cybernetics" />
+            <End Role="PlayerCybernetics" EntitySet="PlayerCybernetics" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Fortress__subgri__5535A963" Association="CyberpunkModel.FK__Fortress__subgri__5535A963">
+            <End Role="Subgrid" EntitySet="Subgrid" />
+            <End Role="Fortress" EntitySet="Fortress" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FortressC__Fortr__5DCAEF64" Association="CyberpunkModel.FK__FortressC__Fortr__5DCAEF64">
+            <End Role="Fortress" EntitySet="Fortress" />
+            <End Role="FortressCPU" EntitySet="FortressCPU" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FortressC__Fortr__6754599E" Association="CyberpunkModel.FK__FortressC__Fortr__6754599E">
+            <End Role="Fortress" EntitySet="Fortress" />
+            <End Role="FortressCodeGates" EntitySet="FortressCodeGates" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FortressM__Fortr__628FA481" Association="CyberpunkModel.FK__FortressM__Fortr__628FA481">
+            <End Role="Fortress" EntitySet="Fortress" />
+            <End Role="FortressMemory" EntitySet="FortressMemory" />
+          </AssociationSet>
           <AssociationSet Name="FK__FortressS__Fortr__4B422AD5" Association="CyberpunkModel.FK__FortressS__Fortr__4B422AD5">
             <End Role="Fortress" EntitySet="Fortress" />
             <End Role="FortressSkills" EntitySet="FortressSkills" />
           </AssociationSet>
+          <AssociationSet Name="FK__FortressW__Fortr__59063A47" Association="CyberpunkModel.FK__FortressW__Fortr__59063A47">
+            <End Role="Fortress" EntitySet="Fortress" />
+            <End Role="FortressWalls" EntitySet="FortressWalls" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FortressRemotes_Fortress" Association="CyberpunkModel.FK_FortressRemotes_Fortress">
+            <End Role="Fortress" EntitySet="Fortress" />
+            <End Role="FortressRemotes" EntitySet="FortressRemotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FortressCo__Type__68487DD7" Association="CyberpunkModel.FK__FortressCo__Type__68487DD7">
+            <End Role="NetObjType" EntitySet="NetObjType" />
+            <End Role="FortressCodeGates" EntitySet="FortressCodeGates" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FortressCP__Type__5EBF139D" Association="CyberpunkModel.FK__FortressCP__Type__5EBF139D">
+            <End Role="NetObjType" EntitySet="NetObjType" />
+            <End Role="FortressCPU" EntitySet="FortressCPU" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FortressMe__Type__6383C8BA" Association="CyberpunkModel.FK__FortressMe__Type__6383C8BA">
+            <End Role="NetObjType" EntitySet="NetObjType" />
+            <End Role="FortressMemory" EntitySet="FortressMemory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FortressRemotes_NetObjType" Association="CyberpunkModel.FK_FortressRemotes_NetObjType">
+            <End Role="NetObjType" EntitySet="NetObjType" />
+            <End Role="FortressRemotes" EntitySet="FortressRemotes" />
+          </AssociationSet>
           <AssociationSet Name="FK__FortressS__Skill__4C364F0E" Association="CyberpunkModel.FK__FortressS__Skill__4C364F0E">
             <End Role="Skill" EntitySet="Skill" />
             <End Role="FortressSkills" EntitySet="FortressSkills" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FortressWa__Type__59FA5E80" Association="CyberpunkModel.FK__FortressWa__Type__59FA5E80">
+            <End Role="NetObjType" EntitySet="NetObjType" />
+            <End Role="FortressWalls" EntitySet="FortressWalls" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Player__RoleID__6B24EA82" Association="CyberpunkModel.FK__Player__RoleID__6B24EA82">
+            <End Role="PlayerRoles" EntitySet="PlayerRoles" />
+            <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerArm__Playe__71D1E811" Association="CyberpunkModel.FK__PlayerArm__Playe__71D1E811">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayerArmor" EntitySet="PlayerArmor" />
           </AssociationSet>
           <AssociationSet Name="FK__PlayerCom__Playe__725BF7F6" Association="CyberpunkModel.FK__PlayerCom__Playe__725BF7F6">
             <End Role="Player" EntitySet="Player" />
@@ -2814,9 +2156,65 @@
             <End Role="Player" EntitySet="Player" />
             <End Role="PlayerCyberdeck" EntitySet="PlayerCyberdeck" />
           </AssociationSet>
+          <AssociationSet Name="FK__PlayerCyb__Playe__7E37BEF6" Association="CyberpunkModel.FK__PlayerCyb__Playe__7E37BEF6">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayerCybernetics" EntitySet="PlayerCybernetics" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerSki__Playe__7A672E12" Association="CyberpunkModel.FK__PlayerSki__Playe__7A672E12">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayerSkill" EntitySet="PlayerSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerSta__Playe__6E01572D" Association="CyberpunkModel.FK__PlayerSta__Playe__6E01572D">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayerStat" EntitySet="PlayerStat" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerWea__Playe__75A278F5" Association="CyberpunkModel.FK__PlayerWea__Playe__75A278F5">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayerWeapon" EntitySet="PlayerWeapon" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerCyb__Playe__69C6B1F5" Association="CyberpunkModel.FK__PlayerCyb__Playe__69C6B1F5">
+            <End Role="PlayerCyberdeck" EntitySet="PlayerCyberdeck" />
+            <End Role="PlayerCyberdeckImprovements" EntitySet="PlayerCyberdeckImprovements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerSki__Skill__797309D9" Association="CyberpunkModel.FK__PlayerSki__Skill__797309D9">
+            <End Role="Skill" EntitySet="Skill" />
+            <End Role="PlayerSkill" EntitySet="PlayerSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerSta__StatI__6EF57B66" Association="CyberpunkModel.FK__PlayerSta__StatI__6EF57B66">
+            <End Role="Stat" EntitySet="Stat" />
+            <End Role="PlayerStat" EntitySet="PlayerStat" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerWea__Weapo__76969D2E" Association="CyberpunkModel.FK__PlayerWea__Weapo__76969D2E">
+            <End Role="Weapons" EntitySet="Weapons" />
+            <End Role="PlayerWeapon" EntitySet="PlayerWeapon" />
+          </AssociationSet>
           <AssociationSet Name="FK__Program__Program__53D770D6" Association="CyberpunkModel.FK__Program__Program__53D770D6">
             <End Role="ProgramType" EntitySet="ProgramType" />
             <End Role="Program" EntitySet="Program" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Skill__StatID__4E88ABD4" Association="CyberpunkModel.FK__Skill__StatID__4E88ABD4">
+            <End Role="Stat" EntitySet="Stat" />
+            <End Role="Skill" EntitySet="Skill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Skill_Skill" Association="CyberpunkModel.FK_Skill_Skill">
+            <End Role="Skill" EntitySet="Skill" />
+            <End Role="Skill1" EntitySet="Skill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Skill_SkillTypes" Association="CyberpunkModel.FK_Skill_SkillTypes">
+            <End Role="SkillTypes" EntitySet="SkillTypes" />
+            <End Role="Skill" EntitySet="Skill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Weapons__Conc__45F365D3" Association="CyberpunkModel.FK__Weapons__Conc__45F365D3">
+            <End Role="WeaponConcTypes" EntitySet="WeaponConcTypes" />
+            <End Role="Weapons" EntitySet="Weapons" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Weapons__Type__44FF419A" Association="CyberpunkModel.FK__Weapons__Type__44FF419A">
+            <End Role="WeaponTypes" EntitySet="WeaponTypes" />
+            <End Role="Weapons" EntitySet="Weapons" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="CyberpunkModel.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
           <AssociationSet Name="FortressPrograms" Association="CyberpunkModel.FortressPrograms">
             <End Role="Fortress" EntitySet="Fortress" />
@@ -2834,16 +2232,16 @@
             <End Role="PlayerComputer" EntitySet="PlayerComputer" />
             <End Role="Program" EntitySet="Program" />
           </AssociationSet>
-          <AssociationSet Name="PlayerCyberdeckImprovements" Association="CyberpunkModel.PlayerCyberdeckImprovements">
-            <End Role="CyberdeckImprovements" EntitySet="CyberdeckImprovements" />
-            <End Role="PlayerCyberdeck" EntitySet="PlayerCyberdeck" />
-          </AssociationSet>
           <AssociationSet Name="PlayerCyberdeckOptions" Association="CyberpunkModel.PlayerCyberdeckOptions">
             <End Role="CyberdeckOptions" EntitySet="CyberdeckOptions" />
             <End Role="PlayerCyberdeck" EntitySet="PlayerCyberdeck" />
           </AssociationSet>
           <AssociationSet Name="PlayerCyberdeckPrograms" Association="CyberpunkModel.PlayerCyberdeckPrograms">
             <End Role="PlayerCyberdeck" EntitySet="PlayerCyberdeck" />
+            <End Role="Program" EntitySet="Program" />
+          </AssociationSet>
+          <AssociationSet Name="PlayerPrograms" Association="CyberpunkModel.PlayerPrograms">
+            <End Role="Player" EntitySet="Player" />
             <End Role="Program" EntitySet="Program" />
           </AssociationSet>
           <AssociationSet Name="ProgramProgramFunctions" Association="CyberpunkModel.ProgramProgramFunctions">
@@ -2858,39 +2256,7 @@
             <End Role="Program" EntitySet="Program" />
             <End Role="Program1" EntitySet="Program" />
           </AssociationSet>
-          <AssociationSet Name="PlayerPrograms" Association="CyberpunkModel.PlayerPrograms">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="Program" EntitySet="Program" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ComputerImprovements_Units" Association="CyberpunkModel.FK_ComputerImprovements_Units">
-            <End Role="Units" EntitySet="Units" />
-            <End Role="ComputerImprovements" EntitySet="ComputerImprovements" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_Skill_Skill">
-          <End Type="CyberpunkModel.Skill" Role="Skill" Multiplicity="1" />
-          <End Type="CyberpunkModel.Skill" Role="Skill1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Skill">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Skill1">
-              <PropertyRef Name="id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Skill_SkillTypes">
-          <End Type="CyberpunkModel.SkillTypes" Role="SkillTypes" Multiplicity="0..1" />
-          <End Type="CyberpunkModel.Skill" Role="Skill" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SkillTypes">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Skill">
-              <PropertyRef Name="SkillType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -2900,6 +2266,14 @@
           <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ArmorLocations">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PlayerArmor" Relationship="CyberpunkModel.FK__PlayerArm__Locat__72C60C4A" FromRole="ArmorLocations" ToRole="PlayerArmor" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -2948,91 +2322,9 @@
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="CyberpunkModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="CyberpunkModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="AspNetRoles" Relationship="CyberpunkModel.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
           <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK_Player_AspNetUsers" FromRole="AspNetUsers" ToRole="Player" />
+          <NavigationProperty Name="AspNetRoles" Relationship="CyberpunkModel.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Type="CyberpunkModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="CyberpunkModel.AspNetUserClaims" Role="AspNetUserClaims" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserClaims">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Type="CyberpunkModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="CyberpunkModel.AspNetUserLogins" Role="AspNetUserLogins" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogins">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AspNetUserRoles">
-          <End Type="CyberpunkModel.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
-          <End Type="CyberpunkModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
-        </Association>
-        <Association Name="FK_Player_AspNetUsers">
-          <End Type="CyberpunkModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
-          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Player">
-              <PropertyRef Name="aspUserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="FortressRemotes">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="xPos" Type="Int32" Nullable="false" />
-          <Property Name="yPos" Type="Int32" Nullable="false" />
-          <Property Name="FortressID" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FK_FortressRemotes_Fortress" FromRole="FortressRemotes" ToRole="Fortress" />
-          <NavigationProperty Name="NetObjType" Relationship="CyberpunkModel.FK_FortressRemotes_NetObjType" FromRole="FortressRemotes" ToRole="NetObjType" />
-        </EntityType>
-        <Association Name="FK_FortressRemotes_Fortress">
-          <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="1" />
-          <End Type="CyberpunkModel.FortressRemotes" Role="FortressRemotes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Fortress">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="FortressRemotes">
-              <PropertyRef Name="FortressID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FortressRemotes_NetObjType">
-          <End Type="CyberpunkModel.NetObjType" Role="NetObjType" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="CyberpunkModel.FortressRemotes" Role="FortressRemotes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NetObjType">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="FortressRemotes">
-              <PropertyRef Name="Type" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Computer">
           <Key>
             <PropertyRef Name="id" />
@@ -3064,12 +2356,11 @@
           <Property Name="ImprovementAmount" Type="Int32" Nullable="false" />
           <Property Name="CostLow" Type="Double" Nullable="false" />
           <Property Name="CostHigh" Type="Double" Nullable="false" />
-          <Property Name="CostPercent" Type="Double" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.PlayerComputerImprovements" FromRole="ComputerImprovements" ToRole="PlayerComputer" />
           <Property Name="UnitTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Slots" Type="Double" Nullable="false" />
           <NavigationProperty Name="Units" Relationship="CyberpunkModel.FK_ComputerImprovements_Units" FromRole="ComputerImprovements" ToRole="Units" />
+          <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.PlayerComputerImprovements" FromRole="ComputerImprovements" ToRole="PlayerComputer" />
         </EntityType>
         <EntityType Name="ComputerPeripherals">
           <Key>
@@ -3077,19 +2368,16 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CostPerUinitLow" Type="Double" Nullable="false" />
-          <Property Name="CostPerUinitHigh" Type="Double" Nullable="false" />
-          <Property Name="UnitTypeID" Type="Int32" />
-          <Property Name="Units" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ComputerPeripheralSkillModifiers" Relationship="CyberpunkModel.FK__ComputerP__Compu__02C769E9" FromRole="ComputerPeripherals" ToRole="ComputerPeripheralSkillModifiers" />
-          <NavigationProperty Name="ComputerPeripheralStatModifiers" Relationship="CyberpunkModel.FK__ComputerP__Compu__078C1F06" FromRole="ComputerPeripherals" ToRole="ComputerPeripheralStatModifiers" />
-          <NavigationProperty Name="Units1" Relationship="CyberpunkModel.FK__ComputerP__UnitT__7E02B4CC" FromRole="ComputerPeripherals" ToRole="Units" />
-          <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.PlayerComputerOptions" FromRole="ComputerPeripherals" ToRole="PlayerComputer" />
           <Property Name="CostPerUnitLow" Type="Double" Nullable="false" />
           <Property Name="CostPerUnitHigh" Type="Double" Nullable="false" />
+          <Property Name="UnitTypeID" Type="Int32" />
           <Property Name="MU" Type="Int32" />
           <Property Name="Bonus" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ComputerPeripheralSkillModifiers" Relationship="CyberpunkModel.FK__ComputerP__Compu__02C769E9" FromRole="ComputerPeripherals" ToRole="ComputerPeripheralSkillModifiers" />
+          <NavigationProperty Name="ComputerPeripheralStatModifiers" Relationship="CyberpunkModel.FK__ComputerP__Compu__078C1F06" FromRole="ComputerPeripherals" ToRole="ComputerPeripheralStatModifiers" />
+          <NavigationProperty Name="Units" Relationship="CyberpunkModel.FK__ComputerP__UnitT__7E02B4CC" FromRole="ComputerPeripherals" ToRole="Units" />
+          <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.PlayerComputerOptions" FromRole="ComputerPeripherals" ToRole="PlayerComputer" />
         </EntityType>
         <EntityType Name="ComputerPeripheralSkillModifiers">
           <Key>
@@ -3140,7 +2428,7 @@
           <Property Name="CostLow" Type="Double" Nullable="false" />
           <Property Name="CostHigh" Type="Double" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="PlayerCyberdeck" Relationship="CyberpunkModel.PlayerCyberdeckImprovements" FromRole="CyberdeckImprovements" ToRole="PlayerCyberdeck" />
+          <NavigationProperty Name="PlayerCyberdeckImprovements" Relationship="CyberpunkModel.FK__PlayerCyb__Cyber__6ABAD62E" FromRole="CyberdeckImprovements" ToRole="PlayerCyberdeckImprovements" />
         </EntityType>
         <EntityType Name="CyberdeckOptions">
           <Key>
@@ -3151,12 +2439,11 @@
           <Property Name="CostPerUinitLow" Type="Double" Nullable="false" />
           <Property Name="CostPerUinitHigh" Type="Double" Nullable="false" />
           <Property Name="UnitTypeID" Type="Int32" />
-          <Property Name="Units" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CyberdeckOptionsSkillModifiers" Relationship="CyberpunkModel.FK__Cyberdeck__Cyber__607251E5" FromRole="CyberdeckOptions" ToRole="CyberdeckOptionsSkillModifiers" />
           <NavigationProperty Name="CyberdeckOptionsStatModifiers" Relationship="CyberpunkModel.FK__Cyberdeck__Cyber__65370702" FromRole="CyberdeckOptions" ToRole="CyberdeckOptionsStatModifiers" />
-          <NavigationProperty Name="Units1" Relationship="CyberpunkModel.FK__Cyberdeck__UnitT__5BAD9CC8" FromRole="CyberdeckOptions" ToRole="Units" />
+          <NavigationProperty Name="Units" Relationship="CyberpunkModel.FK__Cyberdeck__UnitT__5BAD9CC8" FromRole="CyberdeckOptions" ToRole="Units" />
           <NavigationProperty Name="PlayerCyberdeck" Relationship="CyberpunkModel.PlayerCyberdeckOptions" FromRole="CyberdeckOptions" ToRole="PlayerCyberdeck" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CyberdeckOptionsSkillModifiers">
           <Key>
@@ -3182,6 +2469,100 @@
           <NavigationProperty Name="CyberdeckOptions" Relationship="CyberpunkModel.FK__Cyberdeck__Cyber__65370702" FromRole="CyberdeckOptionsStatModifiers" ToRole="CyberdeckOptions" />
           <NavigationProperty Name="Stat" Relationship="CyberpunkModel.FK__Cyberdeck__StatI__6442E2C9" FromRole="CyberdeckOptionsStatModifiers" ToRole="Stat" />
         </EntityType>
+        <EntityType Name="Cybernetics">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NumDice" Type="Int32" />
+          <Property Name="DiceType" Type="Int32" />
+          <Property Name="Bonus" Type="Int32" />
+          <Property Name="HL" Type="Int32" />
+          <Property Name="Cost" Type="Double" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="SurgType" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SurgicalCode" Relationship="CyberpunkModel.FK__Cyberneti__SurgT__49C3F6B7" FromRole="Cybernetics" ToRole="SurgicalCode" />
+          <NavigationProperty Name="CyberneticTypes" Relationship="CyberpunkModel.FK__Cybernetic__Type__48CFD27E" FromRole="Cybernetics" ToRole="CyberneticTypes" />
+          <NavigationProperty Name="PlayerCybernetics" Relationship="CyberpunkModel.FK__PlayerCyb__Cyber__7D439ABD" FromRole="Cybernetics" ToRole="PlayerCybernetics" />
+        </EntityType>
+        <EntityType Name="CyberneticTypes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cybernetics" Relationship="CyberpunkModel.FK__Cybernetic__Type__48CFD27E" FromRole="CyberneticTypes" ToRole="Cybernetics" />
+        </EntityType>
+        <EntityType Name="Fortress">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subgridID" Type="Int32" />
+          <Property Name="WallStrength" Type="Int32" />
+          <Property Name="Int" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Subgrid" Relationship="CyberpunkModel.FK__Fortress__subgri__5535A963" FromRole="Fortress" ToRole="Subgrid" />
+          <NavigationProperty Name="FortressCPU" Relationship="CyberpunkModel.FK__FortressC__Fortr__5DCAEF64" FromRole="Fortress" ToRole="FortressCPU" />
+          <NavigationProperty Name="FortressCodeGates" Relationship="CyberpunkModel.FK__FortressC__Fortr__6754599E" FromRole="Fortress" ToRole="FortressCodeGates" />
+          <NavigationProperty Name="FortressMemory" Relationship="CyberpunkModel.FK__FortressM__Fortr__628FA481" FromRole="Fortress" ToRole="FortressMemory" />
+          <NavigationProperty Name="FortressSkills" Relationship="CyberpunkModel.FK__FortressS__Fortr__4B422AD5" FromRole="Fortress" ToRole="FortressSkills" />
+          <NavigationProperty Name="FortressWalls" Relationship="CyberpunkModel.FK__FortressW__Fortr__59063A47" FromRole="Fortress" ToRole="FortressWalls" />
+          <NavigationProperty Name="FortressRemotes" Relationship="CyberpunkModel.FK_FortressRemotes_Fortress" FromRole="Fortress" ToRole="FortressRemotes" />
+          <NavigationProperty Name="Program" Relationship="CyberpunkModel.FortressPrograms" FromRole="Fortress" ToRole="Program" />
+        </EntityType>
+        <EntityType Name="FortressCodeGates">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="xPos" Type="Int32" />
+          <Property Name="yPos" Type="Int32" />
+          <Property Name="WallStrength" Type="Int32" />
+          <Property Name="FortressID" Type="Int32" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FK__FortressC__Fortr__6754599E" FromRole="FortressCodeGates" ToRole="Fortress" />
+          <NavigationProperty Name="NetObjType" Relationship="CyberpunkModel.FK__FortressCo__Type__68487DD7" FromRole="FortressCodeGates" ToRole="NetObjType" />
+        </EntityType>
+        <EntityType Name="FortressCPU">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="xPos" Type="Int32" />
+          <Property Name="yPos" Type="Int32" />
+          <Property Name="FortressID" Type="Int32" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FK__FortressC__Fortr__5DCAEF64" FromRole="FortressCPU" ToRole="Fortress" />
+          <NavigationProperty Name="NetObjType" Relationship="CyberpunkModel.FK__FortressCP__Type__5EBF139D" FromRole="FortressCPU" ToRole="NetObjType" />
+        </EntityType>
+        <EntityType Name="FortressMemory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="xPos" Type="Int32" />
+          <Property Name="yPos" Type="Int32" />
+          <Property Name="FortressID" Type="Int32" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FK__FortressM__Fortr__628FA481" FromRole="FortressMemory" ToRole="Fortress" />
+          <NavigationProperty Name="NetObjType" Relationship="CyberpunkModel.FK__FortressMe__Type__6383C8BA" FromRole="FortressMemory" ToRole="NetObjType" />
+        </EntityType>
+        <EntityType Name="FortressRemotes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="xPos" Type="Int32" Nullable="false" />
+          <Property Name="yPos" Type="Int32" Nullable="false" />
+          <Property Name="FortressID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FK_FortressRemotes_Fortress" FromRole="FortressRemotes" ToRole="Fortress" />
+          <NavigationProperty Name="NetObjType" Relationship="CyberpunkModel.FK_FortressRemotes_NetObjType" FromRole="FortressRemotes" ToRole="NetObjType" />
+        </EntityType>
         <EntityType Name="FortressSkills">
           <Key>
             <PropertyRef Name="id" />
@@ -3192,6 +2573,71 @@
           <Property Name="Ranks" Type="Int32" />
           <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FK__FortressS__Fortr__4B422AD5" FromRole="FortressSkills" ToRole="Fortress" />
           <NavigationProperty Name="Skill" Relationship="CyberpunkModel.FK__FortressS__Skill__4C364F0E" FromRole="FortressSkills" ToRole="Skill" />
+        </EntityType>
+        <EntityType Name="FortressWalls">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="xPos" Type="Int32" />
+          <Property Name="yPos" Type="Int32" />
+          <Property Name="FortressID" Type="Int32" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FK__FortressW__Fortr__59063A47" FromRole="FortressWalls" ToRole="Fortress" />
+          <NavigationProperty Name="NetObjType" Relationship="CyberpunkModel.FK__FortressWa__Type__59FA5E80" FromRole="FortressWalls" ToRole="NetObjType" />
+        </EntityType>
+        <EntityType Name="NetObjType">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SVG" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FortressCodeGates" Relationship="CyberpunkModel.FK__FortressCo__Type__68487DD7" FromRole="NetObjType" ToRole="FortressCodeGates" />
+          <NavigationProperty Name="FortressCPU" Relationship="CyberpunkModel.FK__FortressCP__Type__5EBF139D" FromRole="NetObjType" ToRole="FortressCPU" />
+          <NavigationProperty Name="FortressMemory" Relationship="CyberpunkModel.FK__FortressMe__Type__6383C8BA" FromRole="NetObjType" ToRole="FortressMemory" />
+          <NavigationProperty Name="FortressRemotes" Relationship="CyberpunkModel.FK_FortressRemotes_NetObjType" FromRole="NetObjType" ToRole="FortressRemotes" />
+          <NavigationProperty Name="FortressWalls" Relationship="CyberpunkModel.FK__FortressWa__Type__59FA5E80" FromRole="NetObjType" ToRole="FortressWalls" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Handle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SIN" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IP" Type="Int32" Nullable="false" />
+          <Property Name="REP" Type="Int32" Nullable="false" />
+          <Property Name="Humanity" Type="Int32" Nullable="false" />
+          <Property Name="Dammage" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="aspUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="CyberpunkModel.FK_Player_AspNetUsers" FromRole="Player" ToRole="AspNetUsers" />
+          <NavigationProperty Name="PlayerRoles" Relationship="CyberpunkModel.FK__Player__RoleID__6B24EA82" FromRole="Player" ToRole="PlayerRoles" />
+          <NavigationProperty Name="PlayerArmor" Relationship="CyberpunkModel.FK__PlayerArm__Playe__71D1E811" FromRole="Player" ToRole="PlayerArmor" />
+          <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.FK__PlayerCom__Playe__725BF7F6" FromRole="Player" ToRole="PlayerComputer" />
+          <NavigationProperty Name="PlayerCyberdeck" Relationship="CyberpunkModel.FK__PlayerCyb__Playe__66EA454A" FromRole="Player" ToRole="PlayerCyberdeck" />
+          <NavigationProperty Name="PlayerCybernetics" Relationship="CyberpunkModel.FK__PlayerCyb__Playe__7E37BEF6" FromRole="Player" ToRole="PlayerCybernetics" />
+          <NavigationProperty Name="PlayerSkill" Relationship="CyberpunkModel.FK__PlayerSki__Playe__7A672E12" FromRole="Player" ToRole="PlayerSkill" />
+          <NavigationProperty Name="PlayerStat" Relationship="CyberpunkModel.FK__PlayerSta__Playe__6E01572D" FromRole="Player" ToRole="PlayerStat" />
+          <NavigationProperty Name="PlayerWeapon" Relationship="CyberpunkModel.FK__PlayerWea__Playe__75A278F5" FromRole="Player" ToRole="PlayerWeapon" />
+          <NavigationProperty Name="Program" Relationship="CyberpunkModel.PlayerPrograms" FromRole="Player" ToRole="Program" />
+        </EntityType>
+        <EntityType Name="PlayerArmor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SP" Type="Int32" />
+          <Property Name="LocationID" Type="Int32" />
+          <Property Name="CurrentSP" Type="Int32" />
+          <Property Name="Encumberance" Type="Int32" />
+          <Property Name="PlayerID" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ArmorLocations" Relationship="CyberpunkModel.FK__PlayerArm__Locat__72C60C4A" FromRole="PlayerArmor" ToRole="ArmorLocations" />
+          <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK__PlayerArm__Playe__71D1E811" FromRole="PlayerArmor" ToRole="Player" />
         </EntityType>
         <EntityType Name="PlayerComputer">
           <Key>
@@ -3219,9 +2665,76 @@
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Cyberdeck" Relationship="CyberpunkModel.FK__PlayerCyb__Cyber__65F62111" FromRole="PlayerCyberdeck" ToRole="Cyberdeck" />
           <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK__PlayerCyb__Playe__66EA454A" FromRole="PlayerCyberdeck" ToRole="Player" />
-          <NavigationProperty Name="CyberdeckImprovements" Relationship="CyberpunkModel.PlayerCyberdeckImprovements" FromRole="PlayerCyberdeck" ToRole="CyberdeckImprovements" />
+          <NavigationProperty Name="PlayerCyberdeckImprovements" Relationship="CyberpunkModel.FK__PlayerCyb__Playe__69C6B1F5" FromRole="PlayerCyberdeck" ToRole="PlayerCyberdeckImprovements" />
           <NavigationProperty Name="CyberdeckOptions" Relationship="CyberpunkModel.PlayerCyberdeckOptions" FromRole="PlayerCyberdeck" ToRole="CyberdeckOptions" />
           <NavigationProperty Name="Program" Relationship="CyberpunkModel.PlayerCyberdeckPrograms" FromRole="PlayerCyberdeck" ToRole="Program" />
+        </EntityType>
+        <EntityType Name="PlayerCyberdeckImprovements">
+          <Key>
+            <PropertyRef Name="PlayerCyberdeckID" />
+            <PropertyRef Name="CyberdeckImprovementsID" />
+          </Key>
+          <Property Name="PlayerCyberdeckID" Type="Int32" Nullable="false" />
+          <Property Name="CyberdeckImprovementsID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CyberdeckImprovements" Relationship="CyberpunkModel.FK__PlayerCyb__Cyber__6ABAD62E" FromRole="PlayerCyberdeckImprovements" ToRole="CyberdeckImprovements" />
+          <NavigationProperty Name="PlayerCyberdeck" Relationship="CyberpunkModel.FK__PlayerCyb__Playe__69C6B1F5" FromRole="PlayerCyberdeckImprovements" ToRole="PlayerCyberdeck" />
+        </EntityType>
+        <EntityType Name="PlayerCybernetics">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HL" Type="Int32" />
+          <Property Name="Cost" Type="Int32" />
+          <Property Name="CyberneticID" Type="Int32" />
+          <Property Name="PlayerID" Type="Int32" />
+          <NavigationProperty Name="Cybernetics" Relationship="CyberpunkModel.FK__PlayerCyb__Cyber__7D439ABD" FromRole="PlayerCybernetics" ToRole="Cybernetics" />
+          <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK__PlayerCyb__Playe__7E37BEF6" FromRole="PlayerCybernetics" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="PlayerRoles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK__Player__RoleID__6B24EA82" FromRole="PlayerRoles" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="PlayerSkill">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ranks" Type="Int32" />
+          <Property Name="Bonus" Type="Int32" />
+          <Property Name="CurrentIP" Type="Int32" />
+          <Property Name="PlayerID" Type="Int32" />
+          <Property Name="SkillID" Type="Int32" />
+          <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK__PlayerSki__Playe__7A672E12" FromRole="PlayerSkill" ToRole="Player" />
+          <NavigationProperty Name="Skill" Relationship="CyberpunkModel.FK__PlayerSki__Skill__797309D9" FromRole="PlayerSkill" ToRole="Skill" />
+        </EntityType>
+        <EntityType Name="PlayerStat">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatID" Type="Int32" />
+          <Property Name="Base" Type="Int32" />
+          <Property Name="Bonus" Type="Int32" />
+          <Property Name="Current" Type="Int32" />
+          <Property Name="PlayerID" Type="Int32" />
+          <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK__PlayerSta__Playe__6E01572D" FromRole="PlayerStat" ToRole="Player" />
+          <NavigationProperty Name="Stat" Relationship="CyberpunkModel.FK__PlayerSta__StatI__6EF57B66" FromRole="PlayerStat" ToRole="Stat" />
+        </EntityType>
+        <EntityType Name="PlayerWeapon">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WeaponID" Type="Int32" />
+          <Property Name="PlayerID" Type="Int32" />
+          <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK__PlayerWea__Playe__75A278F5" FromRole="PlayerWeapon" ToRole="Player" />
+          <NavigationProperty Name="Weapons" Relationship="CyberpunkModel.FK__PlayerWea__Weapo__76969D2E" FromRole="PlayerWeapon" ToRole="Weapons" />
         </EntityType>
         <EntityType Name="Program">
           <Key>
@@ -3238,11 +2751,11 @@
           <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FortressPrograms" FromRole="Program" ToRole="Fortress" />
           <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.PlayerComputerPrograms" FromRole="Program" ToRole="PlayerComputer" />
           <NavigationProperty Name="PlayerCyberdeck" Relationship="CyberpunkModel.PlayerCyberdeckPrograms" FromRole="Program" ToRole="PlayerCyberdeck" />
+          <NavigationProperty Name="Player" Relationship="CyberpunkModel.PlayerPrograms" FromRole="Program" ToRole="Player" />
           <NavigationProperty Name="ProgramFunctions" Relationship="CyberpunkModel.ProgramProgramFunctions" FromRole="Program" ToRole="ProgramFunctions" />
           <NavigationProperty Name="ProgramOptions" Relationship="CyberpunkModel.ProgramProgramOptions" FromRole="Program" ToRole="ProgramOptions" />
           <NavigationProperty Name="Program1" Relationship="CyberpunkModel.ProgramSubroutines" FromRole="Program" ToRole="Program1" />
           <NavigationProperty Name="Program2" Relationship="CyberpunkModel.ProgramSubroutines" FromRole="Program1" ToRole="Program" />
-          <NavigationProperty Name="Player" Relationship="CyberpunkModel.PlayerPrograms" FromRole="Program" ToRole="Player" />
         </EntityType>
         <EntityType Name="ProgramFunctions">
           <Key>
@@ -3273,16 +2786,174 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Program" Relationship="CyberpunkModel.FK__Program__Program__53D770D6" FromRole="ProgramType" ToRole="Program" />
         </EntityType>
+        <EntityType Name="Skill">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SkillType" Type="Int32" />
+          <Property Name="StatID" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Multiplier" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ComputerPeripheralSkillModifiers" Relationship="CyberpunkModel.FK__ComputerP__Skill__01D345B0" FromRole="Skill" ToRole="ComputerPeripheralSkillModifiers" />
+          <NavigationProperty Name="CyberdeckOptionsSkillModifiers" Relationship="CyberpunkModel.FK__Cyberdeck__Skill__5F7E2DAC" FromRole="Skill" ToRole="CyberdeckOptionsSkillModifiers" />
+          <NavigationProperty Name="FortressSkills" Relationship="CyberpunkModel.FK__FortressS__Skill__4C364F0E" FromRole="Skill" ToRole="FortressSkills" />
+          <NavigationProperty Name="PlayerSkill" Relationship="CyberpunkModel.FK__PlayerSki__Skill__797309D9" FromRole="Skill" ToRole="PlayerSkill" />
+          <NavigationProperty Name="Stat" Relationship="CyberpunkModel.FK__Skill__StatID__4E88ABD4" FromRole="Skill" ToRole="Stat" />
+          <NavigationProperty Name="Skill1" Relationship="CyberpunkModel.FK_Skill_Skill" FromRole="Skill" ToRole="Skill1" />
+          <NavigationProperty Name="Skill2" Relationship="CyberpunkModel.FK_Skill_Skill" FromRole="Skill1" ToRole="Skill" />
+          <NavigationProperty Name="SkillTypes" Relationship="CyberpunkModel.FK_Skill_SkillTypes" FromRole="Skill" ToRole="SkillTypes" />
+        </EntityType>
+        <EntityType Name="SkillTypes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Skill" Relationship="CyberpunkModel.FK_Skill_SkillTypes" FromRole="SkillTypes" ToRole="Skill" />
+        </EntityType>
+        <EntityType Name="Stat">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ABBR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ComputerPeripheralStatModifiers" Relationship="CyberpunkModel.FK__ComputerP__StatI__0697FACD" FromRole="Stat" ToRole="ComputerPeripheralStatModifiers" />
+          <NavigationProperty Name="CyberdeckOptionsStatModifiers" Relationship="CyberpunkModel.FK__Cyberdeck__StatI__6442E2C9" FromRole="Stat" ToRole="CyberdeckOptionsStatModifiers" />
+          <NavigationProperty Name="PlayerStat" Relationship="CyberpunkModel.FK__PlayerSta__StatI__6EF57B66" FromRole="Stat" ToRole="PlayerStat" />
+          <NavigationProperty Name="Skill" Relationship="CyberpunkModel.FK__Skill__StatID__4E88ABD4" FromRole="Stat" ToRole="Skill" />
+        </EntityType>
+        <EntityType Name="Subgrid">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="width" Type="Int32" Nullable="false" />
+          <Property Name="height" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FK__Fortress__subgri__5535A963" FromRole="Subgrid" ToRole="Fortress" />
+        </EntityType>
+        <EntityType Name="SurgicalCode">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="time" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="NumDamageDice" Type="Int32" />
+          <Property Name="DamageDiceType" Type="Int32" />
+          <Property Name="DamageBonus" Type="Int32" />
+          <Property Name="SurgicalCost" Type="Int32" />
+          <Property Name="DIFF" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cybernetics" Relationship="CyberpunkModel.FK__Cyberneti__SurgT__49C3F6B7" FromRole="SurgicalCode" ToRole="Cybernetics" />
+        </EntityType>
         <EntityType Name="Units">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ComputerImprovements" Relationship="CyberpunkModel.FK_ComputerImprovements_Units" FromRole="Units" ToRole="ComputerImprovements" />
           <NavigationProperty Name="ComputerPeripherals" Relationship="CyberpunkModel.FK__ComputerP__UnitT__7E02B4CC" FromRole="Units" ToRole="ComputerPeripherals" />
           <NavigationProperty Name="CyberdeckOptions" Relationship="CyberpunkModel.FK__Cyberdeck__UnitT__5BAD9CC8" FromRole="Units" ToRole="CyberdeckOptions" />
-          <NavigationProperty Name="ComputerImprovements" Relationship="CyberpunkModel.FK_ComputerImprovements_Units" FromRole="Units" ToRole="ComputerImprovements" />
         </EntityType>
+        <EntityType Name="WeaponConcTypes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Weapons" Relationship="CyberpunkModel.FK__Weapons__Conc__45F365D3" FromRole="WeaponConcTypes" ToRole="Weapons" />
+        </EntityType>
+        <EntityType Name="Weapons">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NumDice" Type="Int32" />
+          <Property Name="DiceType" Type="Int32" />
+          <Property Name="Bonus" Type="Int32" />
+          <Property Name="ROF" Type="Int32" />
+          <Property Name="REL" Type="Int32" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="Conc" Type="Int32" />
+          <Property Name="Shots1" Type="Int32" />
+          <Property Name="Shots2" Type="Int32" />
+          <Property Name="Range" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PlayerWeapon" Relationship="CyberpunkModel.FK__PlayerWea__Weapo__76969D2E" FromRole="Weapons" ToRole="PlayerWeapon" />
+          <NavigationProperty Name="WeaponConcTypes" Relationship="CyberpunkModel.FK__Weapons__Conc__45F365D3" FromRole="Weapons" ToRole="WeaponConcTypes" />
+          <NavigationProperty Name="WeaponTypes" Relationship="CyberpunkModel.FK__Weapons__Type__44FF419A" FromRole="Weapons" ToRole="WeaponTypes" />
+        </EntityType>
+        <EntityType Name="WeaponTypes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Weapons" Relationship="CyberpunkModel.FK__Weapons__Type__44FF419A" FromRole="WeaponTypes" ToRole="Weapons" />
+        </EntityType>
+        <Association Name="FK__PlayerArm__Locat__72C60C4A">
+          <End Type="CyberpunkModel.ArmorLocations" Role="ArmorLocations" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.PlayerArmor" Role="PlayerArmor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArmorLocations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerArmor">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="CyberpunkModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.AspNetUserClaims" Role="AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="CyberpunkModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.AspNetUserLogins" Role="AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player_AspNetUsers">
+          <End Type="CyberpunkModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="aspUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__PlayerCom__Compu__7167D3BD">
           <End Type="CyberpunkModel.Computer" Role="Computer" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -3294,6 +2965,20 @@
             </Principal>
             <Dependent Role="PlayerComputer">
               <PropertyRef Name="ComputerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComputerImprovements_Units">
+          <End Type="CyberpunkModel.Units" Role="Units" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.ComputerImprovements" Role="ComputerImprovements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Units">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ComputerImprovements">
+              <PropertyRef Name="UnitTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3379,6 +3064,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__PlayerCyb__Cyber__6ABAD62E">
+          <End Type="CyberpunkModel.CyberdeckImprovements" Role="CyberdeckImprovements" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.PlayerCyberdeckImprovements" Role="PlayerCyberdeckImprovements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CyberdeckImprovements">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerCyberdeckImprovements">
+              <PropertyRef Name="CyberdeckImprovementsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Cyberdeck__Cyber__607251E5">
           <End Type="CyberpunkModel.CyberdeckOptions" Role="CyberdeckOptions" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -3447,6 +3146,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Cyberneti__SurgT__49C3F6B7">
+          <End Type="CyberpunkModel.SurgicalCode" Role="SurgicalCode" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.Cybernetics" Role="Cybernetics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SurgicalCode">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Cybernetics">
+              <PropertyRef Name="SurgType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cybernetic__Type__48CFD27E">
+          <End Type="CyberpunkModel.CyberneticTypes" Role="CyberneticTypes" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.Cybernetics" Role="Cybernetics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CyberneticTypes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Cybernetics">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerCyb__Cyber__7D439ABD">
+          <End Type="CyberpunkModel.Cybernetics" Role="Cybernetics" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.PlayerCybernetics" Role="PlayerCybernetics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cybernetics">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerCybernetics">
+              <PropertyRef Name="CyberneticID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Fortress__subgri__5535A963">
+          <End Type="CyberpunkModel.Subgrid" Role="Subgrid" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subgrid">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Fortress">
+              <PropertyRef Name="subgridID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FortressC__Fortr__5DCAEF64">
+          <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.FortressCPU" Role="FortressCPU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fortress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressCPU">
+              <PropertyRef Name="FortressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FortressC__Fortr__6754599E">
+          <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.FortressCodeGates" Role="FortressCodeGates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fortress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressCodeGates">
+              <PropertyRef Name="FortressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FortressM__Fortr__628FA481">
+          <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.FortressMemory" Role="FortressMemory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fortress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressMemory">
+              <PropertyRef Name="FortressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__FortressS__Fortr__4B422AD5">
           <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3461,6 +3244,80 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__FortressW__Fortr__59063A47">
+          <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.FortressWalls" Role="FortressWalls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fortress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressWalls">
+              <PropertyRef Name="FortressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FortressRemotes_Fortress">
+          <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="1" />
+          <End Type="CyberpunkModel.FortressRemotes" Role="FortressRemotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fortress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressRemotes">
+              <PropertyRef Name="FortressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FortressCo__Type__68487DD7">
+          <End Type="CyberpunkModel.NetObjType" Role="NetObjType" Multiplicity="1" />
+          <End Type="CyberpunkModel.FortressCodeGates" Role="FortressCodeGates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NetObjType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressCodeGates">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FortressCP__Type__5EBF139D">
+          <End Type="CyberpunkModel.NetObjType" Role="NetObjType" Multiplicity="1" />
+          <End Type="CyberpunkModel.FortressCPU" Role="FortressCPU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NetObjType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressCPU">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FortressMe__Type__6383C8BA">
+          <End Type="CyberpunkModel.NetObjType" Role="NetObjType" Multiplicity="1" />
+          <End Type="CyberpunkModel.FortressMemory" Role="FortressMemory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NetObjType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressMemory">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FortressRemotes_NetObjType">
+          <End Type="CyberpunkModel.NetObjType" Role="NetObjType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.FortressRemotes" Role="FortressRemotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NetObjType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressRemotes">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__FortressS__Skill__4C364F0E">
           <End Type="CyberpunkModel.Skill" Role="Skill" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3472,6 +3329,42 @@
             </Principal>
             <Dependent Role="FortressSkills">
               <PropertyRef Name="SkillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FortressWa__Type__59FA5E80">
+          <End Type="CyberpunkModel.NetObjType" Role="NetObjType" Multiplicity="1" />
+          <End Type="CyberpunkModel.FortressWalls" Role="FortressWalls" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NetObjType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressWalls">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Player__RoleID__6B24EA82">
+          <End Type="CyberpunkModel.PlayerRoles" Role="PlayerRoles" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayerRoles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerArm__Playe__71D1E811">
+          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.PlayerArmor" Role="PlayerArmor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerArmor">
+              <PropertyRef Name="PlayerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3503,6 +3396,112 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__PlayerCyb__Playe__7E37BEF6">
+          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.PlayerCybernetics" Role="PlayerCybernetics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerCybernetics">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerSki__Playe__7A672E12">
+          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.PlayerSkill" Role="PlayerSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerSkill">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerSta__Playe__6E01572D">
+          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.PlayerStat" Role="PlayerStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerStat">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerWea__Playe__75A278F5">
+          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.PlayerWeapon" Role="PlayerWeapon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerWeapon">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerCyb__Playe__69C6B1F5">
+          <End Type="CyberpunkModel.PlayerCyberdeck" Role="PlayerCyberdeck" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.PlayerCyberdeckImprovements" Role="PlayerCyberdeckImprovements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayerCyberdeck">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerCyberdeckImprovements">
+              <PropertyRef Name="PlayerCyberdeckID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerSki__Skill__797309D9">
+          <End Type="CyberpunkModel.Skill" Role="Skill" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.PlayerSkill" Role="PlayerSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Skill">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerSkill">
+              <PropertyRef Name="SkillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerSta__StatI__6EF57B66">
+          <End Type="CyberpunkModel.Stat" Role="Stat" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.PlayerStat" Role="PlayerStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stat">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerStat">
+              <PropertyRef Name="StatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerWea__Weapo__76969D2E">
+          <End Type="CyberpunkModel.Weapons" Role="Weapons" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.PlayerWeapon" Role="PlayerWeapon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Weapons">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerWeapon">
+              <PropertyRef Name="WeaponID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Program__Program__53D770D6">
           <End Type="CyberpunkModel.ProgramType" Role="ProgramType" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -3516,6 +3515,70 @@
               <PropertyRef Name="ProgramTypeID" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Skill__StatID__4E88ABD4">
+          <End Type="CyberpunkModel.Stat" Role="Stat" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.Skill" Role="Skill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stat">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Skill">
+              <PropertyRef Name="StatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Skill_Skill">
+          <End Type="CyberpunkModel.Skill" Role="Skill" Multiplicity="1" />
+          <End Type="CyberpunkModel.Skill" Role="Skill1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Skill">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Skill1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Skill_SkillTypes">
+          <End Type="CyberpunkModel.SkillTypes" Role="SkillTypes" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.Skill" Role="Skill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SkillTypes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Skill">
+              <PropertyRef Name="SkillType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Weapons__Conc__45F365D3">
+          <End Type="CyberpunkModel.WeaponConcTypes" Role="WeaponConcTypes" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.Weapons" Role="Weapons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WeaponConcTypes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Weapons">
+              <PropertyRef Name="Conc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Weapons__Type__44FF419A">
+          <End Type="CyberpunkModel.WeaponTypes" Role="WeaponTypes" Multiplicity="0..1" />
+          <End Type="CyberpunkModel.Weapons" Role="Weapons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WeaponTypes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Weapons">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="CyberpunkModel.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
+          <End Type="CyberpunkModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
         </Association>
         <Association Name="FortressPrograms">
           <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="*" />
@@ -3533,16 +3596,16 @@
           <End Type="CyberpunkModel.PlayerComputer" Role="PlayerComputer" Multiplicity="*" />
           <End Type="CyberpunkModel.Program" Role="Program" Multiplicity="*" />
         </Association>
-        <Association Name="PlayerCyberdeckImprovements">
-          <End Type="CyberpunkModel.CyberdeckImprovements" Role="CyberdeckImprovements" Multiplicity="*" />
-          <End Type="CyberpunkModel.PlayerCyberdeck" Role="PlayerCyberdeck" Multiplicity="*" />
-        </Association>
         <Association Name="PlayerCyberdeckOptions">
           <End Type="CyberpunkModel.CyberdeckOptions" Role="CyberdeckOptions" Multiplicity="*" />
           <End Type="CyberpunkModel.PlayerCyberdeck" Role="PlayerCyberdeck" Multiplicity="*" />
         </Association>
         <Association Name="PlayerCyberdeckPrograms">
           <End Type="CyberpunkModel.PlayerCyberdeck" Role="PlayerCyberdeck" Multiplicity="*" />
+          <End Type="CyberpunkModel.Program" Role="Program" Multiplicity="*" />
+        </Association>
+        <Association Name="PlayerPrograms">
+          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="*" />
           <End Type="CyberpunkModel.Program" Role="Program" Multiplicity="*" />
         </Association>
         <Association Name="ProgramProgramFunctions">
@@ -3557,304 +3620,12 @@
           <End Type="CyberpunkModel.Program" Role="Program" Multiplicity="*" />
           <End Type="CyberpunkModel.Program" Role="Program1" Multiplicity="*" />
         </Association>
-        <Association Name="PlayerPrograms">
-          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="*" />
-          <End Type="CyberpunkModel.Program" Role="Program" Multiplicity="*" />
-        </Association>
-        <Association Name="FK_ComputerImprovements_Units">
-          <End Type="CyberpunkModel.Units" Role="Units" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="CyberpunkModel.ComputerImprovements" Role="ComputerImprovements" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Units">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="ComputerImprovements">
-              <PropertyRef Name="UnitTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CyberpunkModelStoreContainer" CdmEntityContainer="CyberpunkEntities">
-          <EntitySetMapping Name="ArmorLocations">
-            <EntityTypeMapping TypeName="CyberpunkModel.ArmorLocations">
-              <MappingFragment StoreEntitySet="ArmorLocations">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Cybernetics">
-            <EntityTypeMapping TypeName="CyberpunkModel.Cybernetics">
-              <MappingFragment StoreEntitySet="Cybernetics">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="NumDice" ColumnName="NumDice" />
-                <ScalarProperty Name="DiceType" ColumnName="DiceType" />
-                <ScalarProperty Name="Bonus" ColumnName="Bonus" />
-                <ScalarProperty Name="HL" ColumnName="HL" />
-                <ScalarProperty Name="Cost" ColumnName="Cost" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="SurgType" ColumnName="SurgType" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CyberneticTypes">
-            <EntityTypeMapping TypeName="CyberpunkModel.CyberneticTypes">
-              <MappingFragment StoreEntitySet="CyberneticTypes">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Fortress">
-            <EntityTypeMapping TypeName="CyberpunkModel.Fortress">
-              <MappingFragment StoreEntitySet="Fortress">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="subgridID" ColumnName="subgridID" />
-                <ScalarProperty Name="WallStrength" ColumnName="WallStrength" />
-                <ScalarProperty Name="Int" ColumnName="Int" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FortressCodeGates">
-            <EntityTypeMapping TypeName="CyberpunkModel.FortressCodeGates">
-              <MappingFragment StoreEntitySet="FortressCodeGates">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="xPos" ColumnName="xPos" />
-                <ScalarProperty Name="yPos" ColumnName="yPos" />
-                <ScalarProperty Name="WallStrength" ColumnName="WallStrength" />
-                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FortressCPU">
-            <EntityTypeMapping TypeName="CyberpunkModel.FortressCPU">
-              <MappingFragment StoreEntitySet="FortressCPU">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="xPos" ColumnName="xPos" />
-                <ScalarProperty Name="yPos" ColumnName="yPos" />
-                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FortressMemory">
-            <EntityTypeMapping TypeName="CyberpunkModel.FortressMemory">
-              <MappingFragment StoreEntitySet="FortressMemory">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="xPos" ColumnName="xPos" />
-                <ScalarProperty Name="yPos" ColumnName="yPos" />
-                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FortressWalls">
-            <EntityTypeMapping TypeName="CyberpunkModel.FortressWalls">
-              <MappingFragment StoreEntitySet="FortressWalls">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="xPos" ColumnName="xPos" />
-                <ScalarProperty Name="yPos" ColumnName="yPos" />
-                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NetObjType">
-            <EntityTypeMapping TypeName="CyberpunkModel.NetObjType">
-              <MappingFragment StoreEntitySet="NetObjType">
-                <ScalarProperty Name="SVG" ColumnName="SVG" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Player">
-            <EntityTypeMapping TypeName="CyberpunkModel.Player">
-              <MappingFragment StoreEntitySet="Player">
-                <ScalarProperty Name="aspUserID" ColumnName="aspUserID" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Handle" ColumnName="Handle" />
-                <ScalarProperty Name="SIN" ColumnName="SIN" />
-                <ScalarProperty Name="IP" ColumnName="IP" />
-                <ScalarProperty Name="REP" ColumnName="REP" />
-                <ScalarProperty Name="Humanity" ColumnName="Humanity" />
-                <ScalarProperty Name="Dammage" ColumnName="Dammage" />
-                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PlayerArmor">
-            <EntityTypeMapping TypeName="CyberpunkModel.PlayerArmor">
-              <MappingFragment StoreEntitySet="PlayerArmor">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="SP" ColumnName="SP" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="CurrentSP" ColumnName="CurrentSP" />
-                <ScalarProperty Name="Encumberance" ColumnName="Encumberance" />
-                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PlayerCybernetics">
-            <EntityTypeMapping TypeName="CyberpunkModel.PlayerCybernetics">
-              <MappingFragment StoreEntitySet="PlayerCybernetics">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="HL" ColumnName="HL" />
-                <ScalarProperty Name="Cost" ColumnName="Cost" />
-                <ScalarProperty Name="CyberneticID" ColumnName="CyberneticID" />
-                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PlayerRoles">
-            <EntityTypeMapping TypeName="CyberpunkModel.PlayerRoles">
-              <MappingFragment StoreEntitySet="PlayerRoles">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PlayerSkill">
-            <EntityTypeMapping TypeName="CyberpunkModel.PlayerSkill">
-              <MappingFragment StoreEntitySet="PlayerSkill">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Ranks" ColumnName="Ranks" />
-                <ScalarProperty Name="Bonus" ColumnName="Bonus" />
-                <ScalarProperty Name="CurrentIP" ColumnName="CurrentIP" />
-                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
-                <ScalarProperty Name="SkillID" ColumnName="SkillID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PlayerStat">
-            <EntityTypeMapping TypeName="CyberpunkModel.PlayerStat">
-              <MappingFragment StoreEntitySet="PlayerStat">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="StatID" ColumnName="StatID" />
-                <ScalarProperty Name="Base" ColumnName="Base" />
-                <ScalarProperty Name="Bonus" ColumnName="Bonus" />
-                <ScalarProperty Name="Current" ColumnName="Current" />
-                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PlayerWeapon">
-            <EntityTypeMapping TypeName="CyberpunkModel.PlayerWeapon">
-              <MappingFragment StoreEntitySet="PlayerWeapon">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="WeaponID" ColumnName="WeaponID" />
-                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Skill">
-            <EntityTypeMapping TypeName="CyberpunkModel.Skill">
-              <MappingFragment StoreEntitySet="Skill">
-                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="SkillType" ColumnName="SkillType" />
-                <ScalarProperty Name="StatID" ColumnName="StatID" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SkillTypes">
-            <EntityTypeMapping TypeName="CyberpunkModel.SkillTypes">
-              <MappingFragment StoreEntitySet="SkillTypes">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Stat">
-            <EntityTypeMapping TypeName="CyberpunkModel.Stat">
-              <MappingFragment StoreEntitySet="Stat">
-                <ScalarProperty Name="ABBR" ColumnName="ABBR" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Subgrid">
-            <EntityTypeMapping TypeName="CyberpunkModel.Subgrid">
-              <MappingFragment StoreEntitySet="Subgrid">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="width" ColumnName="width" />
-                <ScalarProperty Name="height" ColumnName="height" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SurgicalCode">
-            <EntityTypeMapping TypeName="CyberpunkModel.SurgicalCode">
-              <MappingFragment StoreEntitySet="SurgicalCode">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Area" ColumnName="Area" />
-                <ScalarProperty Name="time" ColumnName="time" />
-                <ScalarProperty Name="NumDamageDice" ColumnName="NumDamageDice" />
-                <ScalarProperty Name="DamageDiceType" ColumnName="DamageDiceType" />
-                <ScalarProperty Name="DamageBonus" ColumnName="DamageBonus" />
-                <ScalarProperty Name="SurgicalCost" ColumnName="SurgicalCost" />
-                <ScalarProperty Name="DIFF" ColumnName="DIFF" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="WeaponConcTypes">
-            <EntityTypeMapping TypeName="CyberpunkModel.WeaponConcTypes">
-              <MappingFragment StoreEntitySet="WeaponConcTypes">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Weapons">
-            <EntityTypeMapping TypeName="CyberpunkModel.Weapons">
-              <MappingFragment StoreEntitySet="Weapons">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="NumDice" ColumnName="NumDice" />
-                <ScalarProperty Name="DiceType" ColumnName="DiceType" />
-                <ScalarProperty Name="Bonus" ColumnName="Bonus" />
-                <ScalarProperty Name="ROF" ColumnName="ROF" />
-                <ScalarProperty Name="REL" ColumnName="REL" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Conc" ColumnName="Conc" />
-                <ScalarProperty Name="Shots1" ColumnName="Shots1" />
-                <ScalarProperty Name="Shots2" ColumnName="Shots2" />
-                <ScalarProperty Name="Range" ColumnName="Range" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="WeaponTypes">
-            <EntityTypeMapping TypeName="CyberpunkModel.WeaponTypes">
-              <MappingFragment StoreEntitySet="WeaponTypes">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="CyberpunkModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -3862,6 +3633,14 @@
                 <ScalarProperty Name="Model" ColumnName="Model" />
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArmorLocations">
+            <EntityTypeMapping TypeName="CyberpunkModel.ArmorLocations">
+              <MappingFragment StoreEntitySet="ArmorLocations">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3910,25 +3689,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="CyberpunkModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="FortressRemotes">
-            <EntityTypeMapping TypeName="CyberpunkModel.FortressRemotes">
-              <MappingFragment StoreEntitySet="FortressRemotes">
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
-                <ScalarProperty Name="yPos" ColumnName="yPos" />
-                <ScalarProperty Name="xPos" ColumnName="xPos" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Computer">
             <EntityTypeMapping TypeName="CyberpunkModel.Computer">
               <MappingFragment StoreEntitySet="Computer">
@@ -3954,8 +3714,8 @@
             <EntityTypeMapping TypeName="CyberpunkModel.ComputerImprovements">
               <MappingFragment StoreEntitySet="ComputerImprovements">
                 <ScalarProperty Name="Slots" ColumnName="Slots" />
-                <ScalarProperty Name="UnitTypeID" ColumnName="UnitTypeID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="UnitTypeID" ColumnName="UnitTypeID" />
                 <ScalarProperty Name="CostHigh" ColumnName="CostHigh" />
                 <ScalarProperty Name="CostLow" ColumnName="CostLow" />
                 <ScalarProperty Name="ImprovementAmount" ColumnName="ImprovementAmount" />
@@ -3971,9 +3731,9 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Bonus" ColumnName="Bonus" />
                 <ScalarProperty Name="MU" ColumnName="MU" />
+                <ScalarProperty Name="UnitTypeID" ColumnName="UnitTypeID" />
                 <ScalarProperty Name="CostPerUnitHigh" ColumnName="CostPerUnitHigh" />
                 <ScalarProperty Name="CostPerUnitLow" ColumnName="CostPerUnitLow" />
-                <ScalarProperty Name="UnitTypeID" ColumnName="UnitTypeID" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
@@ -4062,12 +3822,143 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Cybernetics">
+            <EntityTypeMapping TypeName="CyberpunkModel.Cybernetics">
+              <MappingFragment StoreEntitySet="Cybernetics">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SurgType" ColumnName="SurgType" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="HL" ColumnName="HL" />
+                <ScalarProperty Name="Bonus" ColumnName="Bonus" />
+                <ScalarProperty Name="DiceType" ColumnName="DiceType" />
+                <ScalarProperty Name="NumDice" ColumnName="NumDice" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CyberneticTypes">
+            <EntityTypeMapping TypeName="CyberpunkModel.CyberneticTypes">
+              <MappingFragment StoreEntitySet="CyberneticTypes">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fortress">
+            <EntityTypeMapping TypeName="CyberpunkModel.Fortress">
+              <MappingFragment StoreEntitySet="Fortress">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Int" ColumnName="Int" />
+                <ScalarProperty Name="WallStrength" ColumnName="WallStrength" />
+                <ScalarProperty Name="subgridID" ColumnName="subgridID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FortressCodeGates">
+            <EntityTypeMapping TypeName="CyberpunkModel.FortressCodeGates">
+              <MappingFragment StoreEntitySet="FortressCodeGates">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
+                <ScalarProperty Name="WallStrength" ColumnName="WallStrength" />
+                <ScalarProperty Name="yPos" ColumnName="yPos" />
+                <ScalarProperty Name="xPos" ColumnName="xPos" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FortressCPU">
+            <EntityTypeMapping TypeName="CyberpunkModel.FortressCPU">
+              <MappingFragment StoreEntitySet="FortressCPU">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
+                <ScalarProperty Name="yPos" ColumnName="yPos" />
+                <ScalarProperty Name="xPos" ColumnName="xPos" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FortressMemory">
+            <EntityTypeMapping TypeName="CyberpunkModel.FortressMemory">
+              <MappingFragment StoreEntitySet="FortressMemory">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
+                <ScalarProperty Name="yPos" ColumnName="yPos" />
+                <ScalarProperty Name="xPos" ColumnName="xPos" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FortressRemotes">
+            <EntityTypeMapping TypeName="CyberpunkModel.FortressRemotes">
+              <MappingFragment StoreEntitySet="FortressRemotes">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
+                <ScalarProperty Name="yPos" ColumnName="yPos" />
+                <ScalarProperty Name="xPos" ColumnName="xPos" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="FortressSkills">
             <EntityTypeMapping TypeName="CyberpunkModel.FortressSkills">
               <MappingFragment StoreEntitySet="FortressSkills">
                 <ScalarProperty Name="Ranks" ColumnName="Ranks" />
                 <ScalarProperty Name="SkillID" ColumnName="SkillID" />
                 <ScalarProperty Name="FortressID" ColumnName="FortressID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FortressWalls">
+            <EntityTypeMapping TypeName="CyberpunkModel.FortressWalls">
+              <MappingFragment StoreEntitySet="FortressWalls">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="FortressID" ColumnName="FortressID" />
+                <ScalarProperty Name="yPos" ColumnName="yPos" />
+                <ScalarProperty Name="xPos" ColumnName="xPos" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NetObjType">
+            <EntityTypeMapping TypeName="CyberpunkModel.NetObjType">
+              <MappingFragment StoreEntitySet="NetObjType">
+                <ScalarProperty Name="SVG" ColumnName="SVG" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Player">
+            <EntityTypeMapping TypeName="CyberpunkModel.Player">
+              <MappingFragment StoreEntitySet="Player">
+                <ScalarProperty Name="aspUserID" ColumnName="aspUserID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="Dammage" ColumnName="Dammage" />
+                <ScalarProperty Name="Humanity" ColumnName="Humanity" />
+                <ScalarProperty Name="REP" ColumnName="REP" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="SIN" ColumnName="SIN" />
+                <ScalarProperty Name="Handle" ColumnName="Handle" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerArmor">
+            <EntityTypeMapping TypeName="CyberpunkModel.PlayerArmor">
+              <MappingFragment StoreEntitySet="PlayerArmor">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="Encumberance" ColumnName="Encumberance" />
+                <ScalarProperty Name="CurrentSP" ColumnName="CurrentSP" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="SP" ColumnName="SP" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4090,6 +3981,67 @@
                 <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
                 <ScalarProperty Name="CyberdeckID" ColumnName="CyberdeckID" />
                 <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerCyberdeckImprovements">
+            <EntityTypeMapping TypeName="CyberpunkModel.PlayerCyberdeckImprovements">
+              <MappingFragment StoreEntitySet="PlayerCyberdeckImprovements">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CyberdeckImprovementsID" ColumnName="CyberdeckImprovementsID" />
+                <ScalarProperty Name="PlayerCyberdeckID" ColumnName="PlayerCyberdeckID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerCybernetics">
+            <EntityTypeMapping TypeName="CyberpunkModel.PlayerCybernetics">
+              <MappingFragment StoreEntitySet="PlayerCybernetics">
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="CyberneticID" ColumnName="CyberneticID" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="HL" ColumnName="HL" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerRoles">
+            <EntityTypeMapping TypeName="CyberpunkModel.PlayerRoles">
+              <MappingFragment StoreEntitySet="PlayerRoles">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerSkill">
+            <EntityTypeMapping TypeName="CyberpunkModel.PlayerSkill">
+              <MappingFragment StoreEntitySet="PlayerSkill">
+                <ScalarProperty Name="SkillID" ColumnName="SkillID" />
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="CurrentIP" ColumnName="CurrentIP" />
+                <ScalarProperty Name="Bonus" ColumnName="Bonus" />
+                <ScalarProperty Name="Ranks" ColumnName="Ranks" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerStat">
+            <EntityTypeMapping TypeName="CyberpunkModel.PlayerStat">
+              <MappingFragment StoreEntitySet="PlayerStat">
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="Current" ColumnName="Current" />
+                <ScalarProperty Name="Bonus" ColumnName="Bonus" />
+                <ScalarProperty Name="Base" ColumnName="Base" />
+                <ScalarProperty Name="StatID" ColumnName="StatID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerWeapon">
+            <EntityTypeMapping TypeName="CyberpunkModel.PlayerWeapon">
+              <MappingFragment StoreEntitySet="PlayerWeapon">
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="WeaponID" ColumnName="WeaponID" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4136,6 +4088,63 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Skill">
+            <EntityTypeMapping TypeName="CyberpunkModel.Skill">
+              <MappingFragment StoreEntitySet="Skill">
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StatID" ColumnName="StatID" />
+                <ScalarProperty Name="SkillType" ColumnName="SkillType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SkillTypes">
+            <EntityTypeMapping TypeName="CyberpunkModel.SkillTypes">
+              <MappingFragment StoreEntitySet="SkillTypes">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stat">
+            <EntityTypeMapping TypeName="CyberpunkModel.Stat">
+              <MappingFragment StoreEntitySet="Stat">
+                <ScalarProperty Name="ABBR" ColumnName="ABBR" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subgrid">
+            <EntityTypeMapping TypeName="CyberpunkModel.Subgrid">
+              <MappingFragment StoreEntitySet="Subgrid">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="height" ColumnName="height" />
+                <ScalarProperty Name="width" ColumnName="width" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SurgicalCode">
+            <EntityTypeMapping TypeName="CyberpunkModel.SurgicalCode">
+              <MappingFragment StoreEntitySet="SurgicalCode">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DIFF" ColumnName="DIFF" />
+                <ScalarProperty Name="SurgicalCost" ColumnName="SurgicalCost" />
+                <ScalarProperty Name="DamageBonus" ColumnName="DamageBonus" />
+                <ScalarProperty Name="DamageDiceType" ColumnName="DamageDiceType" />
+                <ScalarProperty Name="NumDamageDice" ColumnName="NumDamageDice" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Units">
             <EntityTypeMapping TypeName="CyberpunkModel.Units">
               <MappingFragment StoreEntitySet="Units">
@@ -4144,6 +4153,51 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="WeaponConcTypes">
+            <EntityTypeMapping TypeName="CyberpunkModel.WeaponConcTypes">
+              <MappingFragment StoreEntitySet="WeaponConcTypes">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Weapons">
+            <EntityTypeMapping TypeName="CyberpunkModel.Weapons">
+              <MappingFragment StoreEntitySet="Weapons">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Range" ColumnName="Range" />
+                <ScalarProperty Name="Shots2" ColumnName="Shots2" />
+                <ScalarProperty Name="Shots1" ColumnName="Shots1" />
+                <ScalarProperty Name="Conc" ColumnName="Conc" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="REL" ColumnName="REL" />
+                <ScalarProperty Name="ROF" ColumnName="ROF" />
+                <ScalarProperty Name="Bonus" ColumnName="Bonus" />
+                <ScalarProperty Name="DiceType" ColumnName="DiceType" />
+                <ScalarProperty Name="NumDice" ColumnName="NumDice" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeaponTypes">
+            <EntityTypeMapping TypeName="CyberpunkModel.WeaponTypes">
+              <MappingFragment StoreEntitySet="WeaponTypes">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="CyberpunkModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="FortressPrograms" TypeName="CyberpunkModel.FortressPrograms" StoreEntitySet="FortressPrograms">
             <EndProperty Name="Program">
               <ScalarProperty Name="id" ColumnName="ProgramID" />
@@ -4176,14 +4230,6 @@
               <ScalarProperty Name="id" ColumnName="PlayerComputerID" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="PlayerCyberdeckImprovements" TypeName="CyberpunkModel.PlayerCyberdeckImprovements" StoreEntitySet="PlayerCyberdeckImprovements">
-            <EndProperty Name="PlayerCyberdeck">
-              <ScalarProperty Name="id" ColumnName="PlayerCyberdeckID" />
-            </EndProperty>
-            <EndProperty Name="CyberdeckImprovements">
-              <ScalarProperty Name="id" ColumnName="CyberdeckImprovementsID" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="PlayerCyberdeckOptions" TypeName="CyberpunkModel.PlayerCyberdeckOptions" StoreEntitySet="PlayerCyberdeckOptions">
             <EndProperty Name="PlayerCyberdeck">
               <ScalarProperty Name="id" ColumnName="PlayerCyberdeckID" />
@@ -4198,6 +4244,14 @@
             </EndProperty>
             <EndProperty Name="PlayerCyberdeck">
               <ScalarProperty Name="id" ColumnName="PlayerCyberdeckID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PlayerPrograms" TypeName="CyberpunkModel.PlayerPrograms" StoreEntitySet="PlayerPrograms">
+            <EndProperty Name="Program">
+              <ScalarProperty Name="id" ColumnName="ProgramID" />
+            </EndProperty>
+            <EndProperty Name="Player">
+              <ScalarProperty Name="id" ColumnName="PlayerID" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="ProgramProgramFunctions" TypeName="CyberpunkModel.ProgramProgramFunctions" StoreEntitySet="ProgramProgramFunctions">
@@ -4222,14 +4276,6 @@
             </EndProperty>
             <EndProperty Name="Program">
               <ScalarProperty Name="id" ColumnName="ProgramID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="PlayerPrograms" TypeName="CyberpunkModel.PlayerPrograms" StoreEntitySet="PlayerPrograms">
-            <EndProperty Name="Program">
-              <ScalarProperty Name="id" ColumnName="ProgramID" />
-            </EndProperty>
-            <EndProperty Name="Player">
-              <ScalarProperty Name="id" ColumnName="PlayerID" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

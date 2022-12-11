@@ -20,15 +20,17 @@ namespace CyberpunkServer.Models.DTO
             this.ComputerPeripheralSkillModifiers = new List<ComputerPeripheralSkillModifiersData>();
             this.ComputerPeripheralStatModifiers = new List<ComputerPeripheralStatModifiersData>();
         }
-    
+
         public int id { get; set; }
         public string name { get; set; }
-        public double CostPerUinitLow { get; set; }
-        public double CostPerUinitHigh { get; set; }
+        public double CostPerUnitLow { get; set; }
+        public double CostPerUnitHigh { get; set; }
         public Nullable<int> UnitTypeID { get; set; }
-        public int Units { get; set; }
-    
-        
+        public Nullable<int> MU { get; set; }
+        public Nullable<int> Bonus { get; set; }
+        public string Description { get; set; }
+
+
         public virtual List<ComputerPeripheralSkillModifiersData> ComputerPeripheralSkillModifiers { get; set; }
         
         public virtual List<ComputerPeripheralStatModifiersData> ComputerPeripheralStatModifiers { get; set; }

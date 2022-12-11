@@ -27,14 +27,13 @@ namespace CyberpunkServer.Models
         public double CostPerUinitLow { get; set; }
         public double CostPerUinitHigh { get; set; }
         public Nullable<int> UnitTypeID { get; set; }
-        public int Units { get; set; }
         public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CyberdeckOptionsSkillModifiers> CyberdeckOptionsSkillModifiers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CyberdeckOptionsStatModifiers> CyberdeckOptionsStatModifiers { get; set; }
-        public virtual Units Units1 { get; set; }
+        public virtual Units Units { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PlayerCyberdeck> PlayerCyberdeck { get; set; }
     }

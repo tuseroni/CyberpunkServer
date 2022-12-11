@@ -18,7 +18,7 @@ namespace CyberpunkServer.Models.DTO
         public SkillData()
         {
         }
-    
+
         public int id { get; set; }
         public string Name { get; set; }
         public Nullable<int> SkillType { get; set; }
