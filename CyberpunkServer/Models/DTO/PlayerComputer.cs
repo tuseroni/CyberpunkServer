@@ -29,7 +29,6 @@ namespace CyberpunkServer.Models.DTO
         public string description { get; set; }
     
         public virtual ComputerData Computer { get; set; }
-        public virtual PlayerData Player { get; set; }
         public bool isCyberEnabled { get; set; }
         public virtual List<PlayerComputerImprovementsData> PlayerComputerImprovements { get; set; }
         public virtual List<PlayerComputerOptionsData> PlayerComputerOptions { get; set; }

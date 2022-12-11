@@ -25,7 +25,7 @@ namespace CyberpunkServer.Models.DTO
             this.PlayerWeapon = new List<PlayerWeaponData>();
             this.PlayerComputer = new List<PlayerComputerData>();
             this.PlayerCyberdeck = new List<PlayerCyberdeckData>();
-            this.Program = new List<ProgramData>();
+            this.PlayerPrograms = new List<PlayerProgramsData>();
         }
         public Dictionary<int,PlayerSkillData> SkillLookup { get; set; }
         public Dictionary<string, PlayerStatData> StatLookup { get; set; }

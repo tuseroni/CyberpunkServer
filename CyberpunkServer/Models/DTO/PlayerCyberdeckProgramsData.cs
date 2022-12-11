@@ -11,12 +11,13 @@ using System;
 
 namespace CyberpunkServer.Models.DTO
 {
-    public partial class PlayerComputerOptionsData
+    public class PlayerCyberdeckProgramsData
     {
         public int id { get; set; }
-        public Nullable<int> PlayerComputerID { get; set; }
-        public Nullable<int> ComputerPeripheralsID { get; set; }
-
-        public virtual ComputerPeripheralsData ComputerPeripherals { get; set; }
+        public Nullable<int> ProgramID { get; set; }
+        public Nullable<int> PlayerCyberdeckID { get; set; }
+        public bool Rezzed { get; set; }
+        public Nullable<int> Strength { get; set; }
+        public virtual Program Program { get; set; }
     }
 }

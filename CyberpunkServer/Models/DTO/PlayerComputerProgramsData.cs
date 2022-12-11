@@ -11,7 +11,7 @@ using System;
 
 namespace CyberpunkServer.Models.DTO
 {
-    public class PlayerComputerProgramsData
+    public partial class PlayerComputerProgramsData
     {
         public int id { get; set; }
         public Nullable<int> ProgramID { get; set; }
@@ -20,5 +20,6 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> Strength { get; set; }
 
         public virtual ProgramData Program { get; set; }
+
     }
 }

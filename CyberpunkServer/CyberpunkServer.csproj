@@ -308,6 +308,7 @@
     <Compile Include="Models\DTO\PlayerCyberdeck.cs" />
     <Compile Include="Models\DTO\PlayerCyberdeckImprovementsData.cs" />
     <Compile Include="Models\DTO\PlayerCyberdeckOptionsData.cs" />
+    <Compile Include="Models\DTO\PlayerCyberdeckProgramsData.cs" />
     <Compile Include="Models\DTO\PlayerData.cs" />
     <Compile Include="Models\DTO\PlayerArmorData.cs" />
     <Compile Include="Models\DTO\PlayerCyberneticsData.cs" />

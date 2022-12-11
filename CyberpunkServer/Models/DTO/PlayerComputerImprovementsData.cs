@@ -11,7 +11,7 @@ using System;
 
 namespace CyberpunkServer.Models.DTO
 {
-    public class PlayerComputerImprovementsData
+    public partial class PlayerComputerImprovementsData
     {
         public int id { get; set; }
         public Nullable<int> PlayerComputerID { get; set; }
@@ -19,5 +19,6 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> Quantity { get; set; }
 
         public virtual ComputerImprovementsData ComputerImprovements { get; set; }
+
     }
 }

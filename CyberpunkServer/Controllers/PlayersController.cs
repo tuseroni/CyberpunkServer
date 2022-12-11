@@ -92,13 +92,20 @@ namespace CyberpunkServer.Controllers
                 .Include(p => p.PlayerSkill)
                 .Include(p => p.PlayerStat)
                 .Include("PlayerSkill.Skill")
-                .Include("PlayerSkill.Skill.SkillTypes")
                 .Include(p => p.PlayerWeapon)
                 .Include(p => p.PlayerArmor)
                 .Include(p => p.PlayerCybernetics)
-                .Include(p => p.Program)
+                .Include(p => p.PlayerPrograms)
                 .Include(p => p.PlayerCyberdeck)
                 .Include(p => p.PlayerComputer)
+                .Include("PlayerCyberdeck.PlayerCyberdeckImprovements")
+                .Include("PlayerCyberdeck.PlayerCyberdeckOptions")
+                .Include("PlayerCyberdeck.PlayerCyberdeckPrograms")
+                .Include("PlayerCyberdeck.PlayerCyberdeckPrograms.Program")
+                .Include("PlayerComputer.PlayerComputerImprovements")
+                .Include("PlayerComputer.PlayerComputerOptions")
+                .Include("PlayerComputer.PlayerComputerPrograms")
+                .Include("PlayerComputer.PlayerComputerPrograms.Program")
                 .Include(p => p.AspNetUsers)
                 .AsNoTracking()
                 .Where(p => p.id == id).Single();
@@ -134,9 +141,17 @@ namespace CyberpunkServer.Controllers
                 .Include(p => p.PlayerWeapon)
                 .Include(p => p.PlayerArmor)
                 .Include(p => p.PlayerCybernetics)
-                .Include(p => p.Program)
+                .Include(p => p.PlayerPrograms)
                 .Include(p => p.PlayerCyberdeck)
                 .Include(p => p.PlayerComputer)
+                .Include("PlayerCyberdeck.PlayerCyberdeckImprovements")
+                .Include("PlayerCyberdeck.PlayerCyberdeckOptions")
+                .Include("PlayerCyberdeck.PlayerCyberdeckPrograms")
+                .Include("PlayerCyberdeck.PlayerCyberdeckPrograms.Program")
+                .Include("PlayerComputer.PlayerComputerImprovements")
+                .Include("PlayerComputer.PlayerComputerOptions")
+                .Include("PlayerComputer.PlayerComputerPrograms")
+                .Include("PlayerComputer.PlayerComputerPrograms.Program")
                 .Include(p => p.AspNetUsers)
                 .Where(p => p.id == player.id).Single();
 
@@ -144,7 +159,7 @@ namespace CyberpunkServer.Controllers
                 player.aspUserID = userId;
 
                 Models.DTO.PlayerData.CopyProperties(player, old_player, db);
-                db.SaveChanges();
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.RoleID = new SelectList(db.PlayerRoles, "id", "Name", player.RoleID);
@@ -160,9 +175,17 @@ namespace CyberpunkServer.Controllers
                 .Include(p => p.PlayerWeapon)
                 .Include(p => p.PlayerArmor)
                 .Include(p => p.PlayerCybernetics)
-                .Include(p => p.Program)
+                .Include(p => p.PlayerPrograms)
                 .Include(p => p.PlayerCyberdeck)
                 .Include(p => p.PlayerComputer)
+                .Include("PlayerCyberdeck.PlayerCyberdeckImprovements")
+                .Include("PlayerCyberdeck.CyberdeckOptions")
+                .Include("PlayerCyberdeck.Program")
+                .Include("PlayerCyberdeck.Program.Program")
+                .Include("PlayerComputer.PlayerComputerImprovements")
+                .Include("PlayerComputer.PlayerComputerOptions")
+                .Include("PlayerComputer.PlayerComputerPrograms")
+                .Include("PlayerComputer.PlayerComputerPrograms.Program")
                 .Include(p => p.AspNetUsers)
                 .AsNoTracking()
                 .Where(p => p.id == id).Single();

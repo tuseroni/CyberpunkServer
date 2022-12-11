@@ -16,9 +16,9 @@ namespace CyberpunkServer.Models.DTO
     {
         public PlayerCyberdeckData()
         {
-            this.CyberdeckImprovements = new List<CyberdeckImprovementsData>();
-            this.CyberdeckOptions = new List<CyberdeckOptionsData>();
-            this.Program = new List<ProgramData>();
+            this.PlayerCyberdeckImprovements = new List<PlayerCyberdeckImprovementsData>();
+            this.PlayerCyberdeckOptions = new List<PlayerCyberdeckOptionsData>();
+            this.PlayerCyberdeckPrograms = new List<PlayerCyberdeckProgramsData>();
         }
 
         public int id { get; set; }
@@ -28,9 +28,8 @@ namespace CyberpunkServer.Models.DTO
         public string description { get; set; }
 
         public virtual CyberdeckData Cyberdeck { get; set; }
-        public virtual PlayerData Player { get; set; }
-        public virtual List<PlayerCyberdeckOptionsData> CyberdeckOptions { get; set; }
+        public virtual List<PlayerCyberdeckOptionsData> PlayerCyberdeckOptions { get; set; }
         public virtual List<PlayerCyberdeckImprovementsData> PlayerCyberdeckImprovements { get; set; }
-        public virtual ICollection<ProgramData> Program { get; set; }
+        public virtual List<PlayerCyberdeckProgramsData> PlayerCyberdeckPrograms { get; set; }
     }
 }

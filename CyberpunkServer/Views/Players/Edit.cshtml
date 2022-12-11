@@ -9,79 +9,26 @@
 
 	<style>
 
-	.PlayerStats, .PlayerSkill, .playerInfo, .SkillType {
-		display: grid;
-		grid-gap: 5px 25px;
-	}
-
-	.PlayerStats {
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	}
-
-	.PlayerSkill {
-		/* grid-template-columns: 1fr 1fr 1fr; */
-	}
-
-	.playerInfo {
-		grid-template-columns: 1fr 1fr 1fr;
-	}
-
-	.stat-block {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr) 10% 10%;
-	}
-
-	.playerInfo .stat-block {
-		grid-template-columns: 20% 1fr;
-	}
-
-	.PlayerStats .stat-block {
-		grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr);
-	}
-
-	.PlayerSkill .stat-block {
-		background: linear-gradient(90deg, Green,transparent calc( (((  ( var(--currentIP) /((var(--ranks)+1)*(10 * var(--multiplier))))) * 100) * 1% )), transparent);
-	}
-
-	.SkillType {
-		grid-template-columns: 1fr 1fr minmax(0px,1fr);
-	}
-
-	.SkillHeader {
-		grid-column: span 3;
-		text-align: center;
-		background: var(--primary);
-		cursor:pointer;
-	}
-
-		.SkillType.collapsed .chevron::before {
-			content: "\f054";
-		}
-
-		.SkillType.expanded .chevron::before {
-			content: "\f078";
-		}
-
-	.SkillType.collapsed .stat-block {
-		display: none;
-	}
-
-
-	@@media screen and (max-width: 1200px) {
-		.SkillHeader {
-			grid-column: unset;
+		.PlayerStats, .PlayerSkill, .playerInfo, .SkillType {
+			display: grid;
+			grid-gap: 5px 25px;
 		}
 
 		.PlayerStats {
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+		}
+
+		.PlayerSkill {
+			/* grid-template-columns: 1fr 1fr 1fr; */
 		}
 
 		.playerInfo {
-			grid-template-columns: 1fr;
+			grid-template-columns: 1fr 1fr 1fr;
 		}
 
 		.stat-block {
-			grid-template-columns: minmax(0px,1fr) 10% 10%;
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 10% 10%;
 		}
 
 		.playerInfo .stat-block {
@@ -92,12 +39,104 @@
 			grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr);
 		}
 
+		.PlayerSkill .stat-block {
+			background: linear-gradient(90deg, Green,transparent calc( (((  ( var(--currentIP) /((var(--ranks)+1)*(10 * var(--multiplier))))) * 100) * 1% )), transparent);
+		}
+
 		.SkillType {
-			grid-template-columns: minmax(0px,1fr);
+			grid-template-columns: 1fr 1fr minmax(0px,1fr);
+		}
+
+		.SkillHeader {
+			grid-column: span 3;
+			text-align: center;
+			background: var(--primary);
+			cursor: pointer;
+		}
+
+		.SkillType.collapsed .chevron::before {
+			content: "\f054";
+		}
+
+		.SkillType.expanded .chevron::before {
+			content: "\f078";
+		}
+
+		.SkillType.collapsed .stat-block {
+			display: none;
+		}
+		.CyberdeckBlock {
+			min-height: 150px;
+			border: solid 1px white;
+			width: 100%;
+			border-radius: 15px;
+			margin-bottom: 10px;
+		}
+
+		.CyberdeckBlock input[type="text"] {
+			width: calc(100% - 24px);
+			background-color: var(--secondary);
+			color: var(--primary);
+			text-align: center;
+			margin: 12px;
+			border-style: none;
+		}
+
+		.ProgramDiv {
+			border: solid 1px var(--dark);
+		}
+
+		.ComputerBlock {
+			min-height: 150px;
+			border: solid 1px white;
+		}
+
+		.ProgramBlock button {
+			margin-left: 5px;
+			border-radius: 10px;
+			background-color: var(--primary);
+		}
+
+		.ProgramBlock {
+			display: grid;
+			grid-template-columns: minmax(0px,1fr) 1fr 1fr 1fr;
+		}
+
+		.ProgramSection {
+			min-height: 150px;
+			border: solid 1px white;
 		}
 
 
-	}
+		@@media screen and (max-width: 1200px) {
+			.SkillHeader {
+				grid-column: unset;
+			}
+
+			.PlayerStats {
+				grid-template-columns: 1fr 1fr;
+			}
+
+			.playerInfo {
+				grid-template-columns: 1fr;
+			}
+
+			.stat-block {
+				grid-template-columns: minmax(0px,1fr) 10% 10%;
+			}
+
+			.playerInfo .stat-block {
+				grid-template-columns: 20% 1fr;
+			}
+
+			.PlayerStats .stat-block {
+				grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr);
+			}
+
+			.SkillType {
+				grid-template-columns: minmax(0px,1fr);
+			}
+		}
 	</style>
 }
 
@@ -175,6 +214,89 @@
 		<div class="WeaponsPage page" id="WeaponsTab" data-tabname="Weapons">
 		</div>
 		<div class="GearPage page" id="GearTab" data-tabname="Gear">
+			<div class="PlayerSkill">
+				<div class="SkillType expanded">
+					<h2 class="SkillHeader" onclick="toggleCollapse(this.parentElement.parentElement)">Cyberdecks<span class="fa chevron"></span></h2>
+					@{
+						j = 0;
+					}
+				<div class="CyberdeckSection">
+					@foreach (var elem in Model.PlayerCyberdeck)
+					{
+
+						<div class="CyberdeckBlock">
+							<input type="hidden" value="@elem.id" name="PlayerCyberdeck[@j].id" />
+							<input type="text" name="PlayerCyberdeck[@j].name" value="@elem.name">
+							@{
+								var k = 0;
+							}
+						<div class="ProgramSection">
+							<div class="ProgramBlock">
+								<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
+							</div>
+							@foreach (var prog in elem.PlayerCyberdeckPrograms)
+							{
+								<div class="ProgramBlock">
+									<input type="hidden" value="@prog.id" name="PlayerCyberdeck[@j].PlayerCyberdeckPrograms[@k].id" />
+									<div><label>@prog.Program.name</label></div><div><input type="number" name="PlayerCyberdeck[@j].PlayerCyberdeckPrograms[@k].Strength" value="@prog.Program.Strength" /></div><div><label>@prog.Program.MU</label></div><div><button>Uninstall</button></div>
+								</div>
+								j++;
+							}
+						</div>
+						</div>
+						j++;
+					}
+				</div>
+				<div class="ProgramSection">
+					@{
+						j = 0;
+					}
+					<div class="ProgramBlock">
+						<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
+					</div>
+					@foreach (var elem in Model.PlayerPrograms)
+					{
+						<div class="ProgramBlock">
+							<input type="hidden" value="@elem.id" name="PlayerPrograms[@j].id" />
+							<input type="hidden" value="@elem.ProgramID" name="PlayerPrograms[@j].ProgramID" />
+							<div><label>@elem.Program.name</label></div><div><label>@elem.Program.Strength</label></div><div><label>@elem.Program.MU</label></div><div><button>Install</button></div>
+						</div>
+						j++;
+					}
+				</div>
+				<div class="computerSection">
+					@{
+						j = 0;
+					}
+					@foreach (var elem in Model.PlayerComputer)
+					{
+						<div class="ComputerBlock">
+							<input type="hidden" value="@elem.id" name="PlayerComputer[@j].id" />
+							<input type="hidden" value="@elem.ComputerID" name="PlayerComputer[@j].ProgramID" />
+							<label>@elem.name</label>
+							@{
+								var k = 0;
+							}
+						<div class="ProgramSection">
+							<div class="ProgramBlock">
+								<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
+							</div>
+							@foreach (var prog in elem.PlayerComputerPrograms)
+							{
+								<div class="ProgramBlock">
+									<input type="hidden" value="@prog.id" name="PlayerComputer[@j].PlayerComputerPrograms[@k].id" />
+									<label>@prog.Program.name<button>Uninstall</button></label>
+								</div>
+								j++;
+							}
+						</div>
+						</div>
+						j++;
+					}
+				</div>
+				</div>
+			</div>
+			
 		</div>
 		<input type="submit" value="Save" class="btn btn-default" />
 	</div>
