@@ -140,6 +140,8 @@
 			border: solid 1px white;
 			/* margin: 8px; */
 			padding: 5px;
+			height:100%;
+			overflow:auto;
 		}
 
 		.ProgramBlock input[type="number"] {
@@ -177,6 +179,7 @@
 			.computerSection .ProgramSection, .CyberdeckSection .ProgramSection {
 				border-style: none;
 				border-top: solid 1px;
+				height:250px;
 			}
 
 
@@ -221,6 +224,15 @@
 				.OptionBlock label::after {
 					content: ';';
 				}
+
+		.ProgramBlock select {
+			width: 100%;
+			display: none;
+		}
+
+		.ProgramBlock .Expand select {
+			display: block;
+		}
 
 
 		@@media screen and (max-width: 1200px) {
@@ -397,18 +409,30 @@
 						@foreach (var elem in Model.PlayerPrograms)
 						{
 							<div class="ProgramBlock">
-								<div><label>@elem.Program.name</label></div><div><label>@elem.Program.Strength</label></div><div><label>@elem.Program.MU</label></div><div><button>Install</button></div>
-							</div>
-							<div class="newProgram">
-								<select class="programListSelect">
-									@for (var i = 0; i < ViewBag.ProgramData.Count; i++)
-									{
-										<option value="@i">@ViewBag.ProgramData[i].name</option>
-									}
-								</select><button type="button" onclick="addProgram(this.parentElement)"><i class="fa fa-plus"></i></button>
+								<div><label>@elem.Program.name</label></div><div><label>@elem.Program.Strength</label></div><div><label>@elem.Program.MU</label></div><div><button type="button" onclick='this.parentElement.classList.toggle("Expand")'>Install</button>
+																																										   <select data-programindex="@j" onchange="installProduct(@j,this)">
+																																											   <option value="">--Select Device --</option>
+																																										   	@for(var index=0;index<Model.PlayerCyberdeck.Count;index++)
+																																											{
+																																												<option data-devicetype="Cyberdeck" value="@index" >@Model.PlayerCyberdeck[index].name</option>
+																																											}
+																																											@for(var index=0;index<Model.PlayerComputer.Count;index++)
+																																											{
+																																												<option data-devicetype="Computer" value="@index" >@Model.PlayerComputer[index].name</option>
+																																											}
+																																										   </select>
+								</div>
 							</div>
 							j++;
 						}
+						<div class="newProgram">
+							<select class="programListSelect">
+								@for (var i = 0; i < ViewBag.ProgramData.Count; i++)
+								{
+									<option value="@i">@ViewBag.ProgramData[i].name</option>
+								}
+							</select><button type="button" onclick="addProgram(this.parentElement)"><i class="fa fa-plus"></i></button>
+						</div>
 					</div>
 					<div class="computerSection">
 						@{
@@ -526,7 +550,7 @@
 				this.PlayerID = json.PlayerID;
 				this.description = json.description;
 				this.WallStrength = json.WallStrength;
-				
+
 			}
 		}
 		class Cyberdeck extends Electronic
@@ -541,11 +565,11 @@
 				this.CyberdeckID = json.CyberdeckID;
 				for (var improvement of json.PlayerCyberdeckImprovements)
 				{
-					this.PlayerCyberdeckImprovements.push(new improvements(improvement));
+					this.PlayerCyberdeckImprovements.push(new CyberdeckImprovements(improvement));
 				}
 				for (var improvement of json.PlayerCyberdeckOptions)
 				{
-					this.PlayerCyberdeckOptions.push(new Options(improvement));
+					this.PlayerCyberdeckOptions.push(new CyberdeckOptions(improvement));
 				}
 				for (var improvement of json.PlayerCyberdeckPrograms)
 				{
@@ -611,6 +635,22 @@
 				return optionBlock;
 			}
 		}
+		class CyberdeckImprovements extends improvements
+		{
+			constructor(json)
+			{
+				super(json);
+				this.DeviceImprovements = json.PlayerCyberdeckImprovements;
+			}
+		}
+		class ComputerImprovements extends improvements
+		{
+			constructor(json)
+			{
+				super(json);
+				this.DeviceImprovements = json.PlayerComputerImprovements;
+			}
+		}
 		class Options
 		{
 			DeviceOptions = null;
@@ -623,6 +663,14 @@
 				var optionBlock = document.createElement("OptionBlock");
 				optionBlock.innerHTML = `<div><label>${this.DeviceOptions.name}</label></div>`;
 				return optionBlock;
+			}
+		}
+		class CyberdeckOptions extends Options
+		{
+			constructor(json)
+			{
+				super(json);
+				this.DeviceOptions = json.CyberdeckOptions;
 			}
 		}
 		class program
@@ -655,14 +703,14 @@
 			Program = null;
 			Packed = false;
 			MU = 0;
-			constructor(json)
+			constructor(json, DeviceID)
 			{
-				
-				this.ProgramID = json.ProgramID;
-				this.PlayerDeviceID = json.PlayerDeviceID;
+
+				this.ProgramID = json.id;
+				this.PlayerDeviceID = DeviceID;
 				this.Rezzed = json.Rezzed;
 				this.Strength = json.Strength;
-				this.Program = new program(json.Program);
+				this.Program = new program(json);
 			}
 			getHTML()
 			{
@@ -719,6 +767,34 @@
 				}
 
 			}
+
+		}
+		function installProduct(programID, selectElem)
+		{
+			var DeviceType = selectElem.selectedOptions[0].dataset["devicetype"];
+			var DeviceID = selectElem.value;
+			var program = PlayerOBJ.PlayerPrograms[programID].Program;
+			
+			var newProg = new IncludedProgram(program, DeviceID);
+			var elem = null;
+			if (DeviceType == null)
+			{
+				return;
+			}
+			else if (DeviceType == "Cyberdeck")
+			{
+				PlayerOBJ.PlayerCyberdeck[DeviceID].PlayerCyberdeckPrograms.push(newProg);
+				elem = document.querySelectorAll(`.CyberdeckBlock[data-index="${DeviceID}"] .newProgram`)[0];
+			}
+			else if (DeviceType == "Computer")
+			{
+				PlayerOBJ.PlayerComputer[DeviceID].PlayerComputerPrograms.push(newProg);
+				elem = document.querySelectorAll(`.ComputerBlock[data-index="${DeviceID}"] .newProgram`)[0];
+			}
+			var newDiv = newProg.getHTML();
+			PlayerOBJ.PlayerPrograms.splice(programID,1);
+			elem.parentElement.insertBefore(newDiv, elem);
+			selectElem.parentElement.parentElement.parentElement.removeChild(selectElem.parentElement.parentElement);
 
 		}
 		function submit(frm)

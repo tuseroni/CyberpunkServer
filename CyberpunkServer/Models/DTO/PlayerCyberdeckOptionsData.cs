@@ -11,12 +11,12 @@ using System;
 
 namespace CyberpunkServer.Models.DTO
 {
-    public class PlayerCyberdeckOptionsData
+    public partial class PlayerCyberdeckOptionsData
     {
         public int id { get; set; }
         public Nullable<int> PlayerCyberdeckID { get; set; }
         public Nullable<int> CyberdeckOptionsID { get; set; }
 
-        public virtual CyberdeckOptions CyberdeckOptions { get; set; }
+        public virtual CyberdeckOptionsData CyberdeckOptions { get; set; }
     }
 }

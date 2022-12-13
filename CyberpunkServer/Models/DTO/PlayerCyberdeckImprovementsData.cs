@@ -15,10 +15,10 @@ namespace CyberpunkServer.Models
     
     public partial class PlayerCyberdeckImprovementsData
     {
-        public int PlayerCyberdeckID { get; set; }
-        public int CyberdeckImprovementsID { get; set; }
-        public int Quantity { get; set; }
-    
-        public virtual CyberdeckImprovementsData PlayerCyberdeckImprovements { get; set; }
+        public int id { get; set; }
+        public Nullable<int> PlayerCyberdeckID { get; set; }
+        public Nullable<int> CyberdeckImprovementsID { get; set; }
+        public Nullable<int> Quantity { get; set; }
+public virtual CyberdeckImprovementsData CyberdeckImprovements { get; set; }
     }
 }

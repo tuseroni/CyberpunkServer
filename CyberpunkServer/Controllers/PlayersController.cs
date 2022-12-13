@@ -163,9 +163,9 @@ namespace CyberpunkServer.Controllers
                 player.aspUserID = userId;
 
                 Models.DTO.PlayerData.CopyProperties(player, old_player, db);
-                //db.SaveChanges();
-                var retDTO = (CyberpunkServer.Models.DTO.PlayerData)old_player;
-                var js = Newtonsoft.Json.JsonConvert.SerializeObject(retDTO);
+                db.SaveChanges();
+                //var retDTO = (CyberpunkServer.Models.DTO.PlayerData)old_player;
+                var js = Newtonsoft.Json.JsonConvert.SerializeObject(player);
                 return Content(js);
             }
             ViewBag.RoleID = new SelectList(db.PlayerRoles, "id", "Name", player.RoleID);

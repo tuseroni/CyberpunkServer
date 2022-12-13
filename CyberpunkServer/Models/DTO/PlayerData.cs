@@ -39,7 +39,7 @@ namespace CyberpunkServer.Models.DTO
         public int REP { get; set; }
         public int Humanity { get; set; }
         public int Dammage { get; set; }
-        public int RoleID { get; set; }
+        public Nullable<int> RoleID { get; set; }
         public string aspUserID { get; set; }
         public int xPos { get; set; }
         public int yPos { get; set; }
