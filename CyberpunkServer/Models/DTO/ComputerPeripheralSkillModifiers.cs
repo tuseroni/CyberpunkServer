@@ -19,8 +19,6 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> SkillID { get; set; }
         public int Modifier { get; set; }
         public Nullable<int> ComputerPeripheralID { get; set; }
-    
-        public virtual ComputerPeripheralsData ComputerPeripherals { get; set; }
         public virtual SkillData Skill { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace CyberpunkServer.Models.DTO
             return (oType.IsGenericType && (oType.GetGenericTypeDefinition() == typeof(List<>)));
         }
     }
-    public static class Converter<t, u> where t: iConvert,new() where u:new()
+    public static class Converter<t, u> where t: iConvert, new() where u:new()
     {
         public static u ConvertType<t>(t orig,u dest, string converterMethod = "CopyProperties")
         {
@@ -69,6 +69,10 @@ namespace CyberpunkServer.Models.DTO
             {
                 dest = new t();
             }
+            if(orig==null)
+            {
+                return default(t);
+            }
             var props = dest.GetType().GetProperties();
             foreach (var prop in props)
             {
@@ -101,7 +105,18 @@ namespace CyberpunkServer.Models.DTO
             var ret = new List<t>();
             foreach (var orig in origs)
             {
-                var dest = ConvertType<u>(orig, new t());
+                var dest = new t();
+                var cast = dest.GetType().GetMethod("op_Explicit");
+                if(cast !=null)
+                {
+                    dest=(t)cast.Invoke(dest, new object[] { orig });
+                }
+                else
+                {
+                    ConvertType<u>(orig, dest);
+                }
+                
+                //var dest = ConvertType<u>(orig, new t());
                 
                 ret.Add(dest);
             }

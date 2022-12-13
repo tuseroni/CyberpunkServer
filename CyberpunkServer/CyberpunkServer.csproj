@@ -78,6 +78,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -89,6 +92,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.9\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -377,15 +383,23 @@
     <Compile Include="Models\Interface\FortressCPUData.cs" />
     <Compile Include="Models\Interface\FortressData.cs" />
     <Compile Include="Models\Interface\FortressMemoryData.cs" />
+    <Compile Include="Models\Interface\FortressProgramsData.cs" />
     <Compile Include="Models\Interface\FortressRemotes.cs" />
     <Compile Include="Models\Interface\FortressSkills.cs" />
     <Compile Include="Models\Interface\FortressWallsData.cs" />
     <Compile Include="Models\Interface\NetObjTypeData.cs" />
     <Compile Include="Models\Interface\PlayerArmorData.cs" />
     <Compile Include="Models\Interface\PlayerComputer.cs" />
+    <Compile Include="Models\Interface\PlayerComputerImprovementsData.cs" />
+    <Compile Include="Models\Interface\PlayerComputerOptionsData.cs" />
+    <Compile Include="Models\Interface\PlayerComputerProgramsData.cs" />
     <Compile Include="Models\Interface\PlayerCyberdeck.cs" />
+    <Compile Include="Models\Interface\PlayerCyberdeckImprovementsData.cs" />
+    <Compile Include="Models\Interface\PlayerCyberdeckOptionsData.cs" />
+    <Compile Include="Models\Interface\PlayerCyberdeckProgramsData.cs" />
     <Compile Include="Models\Interface\PlayerCyberneticsData.cs" />
     <Compile Include="Models\Interface\PlayerData.cs" />
+    <Compile Include="Models\Interface\PlayerProgramsData.cs" />
     <Compile Include="Models\Interface\PlayerRolesData.cs" />
     <Compile Include="Models\Interface\PlayerSkillData.cs" />
     <Compile Include="Models\Interface\PlayerStatData.cs" />
@@ -399,6 +413,7 @@
     <Compile Include="Models\Interface\StatData.cs" />
     <Compile Include="Models\Interface\SubgridData.cs" />
     <Compile Include="Models\Interface\SurgicalCodeData.cs" />
+    <Compile Include="Models\Interface\Units.cs" />
     <Compile Include="Models\Interface\WeaponConcTypesData.cs" />
     <Compile Include="Models\Interface\WeaponsData.cs" />
     <Compile Include="Models\Interface\WeaponTypesData.cs" />

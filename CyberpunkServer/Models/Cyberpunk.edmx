@@ -372,6 +372,7 @@
           <Property Name="PlayerComputerID" Type="int" />
           <Property Name="Rezzed" Type="bit" Nullable="false" />
           <Property Name="Strength" Type="int" />
+          <Property Name="Packed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerCyberdeck">
           <Key>
@@ -409,6 +410,7 @@
           <Property Name="PlayerCyberdeckID" Type="int" />
           <Property Name="Rezzed" Type="bit" Nullable="false" />
           <Property Name="Strength" Type="int" />
+          <Property Name="Packed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerCybernetics">
           <Key>
@@ -2744,6 +2746,7 @@
           <Property Name="Strength" Type="Int32" />
           <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.FK__PlayerCom__Playe__78D3EB5B" FromRole="PlayerComputerPrograms" ToRole="PlayerComputer" />
           <NavigationProperty Name="Program" Relationship="CyberpunkModel.FK__PlayerCom__Progr__77DFC722" FromRole="PlayerComputerPrograms" ToRole="Program" />
+          <Property Name="Packed" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerCyberdeck">
           <Key>
@@ -2792,6 +2795,7 @@
           <Property Name="Strength" Type="Int32" />
           <NavigationProperty Name="PlayerCyberdeck" Relationship="CyberpunkModel.FK__PlayerCyb__Playe__740F363E" FromRole="PlayerCyberdeckPrograms" ToRole="PlayerCyberdeck" />
           <NavigationProperty Name="Program" Relationship="CyberpunkModel.FK__PlayerCyb__Progr__731B1205" FromRole="PlayerCyberdeckPrograms" ToRole="Program" />
+          <Property Name="Packed" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerCybernetics">
           <Key>
@@ -4301,6 +4305,7 @@
           <EntitySetMapping Name="PlayerComputerPrograms">
             <EntityTypeMapping TypeName="CyberpunkModel.PlayerComputerPrograms">
               <MappingFragment StoreEntitySet="PlayerComputerPrograms">
+                <ScalarProperty Name="Packed" ColumnName="Packed" />
                 <ScalarProperty Name="Strength" ColumnName="Strength" />
                 <ScalarProperty Name="Rezzed" ColumnName="Rezzed" />
                 <ScalarProperty Name="PlayerComputerID" ColumnName="PlayerComputerID" />
@@ -4342,6 +4347,7 @@
           <EntitySetMapping Name="PlayerCyberdeckPrograms">
             <EntityTypeMapping TypeName="CyberpunkModel.PlayerCyberdeckPrograms">
               <MappingFragment StoreEntitySet="PlayerCyberdeckPrograms">
+                <ScalarProperty Name="Packed" ColumnName="Packed" />
                 <ScalarProperty Name="Strength" ColumnName="Strength" />
                 <ScalarProperty Name="Rezzed" ColumnName="Rezzed" />
                 <ScalarProperty Name="PlayerCyberdeckID" ColumnName="PlayerCyberdeckID" />

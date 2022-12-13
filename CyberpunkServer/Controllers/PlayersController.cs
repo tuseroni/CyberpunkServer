@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using CyberpunkServer.Models;
 using Microsoft.AspNet.Identity;
@@ -18,7 +19,7 @@ namespace CyberpunkServer.Controllers
         private CyberpunkEntities db = new CyberpunkEntities();
 
         // GET: Players
-        [Authorize]
+        [System.Web.Mvc.Authorize]
         public ActionResult Index()
         {
             string userId = User.Identity.GetUserId();
@@ -57,8 +58,8 @@ namespace CyberpunkServer.Controllers
         // POST: Players/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [System.Web.Mvc.HttpPost]
+        
         public ActionResult Create(Models.DTO.PlayerData player)
         {
             if (ModelState.IsValid)
@@ -109,13 +110,16 @@ namespace CyberpunkServer.Controllers
                 .Include(p => p.AspNetUsers)
                 .AsNoTracking()
                 .Where(p => p.id == id).Single();
-            var testDTO = (CyberpunkServer.Models.DTO.PlayerData)player;
             if (player == null)
             {
                 return HttpNotFound();
             }
 
             ViewBag.RoleID = new SelectList(db.PlayerRoles, "id", "Name", player.RoleID);
+            var programs = db.Program
+                .Include(x => x.ProgramFunctions)
+                .Include(x => x.ProgramOptions).AsNoTracking().ToList().Select(x=>(Models.DTO.ProgramData)x).ToList();
+            ViewBag.ProgramData = programs;
             var data = (Models.DTO.PlayerData)player;
             var js = Newtonsoft.Json.JsonConvert.SerializeObject(data);
             
@@ -126,10 +130,10 @@ namespace CyberpunkServer.Controllers
         // POST: Players/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(CyberpunkServer.Models.DTO.PlayerData player)
+        [System.Web.Mvc.Authorize]
+        [System.Web.Mvc.HttpPost]
+        
+        public ActionResult Edit([FromBody]CyberpunkServer.Models.DTO.PlayerData player)
         {
             if (ModelState.IsValid)
             {
@@ -160,7 +164,9 @@ namespace CyberpunkServer.Controllers
 
                 Models.DTO.PlayerData.CopyProperties(player, old_player, db);
                 //db.SaveChanges();
-                return RedirectToAction("Index");
+                var retDTO = (CyberpunkServer.Models.DTO.PlayerData)old_player;
+                var js = Newtonsoft.Json.JsonConvert.SerializeObject(retDTO);
+                return Content(js);
             }
             ViewBag.RoleID = new SelectList(db.PlayerRoles, "id", "Name", player.RoleID);
             return View(player);
@@ -238,7 +244,7 @@ namespace CyberpunkServer.Controllers
         }
 
         // POST: Players/Delete/5
-        [HttpPost, ActionName("Delete")]
+        //[HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

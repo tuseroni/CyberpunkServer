@@ -9,7 +9,7 @@
 
 	<style>
 
-		.PlayerStats, .PlayerSkill, .playerInfo, .SkillType {
+		.PlayerStats, .PlayerSkill, .playerInfo, .SkillType, .ElectronicsType {
 			display: grid;
 			grid-gap: 5px 25px;
 		}
@@ -65,6 +65,37 @@
 		.SkillType.collapsed .stat-block {
 			display: none;
 		}
+
+		/* player electronics*/
+
+		.PlayerElectronics .stat-block {
+			background: linear-gradient(90deg, Green,transparent calc( (((  ( var(--currentIP) /((var(--ranks)+1)*(10 * var(--multiplier))))) * 100) * 1% )), transparent);
+		}
+
+		.ElectronicsType {
+			grid-template-columns: 1fr 1fr minmax(0px,1fr);
+		}
+
+		.ElectronicsHeader {
+			grid-column: span 3;
+			text-align: center;
+			background: var(--primary);
+			cursor: pointer;
+		}
+
+		.ElectronicsType.collapsed .chevron::before {
+			content: "\f054";
+		}
+
+		.ElectronicsType.expanded .chevron::before {
+			content: "\f078";
+		}
+
+		.ElectronicsType.collapsed .stat-block {
+			display: none;
+		}
+
+
 		.CyberdeckBlock {
 			min-height: 150px;
 			border: solid 1px white;
@@ -73,14 +104,14 @@
 			margin-bottom: 10px;
 		}
 
-		.CyberdeckBlock input[type="text"] {
-			width: calc(100% - 24px);
-			background-color: var(--secondary);
-			color: var(--primary);
-			text-align: center;
-			margin: 12px;
-			border-style: none;
-		}
+			.CyberdeckBlock input[type="text"] {
+				width: calc(100% - 24px);
+				background-color: var(--secondary);
+				color: var(--primary);
+				text-align: center;
+				margin: 12px;
+				border-style: none;
+			}
 
 		.ProgramDiv {
 			border: solid 1px var(--dark);
@@ -89,23 +120,107 @@
 		.ComputerBlock {
 			min-height: 150px;
 			border: solid 1px white;
+			border-radius: 10px;
 		}
 
 		.ProgramBlock button {
-			margin-left: 5px;
+			/* margin-left: 5px; */
 			border-radius: 10px;
 			background-color: var(--primary);
+			width: 100%;
 		}
 
 		.ProgramBlock {
 			display: grid;
-			grid-template-columns: minmax(0px,1fr) 1fr 1fr 1fr;
+			grid-template-columns: 1fr minmax(0px,1fr) minmax(0px,1fr) 1fr;
 		}
 
 		.ProgramSection {
 			min-height: 150px;
 			border: solid 1px white;
+			/* margin: 8px; */
+			padding: 5px;
 		}
+
+		.ProgramBlock input[type="number"] {
+			width: 100%;
+			background-color: var(--secondary);
+			color: var(--light);
+			border-style: none;
+		}
+		.newProgram {
+			display: grid;
+			grid-template-columns: 3fr 1fr;
+		}
+
+			.newProgram select {
+				border-radius: 5px;
+				background-color: var(--secondary);
+				color: var(--light);
+			}
+
+			.newProgram button {
+				background-color: var(--primary);
+				border-radius: 10px;
+			}
+
+		.CyberdeckSection {
+			padding: 9px;
+			border: solid 1px white;
+		}
+
+		.computerSection {
+			padding: 9px;
+			border: solid 1px white;
+		}
+
+			.computerSection .ProgramSection, .CyberdeckSection .ProgramSection {
+				border-style: none;
+				border-top: solid 1px;
+			}
+
+
+		.ComputerBlock .nameHeader {
+			width: calc(100% - 24px);
+			background-color: var(--secondary);
+			color: var(--primary);
+			text-align: center;
+			margin: 12px;
+			border-style: none;
+		}
+		.CyberdeckSection .btn, .computerSection .btn {
+			width: 100%;
+		}
+		.OptionsDiv {
+			display: flex;
+			margin-top: 5px;
+			border-top: solid 1px;
+			flex-wrap: wrap;
+		}
+
+		.ElectronicsStatDiv {
+			display: grid;
+			grid-template-columns: 1fr 50px 5px minmax(0,1fr);
+			border-top: solid 1px;
+		}
+
+			.ElectronicsStatDiv input {
+				background-color: var(--secondary);
+				color: var(--light);
+				border-style: none;
+			}
+
+		.OptionBlock {
+			padding-right: 10px;
+		}
+
+			.OptionBlock label {
+				white-space: nowrap;
+			}
+
+				.OptionBlock label::after {
+					content: ';';
+				}
 
 
 		@@media screen and (max-width: 1200px) {
@@ -139,9 +254,7 @@
 		}
 	</style>
 }
-
-@using (Html.BeginForm())
-{
+<form action="return submitForm(this);">
 	@Html.AntiForgeryToken()
 	<hr />
 	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -214,101 +327,455 @@
 		<div class="WeaponsPage page" id="WeaponsTab" data-tabname="Weapons">
 		</div>
 		<div class="GearPage page" id="GearTab" data-tabname="Gear">
-			<div class="PlayerSkill">
-				<div class="SkillType expanded">
-					<h2 class="SkillHeader" onclick="toggleCollapse(this.parentElement.parentElement)">Cyberdecks<span class="fa chevron"></span></h2>
+			<div class="PlayerElectronics">
+				<div class="ElectronicsType expanded">
+					<h2 class="ElectronicsHeader" onclick="toggleCollapse(this.parentElement.parentElement)">Electronics<span class="fa chevron"></span></h2>
 					@{
 						j = 0;
 					}
-				<div class="CyberdeckSection">
-					@foreach (var elem in Model.PlayerCyberdeck)
-					{
+					<div class="CyberdeckSection">
+						@foreach (var elem in Model.PlayerCyberdeck)
+						{
 
-						<div class="CyberdeckBlock">
-							<input type="hidden" value="@elem.id" name="PlayerCyberdeck[@j].id" />
+						<div class="CyberdeckBlock" data-index="@j">
 							<input type="text" name="PlayerCyberdeck[@j].name" value="@elem.name">
+							<div class="ElectronicsStatDiv">
+								<label>MU</label><input type="number" class="AvailableMemory" value="@((elem.TotalMemory*10) - elem.TotalMemoryCost)"><span>/</span><div class="TotalMemory">@(elem.TotalMemory * 10)</div>
+								<label>Speed</label><input type="number" class="AvailableSpeed" value="@elem.TotalSpeed"><span>/</span><div>@elem.TotalSpeed</div>
+								<label>Wall Strength</label><div>@elem.Cyberdeck.WallStrength</div>
+							</div>
+							<div class="OptionsDiv">
+								@foreach (var prog in elem.PlayerCyberdeckImprovements)
+								{
+									<div class="OptionBlock">
+										<div><label>@prog.CyberdeckImprovements.name X @prog.Quantity</label></div>
+									</div>
+								}
+								@foreach (var prog in elem.PlayerCyberdeckOptions)
+								{
+									<div class="OptionBlock">
+										<div><label>@prog.CyberdeckOptions.name</label></div>
+									</div>
+								}
+
+							</div>
 							@{
 								var k = 0;
 							}
-						<div class="ProgramSection">
-							<div class="ProgramBlock">
-								<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
-							</div>
-							@foreach (var prog in elem.PlayerCyberdeckPrograms)
-							{
+							<div class="ProgramSection" data-playerdeviceid="@j">
 								<div class="ProgramBlock">
-									<input type="hidden" value="@prog.id" name="PlayerCyberdeck[@j].PlayerCyberdeckPrograms[@k].id" />
-									<div><label>@prog.Program.name</label></div><div><input type="number" name="PlayerCyberdeck[@j].PlayerCyberdeckPrograms[@k].Strength" value="@prog.Program.Strength" /></div><div><label>@prog.Program.MU</label></div><div><button>Uninstall</button></div>
+									<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
 								</div>
-								j++;
-							}
+								@foreach (var prog in elem.PlayerCyberdeckPrograms)
+								{
+									<div class="ProgramBlock" data-programIndex="@k">
+										<div><label>@prog.Program.name</label></div><div><input class="programStrength" type="number" value="@prog.Strength" /></div><div><label class="MU">@prog.MU</label></div><div><button>Uninstall</button></div>
+									</div>
+									k++;
+								}
+								<div class="newProgram">
+									<select class="programListSelect">
+										@for (var i = 0; i < ViewBag.ProgramData.Count; i++)
+										{
+											<option value="@i">@ViewBag.ProgramData[i].name</option>
+										}
+									</select><button type="button" onclick="addProgram(this.parentElement,'Cyberdeck',@j)"><i class="fa fa-plus"></i></button>
+								</div>
+							</div>
 						</div>
-						</div>
-						j++;
-					}
-				</div>
-				<div class="ProgramSection">
-					@{
-						j = 0;
-					}
-					<div class="ProgramBlock">
-						<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProgram" onclick="setModalTarget(this.parentElement)"><i class="fa fa-plus"></i></button>
+							j++;
+						}
 					</div>
-					@foreach (var elem in Model.PlayerPrograms)
-					{
+					<div class="ProgramSection" data-playercomputerid="-1">
+						@{
+							j = 0;
+						}
 						<div class="ProgramBlock">
-							<input type="hidden" value="@elem.id" name="PlayerPrograms[@j].id" />
-							<input type="hidden" value="@elem.ProgramID" name="PlayerPrograms[@j].ProgramID" />
-							<div><label>@elem.Program.name</label></div><div><label>@elem.Program.Strength</label></div><div><label>@elem.Program.MU</label></div><div><button>Install</button></div>
+							<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
 						</div>
-						j++;
-					}
-				</div>
-				<div class="computerSection">
-					@{
-						j = 0;
-					}
-					@foreach (var elem in Model.PlayerComputer)
-					{
-						<div class="ComputerBlock">
-							<input type="hidden" value="@elem.id" name="PlayerComputer[@j].id" />
-							<input type="hidden" value="@elem.ComputerID" name="PlayerComputer[@j].ProgramID" />
-							<label>@elem.name</label>
-							@{
-								var k = 0;
-							}
-						<div class="ProgramSection">
+						@foreach (var elem in Model.PlayerPrograms)
+						{
 							<div class="ProgramBlock">
-								<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
+								<div><label>@elem.Program.name</label></div><div><label>@elem.Program.Strength</label></div><div><label>@elem.Program.MU</label></div><div><button>Install</button></div>
 							</div>
-							@foreach (var prog in elem.PlayerComputerPrograms)
-							{
-								<div class="ProgramBlock">
-									<input type="hidden" value="@prog.id" name="PlayerComputer[@j].PlayerComputerPrograms[@k].id" />
-									<label>@prog.Program.name<button>Uninstall</button></label>
+							<div class="newProgram">
+								<select class="programListSelect">
+									@for (var i = 0; i < ViewBag.ProgramData.Count; i++)
+									{
+										<option value="@i">@ViewBag.ProgramData[i].name</option>
+									}
+								</select><button type="button" onclick="addProgram(this.parentElement)"><i class="fa fa-plus"></i></button>
+							</div>
+							j++;
+						}
+					</div>
+					<div class="computerSection">
+						@{
+							j = 0;
+						}
+						@foreach (var elem in Model.PlayerComputer)
+						{
+							<div class="ComputerBlock">
+								<input type="hidden" value="@elem.id" name="PlayerComputer[@j].id" />
+								<input type="hidden" value="@elem.ComputerID" name="PlayerComputer[@j].ProgramID" />
+								<label class="nameHeader">@elem.name</label>
+								@{
+									var k = 0;
+								}
+								<div class="ProgramSection" data-playercomputerid="@j">
+									<div class="ProgramBlock">
+										<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
+									</div>
+									@foreach (var prog in elem.PlayerComputerPrograms)
+									{
+										<div class="ProgramBlock">
+											<input type="hidden" value="@prog.id" name="PlayerComputer[@j].PlayerComputerPrograms[@k].id" />
+											<div><label>@prog.Program.name</label></div><div><input type="number" name="PlayerCyberdeck[@j].PlayerCyberdeckPrograms[@k].Strength" value="@prog.Program.Strength" /></div><div><label>@prog.Program.MU</label></div><div><button>Uninstall</button></div>
+										</div>
+										k++;
+									}
 								</div>
-								j++;
-							}
-						</div>
-						</div>
-						j++;
-					}
-				</div>
+							</div>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProgram" onclick="setModalTarget(this.parentElement)"><i class="fa fa-plus"></i></button>
+							j++;
+						}
+					</div>
 				</div>
 			</div>
-			
+
 		</div>
 		<input type="submit" value="Save" class="btn btn-default" />
 	</div>
-}
 
+</form>
 <div>
 	@Html.ActionLink("Back to List", "Index")
+</div>
+<!-- Modal -->
+<div class="modal fade" id="addProgram" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Add Program</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<!-- Form -->
+				<form action="addProgram(this);return false;">
+					<!-- ID (hidden) -->
+					<input type="hidden" id="id" name="id">
+					<!-- Name -->
+					<div class="form-group">
+						<label for="name">Name</label>
+
+						<input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+					</div>
+					<!-- MU -->
+					<div class="form-group">
+						<label for="mu">MU</label>
+						<input type="number" class="form-control" id="mu" name="mu" placeholder="Enter MU">
+					</div>
+					<!-- STR -->
+					<div class="form-group">
+						<label for="str">STR</label>
+						<input type="number" class="form-control" id="str" name="str" placeholder="Enter STR">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 @section Scripts {
 	<script>
 		var PlayerOBJ =@Html.Raw(@ViewBag.JSON);
+		var ProgramData =@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ProgramData));
+		var modalTarget = null;
+		var modalTargetNamePrefix = "";
+		class Electronic
+		{
+			id = 0;
+			name = "";
+			MU = 0;
+			Speed = 0;
+			TotalMemory = 0;
+			TotalMemoryCost = 0;
+			AvailableMemory = 0;
+			TotalSpeed = 0;
+			PlayerID = 0;
+			description = "";
+			WallStrength = 0;
+			constructor(json)
+			{
+				this.id = json.id;
+				this.name = json.name;
+				this.MU = json.MU;
+				this.Speed = json.Speed;
+				this.TotalMemory = json.TotalMemory;
+				this.TotalMemoryCost = json.TotalMemoryCost;
+				this.MU = json.TotalMemory * 10;
+				this.AvailableMemory = this.MU - json.TotalMemoryCost;
+				this.TotalSpeed = json.TotalSpeed;
+				this.PlayerID = json.PlayerID;
+				this.description = json.description;
+				this.WallStrength = json.WallStrength;
+				
+			}
+		}
+		class Cyberdeck extends Electronic
+		{
+			CyberdeckID = 0;
+			PlayerCyberdeckImprovements = [];
+			PlayerCyberdeckOptions = [];
+			PlayerCyberdeckPrograms = [];
+			constructor(json)
+			{
+				super(json);
+				this.CyberdeckID = json.CyberdeckID;
+				for (var improvement of json.PlayerCyberdeckImprovements)
+				{
+					this.PlayerCyberdeckImprovements.push(new improvements(improvement));
+				}
+				for (var improvement of json.PlayerCyberdeckOptions)
+				{
+					this.PlayerCyberdeckOptions.push(new Options(improvement));
+				}
+				for (var improvement of json.PlayerCyberdeckPrograms)
+				{
+					this.PlayerCyberdeckPrograms.push(new IncludedProgram(improvement));
+				}
+			}
+			getHTML(j)
+			{
+				var CyberdeckBlockInnerHTML = `
+				 <input type="text" value="{name}">
+							<div class="ElectronicsStatDiv">
+								<label>MU</label><input type="number" class="AvailableMemory" value="">${this.availableMemory}<span>/</span><div class="TotalMemory">${(this.MU*10)}</div>
+								<label>Speed</label><input type="number" class="AvailableSpeed" value="${this.TotalSpeed}"><span>/</span><div>${this.TotalSpeed}</div>
+								<label>Wall Strength</label><div>${this.WallStrength}</div>
+							</div>`;
+				var Cyberdiv = document.createElement("div");
+				Cyberdiv.className = "CyberdeckBlock";
+				Cyberdiv.innerHTML = CyberdeckBlockInnerHTML;
+				var OptionsDiv = document.createElement("div");
+				OptionsDiv.className = "OptionsDiv";
+				for (var prog of this.PlayerCyberdeckImprovements)
+				{
+					OptionsDiv.appendChild(prog.getHTML());
+				}
+				for (var prog of this.PlayerCyberdeckOptions)
+				{
+					OptionsDiv.appendChild(prog.getHTML());
+				}
+				var ProgramSection = document.createElement("div");
+				ProgramSection.className = "ProgramSection";
+				ProgramSection.innerHTML = `<div class="ProgramBlock">
+												<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
+											</div>`;
+				for (var prog of this.PlayerCyberdeckPrograms)
+				{
+					ProgramSection.appendChild(prog.getHTML());
+
+				}
+				ProgramSection.innerHTML+=`<div class="newProgram">
+									<select class="programListSelect">
+										@for (var i = 0; i < ViewBag.ProgramData.Count; i++)
+										{
+											<option value="@i">@ViewBag.ProgramData[i].name</option>
+										}
+									</select><button type="button" onclick="addProgram(this.parentElement,'Cyberdeck',${j})"><i class="fa fa-plus"></i></button>
+								</div>
+							</div>`
+			}
+		}
+		class improvements
+		{
+			DeviceImprovements = null;
+			Quantity = 1;
+			constructor(json)
+			{
+				this.DeviceImprovements = json.DeviceImprovements;
+				this.Quantity = json.Quantity;
+			}
+			getHTML()
+			{
+				var optionBlock = document.createElement("OptionBlock");
+				optionBlock.innerHTML = `<div><label>${this.DeviceImprovements.name} X ${this.Quantity}</label></div>`;
+				return optionBlock;
+			}
+		}
+		class Options
+		{
+			DeviceOptions = null;
+			constructor(json)
+			{
+				this.DeviceOptions = json.DeviceOptions;
+			}
+			getHTML()
+			{
+				var optionBlock = document.createElement("OptionBlock");
+				optionBlock.innerHTML = `<div><label>${this.DeviceOptions.name}</label></div>`;
+				return optionBlock;
+			}
+		}
+		class program
+		{
+			id = 0;
+			name = "";
+			Strength = 0;
+			ProgramTypeID = 0;
+			cost = 0;
+			MU = 0;
+			Description = "";
+			constructor(json)
+			{
+				this.id = json.id;
+				this.name = json.name;
+				this.Strength = json.Strength;
+				this.ProgramTypeID = json.ProgramTypeID;
+				this.cost = json.cost;
+				this.MU = json.MU;
+				this.Description = json.Description;
+			}
+		}
+		class IncludedProgram
+		{
+			id = 0;
+			ProgramID = 0;
+			PlayerDeviceID = 0;
+			Rezzed = 0;
+			Strength = 0;
+			Program = null;
+			Packed = false;
+			MU = 0;
+			constructor(json)
+			{
+				
+				this.ProgramID = json.ProgramID;
+				this.PlayerDeviceID = json.PlayerDeviceID;
+				this.Rezzed = json.Rezzed;
+				this.Strength = json.Strength;
+				this.Program = new program(json.Program);
+			}
+			getHTML()
+			{
+				var newDiv = document.createElement("div");
+				newDiv.className = "ProgramBlock";
+				newDiv.innerHTML = `
+				<div><label>${this.Program.name}</label></div>
+				<div><input type="number" class="programStrength" value="${this.Program.Strength}" /></div>
+				<div><label>${this.Program.MU}</label></div>
+				<div><button>${(this.PlayerDeviceID == null ? "Install" : "Uninstall")}</button></div>`;
+				var strInput = newDiv.querySelectorAll("input.programStrength")[0]
+				strInput.addEventListener("change", function (e, prog)
+				{
+					prog.Strength = parseInt(this.value);
+					if (prog.Strength <= 0)
+					{
+						prog.Strength = 0;
+						prog.Rezzed = false;
+					}
+				}.bind(strInput, event, this));
+				return newDiv;
+			}
+		}
+		function getCyberdecks()
+		{
+			var sections = document.querySelectorAll(".CyberdeckBlock");
+			if (sections.length > 0)
+			{
+				for (var section of sections)
+				{
+
+					var sectionIndex = section.dataset["index"]
+					var playerCyberdeck = PlayerOBJ.PlayerCyberdeck[sectionIndex];
+					var programs = section.querySelectorAll(".ProgramBlock");
+					for (var program of programs)
+					{
+						var programIndex = program.dataset["programindex"];
+						var prog = playerCyberdeck.PlayerCyberdeckPrograms[programIndex];
+						var strInput = program.querySelectorAll("input.programStrength")[0];
+						if (strInput != null)
+						{
+
+							strInput.addEventListener("change", function (e, prog)
+							{
+								prog.Strength = parseInt(this.value);
+								if (prog.Strength <= 0)
+								{
+									prog.Strength = 0;
+									prog.Rezzed = false;
+								}
+							}.bind(strInput,event,prog));
+						}
+					}
+				}
+
+			}
+
+		}
+		function submit(frm)
+		{
+			try
+			{
+				//var res = await fetch("",
+				//	{
+				//	method: 'POST',
+				//	headers: { 'Content-Type': 'application/json' },
+				//	body: JSON.stringify(PlayerOBJ)
+				//	}
+				//);
+			}
+			catch (ex)
+			{
+			}
+			finally
+			{
+				return false;
+			}
+		}
+		function setModalTarget(elem,namePrefix)
+		{
+			modalTarget = elem;
+			modalTargetNamePrefix = namePrefix;
+		}
+		function drawCyberdecks()
+		{
+		}
+		function drawPrograms()
+		{
+		}
+		function drawComputers()
+		{
+		}
+		function addProgram(elem, DeviceType=null , DeviceID = null)
+		{
+			var index = parseInt(elem.querySelectorAll(".programListSelect")[0].value);
+			var program = ProgramData[index];
+			var newProg = new IncludedProgram(program, DeviceID);
+			if (DeviceType == null) {
+				PlayerOBJ.PlayerPrograms.push(newProg);
+			}
+			else if (DeviceType == "Cyberdeck")
+			{
+				PlayerOBJ.PlayerCyberdeck[DeviceID].PlayerCyberdeckPrograms.push(newProg);
+			}
+			else if (DeviceType == "Computer")
+			{
+				PlayerOBJ.PlayerComputer[DeviceID].PlayerComputerPrograms.push(newProg);
+			}
+			var newDiv = newProg.getHTML();
+			elem.parentElement.insertBefore(newDiv, elem);
+
+
+		}
 		function toggleCollapse(elem)
 		{
 			elem.querySelectorAll(".SkillType").forEach(x => {
@@ -333,6 +800,6 @@
 			var newIP = elem.value;
 
 		}
-
+		getCyberdecks();
 	</script>
 }

@@ -11,7 +11,8 @@ namespace CyberpunkServer.Models.DTO
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
+
     public partial class PlayerCyberdeckData
     {
         public PlayerCyberdeckData()
@@ -26,10 +27,43 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> CyberdeckID { get; set; }
         public Nullable<int> PlayerID { get; set; }
         public string description { get; set; }
-
+        
+        public Dictionary<string, int> Improvements { get; set; }
+        public int TotalMemory
+        {
+            get
+            {
+                var totalMemory = Cyberdeck?.Memory ?? 0;
+                if(Improvements.ContainsKey("Memory"))
+                {
+                    totalMemory += Improvements["Memory"];
+                }
+                return totalMemory;
+            }
+        }
+        public int TotalSpeed
+        {
+            get
+            {
+                var totalSpeed = Cyberdeck?.Speed ?? 0;
+                if (Improvements.ContainsKey("Speed"))
+                {
+                    totalSpeed += Improvements["Speed"];
+                }
+                return totalSpeed;
+            }
+        }
+        public int TotalMemoryCost
+        {
+            get
+            {
+                return Convert.ToInt32(PlayerCyberdeckPrograms.Sum(x => x.MU ));
+            }
+        }
         public virtual CyberdeckData Cyberdeck { get; set; }
         public virtual List<PlayerCyberdeckOptionsData> PlayerCyberdeckOptions { get; set; }
         public virtual List<PlayerCyberdeckImprovementsData> PlayerCyberdeckImprovements { get; set; }
         public virtual List<PlayerCyberdeckProgramsData> PlayerCyberdeckPrograms { get; set; }
+
     }
 }

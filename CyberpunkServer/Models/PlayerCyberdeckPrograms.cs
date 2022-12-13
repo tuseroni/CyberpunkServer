@@ -19,6 +19,7 @@ namespace CyberpunkServer.Models
         public Nullable<int> PlayerCyberdeckID { get; set; }
         public bool Rezzed { get; set; }
         public Nullable<int> Strength { get; set; }
+        public bool Packed { get; set; }
     
         public virtual PlayerCyberdeck PlayerCyberdeck { get; set; }
         public virtual Program Program { get; set; }

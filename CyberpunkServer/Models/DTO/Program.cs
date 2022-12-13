@@ -17,7 +17,6 @@ namespace CyberpunkServer.Models.DTO
         
         public ProgramData()
         {
-            this.Fortress = new List<FortressData>();
             this.ProgramFunctions = new List<ProgramFunctionsData>();
             this.ProgramOptions = new List<ProgramOptionsData>();
             this.Subroutines = new List<ProgramData>();
@@ -32,7 +31,6 @@ namespace CyberpunkServer.Models.DTO
         public string Description { get; set; }
 
         public virtual ProgramTypeData ProgramType { get; set; }
-        public virtual List<FortressData> Fortress { get; set; }
         public virtual List<ProgramFunctionsData> ProgramFunctions { get; set; }
         public virtual List<ProgramOptionsData> ProgramOptions { get; set; }
         public virtual List<ProgramData> Subroutines { get; set; }

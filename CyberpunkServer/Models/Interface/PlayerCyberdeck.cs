@@ -56,6 +56,7 @@ namespace CyberpunkServer.Models.DTO
         public static explicit operator PlayerCyberdeckData(CyberpunkServer.Models.PlayerCyberdeck PlayerCyberdeck)
         {
             var ret = Converter<PlayerCyberdeckData, Models.PlayerCyberdeck>.ConvertType(PlayerCyberdeck, new PlayerCyberdeckData());
+            ret.Improvements= ret.PlayerCyberdeckImprovements.ToDictionary(x => x.CyberdeckImprovements.ImprovementFor, x => x.CyberdeckImprovements.ImprovementAmount * x.Quantity ?? 1);
             return ret;
         }
 
