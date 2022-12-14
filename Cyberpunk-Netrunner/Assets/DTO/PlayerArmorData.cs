@@ -25,7 +25,6 @@ namespace CyberpunkServer.Models.DTO
         public string Description { get; set; }
     
         public virtual ArmorLocationsData ArmorLocations { get; set; }
-        public virtual PlayerData Player { get; set; }
        
     }
 }

@@ -21,7 +21,6 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> FortressID { get; set; }
         public int Type { get; set; }
     
-        public virtual FortressData Fortress { get; set; }
         public virtual NetObjTypeData NetObjType { get; set; }
        
 

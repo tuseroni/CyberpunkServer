@@ -14,10 +14,11 @@ namespace CyberpunkServer.Models.DTO
 
     public partial class SubgridData
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        
         public SubgridData()
         {
-            this.Fortress = new HashSet<FortressData>();
+            this.Fortress = new List<FortressData>();
+            this.JackedInPlayers=new List<PlayerData>();
         }
     
         public int id { get; set; }
@@ -26,7 +27,8 @@ namespace CyberpunkServer.Models.DTO
         public string Name { get; set; }
         public string UserID { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FortressData> Fortress { get; set; }
+        
+        public virtual List<FortressData> Fortress { get; set; }
+        public List<PlayerData> JackedInPlayers { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace CyberpunkServer.Models
     {
         public int id { get; set; }
         public Nullable<int> ProgramID { get; set; }
-        public Nullable<int> PlayerID { get; set; }
+        public int PlayerID { get; set; }
         public bool Rezzed { get; set; }
         public Nullable<int> Strength { get; set; }
     

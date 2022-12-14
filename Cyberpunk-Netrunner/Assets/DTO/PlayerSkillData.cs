@@ -21,8 +21,6 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> PlayerID { get; set; }
         public Nullable<int> SkillID { get; set; }
     
-        [Newtonsoft.Json.JsonIgnore]
-        public virtual PlayerData Player { get; set; }
         public virtual SkillData Skill { get; set; }
 
        

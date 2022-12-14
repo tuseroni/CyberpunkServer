@@ -37,7 +37,10 @@ namespace CyberpunkServer.Models.DTO
                 foreach (KeyValuePair<int, Models.PlayerPrograms> keyValuePair in dictionary1)
                 {
                     if (!dictionary2.ContainsKey(keyValuePair.Key))
+                    {
+                        db.Entry(keyValuePair.Value).State = System.Data.Entity.EntityState.Deleted;
                         dest.Remove(keyValuePair.Value);
+                    }
                 }
             }
             else if (dest != null && !orig.Any<PlayerProgramsData>())
@@ -59,7 +62,7 @@ namespace CyberpunkServer.Models.DTO
 
         public static CyberpunkServer.Models.PlayerPrograms CopyProperties(PlayerProgramsData PlayerPrograms, Models.PlayerPrograms dest, CyberpunkEntities db)
         {
-            Converter<PlayerProgramsData, PlayerPrograms>.ConvertType<PlayerProgramsData>(PlayerPrograms, dest, "CopyProperties");
+            Converter<PlayerProgramsData, PlayerPrograms>.ConvertType<PlayerProgramsData>(PlayerPrograms, dest, "CopyProperties",db);
             return dest;
         }
 

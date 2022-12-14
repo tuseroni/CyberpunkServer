@@ -22,7 +22,6 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> PlayerID { get; set; }
     
         public virtual CyberneticsData Cybernetics { get; set; }
-        public virtual PlayerData Player { get; set; }
        
     }
 }

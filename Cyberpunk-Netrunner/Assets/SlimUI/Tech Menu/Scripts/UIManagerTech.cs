@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.SceneManagement;
+using CyberpunkServer.Models.DTO;
 
 public class UIManagerTech : MonoBehaviour
 {
@@ -93,7 +94,10 @@ public class UIManagerTech : MonoBehaviour
 	public TMP_Text error_NewAccount;
 	public TMP_Text messageDisplayDatabase;
 	public string newAccountMessageDisplay = "ACCOUNT CREATED";
-	private string Username;
+	public GameObject CharacterPanelPrefab;
+	public GameObject CharactersPanel;
+
+    private string Username;
 	private string Password;
 	private string ConfPassword;
 	private string form;
@@ -105,10 +109,10 @@ public class UIManagerTech : MonoBehaviour
 	[Header("Login Account")]
 	public TMP_InputField logUsername;
 	public TMP_InputField logPassword;
-	private string logUsernameString; // the input in logUsername
-	private string logPasswordString; // the input in logPassword
+	public string logUsernameString; // the input in logUsername
+	public string logPasswordString; // the input in logPassword
 	private String[] Lines;
-	private string DecryptedPass;
+	public string DecryptedPass;
 	public TMP_Text error_LogIn;
 	public TMP_Text profileDisplay;
 	public string loginMessageDisplay = "LOGGED IN";
@@ -144,7 +148,7 @@ public class UIManagerTech : MonoBehaviour
 
 	string debugConnection = "https://localhost:44349/com";
 	string ProductionConnection = "https://www.cloudwranglersinc.com/com";
-
+	GameObject JackInButton = null;
 
 	public void MoveToFront(GameObject currentObj){
 		//tempParent = currentObj.transform.parent;
@@ -236,50 +240,73 @@ public class UIManagerTech : MonoBehaviour
         SignalrHandler.onJackInRequestRejected += SignalrHandler_onJackInRequestRejected;
         SignalrHandler.onLoginSuccessful += SignalrHandler_onLoginSuccessful;
         SignalrHandler.onLoginFailure += SignalrHandler_onLoginFailure;
-		//SignalrHandler.CreateConnection(ProductionConnection, "ComHub");
-		SignalrHandler.CreateConnection(debugConnection, "ComHub");
-		
-		//GameObject.Find("Btn_NewGame").SetActive(false);
+        //SignalrHandler.CreateConnection(ProductionConnection, "ComHub");
+        SignalrHandler.CreateConnection(debugConnection, "ComHub");
+		//CharactersPanel = GameObject.Find("CharactersPanel");
+		JackInButton = GameObject.Find("Btn_NewGame");
+		JackInButton.SetActive(false);
 	}
-
-    private void SignalrHandler_onLoginFailure(string Message)
+	public void CharacterSet(PlayerData Player)
     {
-		error_LogIn.color = errorColor;
-		error_LogIn.text = Message;
-	}
-
-    private void SignalrHandler_onLoginSuccessful(List<CyberpunkServer.Models.DTO.PlayerData> player)
-	{
-		profileDisplay.text = player[0].Handle;
+		profileDisplay.text = Player.Handle;
 		logUsernameString = "";
 		logPasswordString = "";
 		logUsername.text = "";
 		logPassword.text = "";
 		error_LogIn.text = "";
 		DecryptedPass = "";
-		ProgramData.player = player[0];
+		ProgramData.player = Player;
+		databaseScreen.SetActive(false);
+		JackInButton.SetActive(true);
+	}
+    private void SignalrHandler_onLoginFailure(string Message)
+    {
+		error_LogIn.color = errorColor;
+		error_LogIn.text = Message;
+	}
+
+    private void SignalrHandler_onLoginSuccessful(List<CyberpunkServer.Models.DTO.PlayerData> players)
+	{
+		foreach (var player in players)
+		{
+			var go= GameObject.Instantiate(CharacterPanelPrefab, CharactersPanel.transform);
+			var panelInfo = go.GetComponent<PlayerPanelInfo>();
+			panelInfo.MainMenuScript = this;
+			panelInfo.Player = player;
+
+		}
 		MessageDisplayDatabase(loginMessageDisplay, successColor);
 		print("Login Successful");
-
+		ProgramData.Characters = players;
 		databaseScreen.SetActive(true);
 		loginScreen.SetActive(false);
 
 	}
 
-    private void SignalrHandler_onJackInRequestRejected(CyberpunkServer.Models.DTO.PlayerData player)
+    private void SignalrHandler_onJackInRequestRejected(int PlayerID)
     {
 		GameObject.Find("MessageDisplay_Database").GetComponent<TextMeshPro>().text = "Jack in Failed";
 		loadingScreen.SetActive(false);
 
 	}
 
-    private void SignalrHandler_onJackInRequestAccepted(CyberpunkServer.Models.DTO.PlayerData player, CyberpunkServer.Models.DTO.SubgridData subgrid)
+    private void SignalrHandler_onJackInRequestAccepted(int PlayerID,int x, int y, SubgridData subgrid)
     {
-		ProgramData.player = player;
-		ProgramData.subgrid = subgrid;
-		if (newSceneName != "")
+		if (ProgramData.PlayerLookup.ContainsKey(PlayerID))
 		{
-			StartCoroutine(LoadAsynchronously(newSceneName));
+			var player = ProgramData.PlayerLookup[PlayerID];
+			player.xPos = x;
+			player.yPos = y;
+			ProgramData.subgrid = subgrid;
+			if (newSceneName != "")
+			{
+				StartCoroutine(LoadAsynchronously(newSceneName));
+			}
+		}
+		else
+        {
+			GameObject.Find("MessageDisplay_Database").GetComponent<TextMeshPro>().text = "Jack in Failed";
+			loadingScreen.SetActive(false);
 		}
 	}
 
@@ -417,16 +444,13 @@ public class UIManagerTech : MonoBehaviour
 
 	// Called when loading new game scene
 	public void LoadNewLevel (){
-		SignalrHandler.InvokeJackInRequest(3);
-	}
-
-	// Called when loading saved scene
-	// Add the save code in this function!
-	public void LoadSavedLevel (){
-		if(loadSceneName != ""){
-			StartCoroutine(LoadAsynchronously(newSceneName)); // temporarily uses New Scene Name. Change this to 'loadSceneName' when you program the save data
+		if (ProgramData.player != null)
+		{
+			SignalrHandler.InvokeJackInRequest(ProgramData.player.id);
 		}
 	}
+
+	
 
 	// Load Bar synching animation
 	IEnumerator LoadAsynchronously (string sceneName){ // scene name is just the name of the current scene being loaded

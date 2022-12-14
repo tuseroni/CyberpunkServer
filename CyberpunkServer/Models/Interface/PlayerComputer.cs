@@ -56,6 +56,7 @@ namespace CyberpunkServer.Models.DTO
         public static explicit operator PlayerComputerData(CyberpunkServer.Models.PlayerComputer PlayerComputer)
         {
             var ret = Converter<PlayerComputerData, Models.PlayerComputer>.ConvertType(PlayerComputer, new PlayerComputerData());
+            ret.Improvements = ret.PlayerComputerImprovements.ToDictionary(x => x.ComputerImprovements.ImprovementFor, x => x.ComputerImprovements.ImprovementAmount * x.Quantity ?? 1);
             return ret;
         }
 

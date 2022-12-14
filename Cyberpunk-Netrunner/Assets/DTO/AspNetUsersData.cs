@@ -20,7 +20,7 @@ namespace CyberpunkServer.Models.DTO
             this.AspNetUserClaims = new HashSet<AspNetUserClaimsData>();
             this.AspNetUserLogins = new HashSet<AspNetUserLoginsData>();
             this.AspNetRoles = new HashSet<AspNetRolesData>();
-            this.Player = new HashSet<PlayerData>();
+            this.Player = new List<PlayerData>();
         }
     
         public string Id { get; set; }
@@ -44,6 +44,6 @@ namespace CyberpunkServer.Models.DTO
         public virtual ICollection<AspNetRolesData> AspNetRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Newtonsoft.Json.JsonIgnore]
-        public virtual ICollection<PlayerData> Player { get; set; }
+        public virtual List<PlayerData> Player { get; set; }
     }
 }

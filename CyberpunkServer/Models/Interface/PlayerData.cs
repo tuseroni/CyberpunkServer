@@ -27,7 +27,7 @@ namespace CyberpunkServer.Models.DTO
     }
     public static class Converter<t, u> where t: iConvert, new() where u:new()
     {
-        public static u ConvertType<t>(t orig,u dest, string converterMethod = "CopyProperties")
+        public static u ConvertType<t>(t orig,u dest, string converterMethod = "CopyProperties", CyberpunkEntities db = null)
         {
             if (dest == null)
             {
@@ -52,7 +52,7 @@ namespace CyberpunkServer.Models.DTO
                     {
 
                         prop.PropertyType.GetGenericArguments()[0].GetMethod(converterMethod, new[] { prop.PropertyType, destProperty.PropertyType, typeof(CyberpunkEntities) })
-                        .Invoke(orig, new object[] { prop.GetValue(orig), destProperty.GetValue(dest), null });
+                        .Invoke(orig, new object[] { prop.GetValue(orig), destProperty.GetValue(dest), db });
                             
                     }
                 }
@@ -63,7 +63,7 @@ namespace CyberpunkServer.Models.DTO
             }
             return dest;
         }
-        public static t ConvertType<u>(u orig,t dest,string converterMethod="ConvertList")
+        public static t ConvertType<u>(u orig,t dest,string converterMethod="ConvertList", CyberpunkEntities db = null)
         {
             if(dest==null)
             {
@@ -183,7 +183,7 @@ namespace CyberpunkServer.Models.DTO
 
         public static CyberpunkServer.Models.Player CopyProperties(PlayerData player,Models.Player dest, CyberpunkEntities db)
         {
-            Converter<PlayerData, Player>.ConvertType<PlayerData>(player, dest, "CopyProperties");
+            Converter<PlayerData, Player>.ConvertType<PlayerData>(player, dest, "CopyProperties", db);
             return dest;
         }
         

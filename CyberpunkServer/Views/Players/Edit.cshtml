@@ -140,8 +140,8 @@
 			border: solid 1px white;
 			/* margin: 8px; */
 			padding: 5px;
-			height:100%;
-			overflow:auto;
+			height: 100%;
+			overflow: auto;
 		}
 
 		.ProgramBlock input[type="number"] {
@@ -150,6 +150,7 @@
 			color: var(--light);
 			border-style: none;
 		}
+
 		.newProgram {
 			display: grid;
 			grid-template-columns: 3fr 1fr;
@@ -179,7 +180,7 @@
 			.computerSection .ProgramSection, .CyberdeckSection .ProgramSection {
 				border-style: none;
 				border-top: solid 1px;
-				height:250px;
+				height: 250px;
 			}
 
 
@@ -191,9 +192,11 @@
 			margin: 12px;
 			border-style: none;
 		}
+
 		.CyberdeckSection .btn, .computerSection .btn {
 			width: 100%;
 		}
+
 		.OptionsDiv {
 			display: flex;
 			margin-top: 5px;
@@ -217,13 +220,10 @@
 			padding-right: 10px;
 		}
 
-			.OptionBlock label {
-				white-space: nowrap;
-			}
 
-				.OptionBlock label::after {
-					content: ';';
-				}
+			.OptionBlock label::after {
+				content: ';';
+			}
 
 		.ProgramBlock select {
 			width: 100%;
@@ -233,7 +233,16 @@
 		.ProgramBlock .Expand select {
 			display: block;
 		}
-
+		div#infoModal {
+			position:absolute;
+			top:0px;
+			left:0px;
+			background-color: white;
+			display:none;
+		}
+			div#infoModal.shown {
+				display: block;
+			}
 
 		@@media screen and (max-width: 1200px) {
 			.SkillHeader {
@@ -263,93 +272,117 @@
 			.SkillType {
 				grid-template-columns: minmax(0px,1fr);
 			}
+			/* player electronics*/
+
+			.ElectronicsType {
+				grid-template-columns: minmax(0px,1fr);
+			}
+
+			.ElectronicsHeader {
+				grid-column: unset;
+				text-align: center;
+				background: var(--primary);
+				cursor: pointer;
+			}
+
+			.ElectronicsType.collapsed .chevron::before {
+				content: "\f054";
+			}
+
+			.ElectronicsType.expanded .chevron::before {
+				content: "\f078";
+			}
+
+			.ElectronicsType.collapsed .stat-block {
+				display: none;
+			}
 		}
 	</style>
 }
-<form action="return submitForm(this);">
-	@Html.AntiForgeryToken()
-	<hr />
-	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-	@Html.HiddenFor(model => model.id)
-	<div class="Player">
-		<div class="playerInfo">
-			<div class="stat-block"><label>Handle:</label><input type="text" name="Handle" value="@Model.Handle"></div>
-			<div class="stat-block"><label>S.I.N.:</label><input type="text" name="SIN" value="@Model.SIN"></div>
-			<div class="stat-block"><label>Role:</label>@Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "" })</div>
-		</div>
-		<div class="PlayerStats">
-			@for (var i = 0; i < Model.PlayerStat.Count(); i++)
-			{
-				<div class="stat-block">
-					<input type="hidden" value="@Model.PlayerStat.ElementAt(i).Bonus" name="PlayerStat[@i].Bonus" />
-					<input type="hidden" value="@Model.PlayerStat.ElementAt(i).Current" name="PlayerStat[@i].Current" />
-					<input type="hidden" value="@Model.PlayerStat.ElementAt(i).id" name="PlayerStat[@i].id" />
-					<input type="hidden" value="@Model.PlayerStat.ElementAt(i).PlayerID" name="PlayerStat[@i].PlayerID" />
-					<input type="hidden" value="@Model.PlayerStat.ElementAt(i).StatID" name="PlayerStat[@i].StatID" />
-					<label>@Model.PlayerStat.ElementAt(i).Stat.ABBR</label>
-					<input type="number" value="@Model.PlayerStat.ElementAt(i).Base" name="PlayerStat[@i].Base" onchange="changeStatBase(this)" />
-				</div>
-			}
-		</div>
-		<div class="PlayerStats">
-			<div class="stat-block"><label>IP:</label><input type="number" name="IP" value="@Model.IP"></div>
-			<div class="stat-block"><label>Damage:</label><input type="number" name="Dammage" value="@Model.Dammage"></div>
-			<div class="stat-block"><label>REP:</label><input type="number" name="REP" value="@Model.REP"></div>
-			<div class="stat-block"><label>HL:</label><input type="number" name="Humanity" value="@Model.Humanity"></div>
-			<div class="stat-block calculated" title="Humanity=(Empathy(base)*10)-floor(HL/10)"><label>Humanity:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["EMP"].Base*10) - (Math.Floor((Model.Humanity/10.0))*10) )"></div>
-			<div class="stat-block calculated" title="RUN=(BT)*3"><label>RUN:</label><input disabled="disabled" type="number" value="@(Model.StatLookup["BT"].Base * 3)"></div>
-			<div class="stat-block calculated" title="LEAP=(BT)*3/4"><label>LEAP:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["BT"].Base * 3) / 4)"></div>
-			<div class="stat-block calculated" title="LIFT=(BT)*10"><label>LIFT:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["BT"].Base * 10))"></div>
-		</div>
-		@{
-			var j = 0;
-		}
-		<hr />
-		<div class="pagesTab">
-			<div class="tab active" data-tabname="Skills">Skills</div>
-			<div class="tab" data-tabname="Cybernetics">Cybernetics</div>
-			<div class="tab" data-tabname="Weapons">Weapons</div>
-			<div class="tab" data-tabname="Gear">Gear</div>
-		</div>
-		<div class="skillsPage page active" id="SkillsTab">
-			@foreach (var stat in Model.PlayerSkill.GroupBy(x => x.Skill.SkillType))
-			{
-				<div class="PlayerSkill">
-					<div class="SkillType expanded">
-						<h2 class="SkillHeader" onclick="toggleCollapse(this.parentElement.parentElement)">@stat.First().Skill.SkillTypes.Name<span class="fa chevron"></span></h2>
-						@foreach (var elem in stat)
-						{
-							<div class="stat-block" style="--ranks:@elem.Ranks; --currentIP:@elem.CurrentIP; --multiplier:@elem.Skill.Multiplier">
-								<input type="hidden" value="@elem.id" name="PlayerSkill[@j].id" />
-								<input type="hidden" value="@elem.SkillID" name="PlayerSkill[@j].SkillID" />
-								<input type="hidden" value="@elem.Bonus" name="PlayerSkill[@j].Bonus" />
-								<input type="hidden" value="@elem.PlayerID" name="PlayerSkill[@j].PlayerID" />
-								<label>@elem.Skill.Name</label>
-								<input type="Number" value="@elem.CurrentIP" name="PlayerSkill[@j].CurrentIP" title="Current IP" onchange="CurrentIPChange(this)" />
-								<input type="number" value="@elem.Ranks" name="PlayerSkill[@j].Ranks" title="Ranks" onchange="CurrentRankChange(this)" />
-							</div>
-							j++;
-						}
-					</div>
-				</div>
-			}
-		</div>
-		<div class="CyberneticsPage page" id="CyberneticsTab" data-tabname="Cybernetics">
-		</div>
-		<div class="WeaponsPage page" id="WeaponsTab" data-tabname="Weapons">
-		</div>
-		<div class="GearPage page" id="GearTab" data-tabname="Gear">
-			<div class="PlayerElectronics">
-				<div class="ElectronicsType expanded">
-					<h2 class="ElectronicsHeader" onclick="toggleCollapse(this.parentElement.parentElement)">Electronics<span class="fa chevron"></span></h2>
-					@{
-						j = 0;
-					}
-					<div class="CyberdeckSection">
-						@foreach (var elem in Model.PlayerCyberdeck)
-						{
 
-						<div class="CyberdeckBlock" data-index="@j">
+@Html.AntiForgeryToken()
+<hr />
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(model => model.id)
+<div class="Player">
+	<div class="playerInfo">
+		<div class="stat-block"><label>Handle:</label><input type="text" name="Handle" value="@Model.Handle"></div>
+		<div class="stat-block"><label>S.I.N.:</label><input type="text" name="SIN" value="@Model.SIN"></div>
+		<div class="stat-block"><label>Role:</label>@Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "" })</div>
+	</div>
+	<div class="PlayerStats">
+		@for (var i = 0; i < Model.PlayerStat.Count(); i++)
+		{
+			<div class="stat-block">
+				<input type="hidden" value="@Model.PlayerStat.ElementAt(i).Bonus" name="PlayerStat[@i].Bonus" />
+				<input type="hidden" value="@Model.PlayerStat.ElementAt(i).Current" name="PlayerStat[@i].Current" />
+				<input type="hidden" value="@Model.PlayerStat.ElementAt(i).id" name="PlayerStat[@i].id" />
+				<input type="hidden" value="@Model.PlayerStat.ElementAt(i).PlayerID" name="PlayerStat[@i].PlayerID" />
+				<input type="hidden" value="@Model.PlayerStat.ElementAt(i).StatID" name="PlayerStat[@i].StatID" />
+				<label>@Model.PlayerStat.ElementAt(i).Stat.ABBR</label>
+				<input type="number" value="@Model.PlayerStat.ElementAt(i).Base" name="PlayerStat[@i].Base" onchange="changeStatBase(this)" />
+			</div>
+		}
+	</div>
+	<div class="PlayerStats">
+		<div class="stat-block"><label>IP:</label><input type="number" name="IP" value="@Model.IP"></div>
+		<div class="stat-block"><label>Damage:</label><input type="number" name="Dammage" value="@Model.Dammage"></div>
+		<div class="stat-block"><label>REP:</label><input type="number" name="REP" value="@Model.REP"></div>
+		<div class="stat-block"><label>HL:</label><input type="number" name="Humanity" value="@Model.Humanity"></div>
+		<div class="stat-block calculated" title="Humanity=(Empathy(base)*10)-floor(HL/10)"><label>Humanity:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["EMP"].Base*10) - (Math.Floor((Model.Humanity/10.0))*10) )"></div>
+		<div class="stat-block calculated" title="RUN=(BT)*3"><label>RUN:</label><input disabled="disabled" type="number" value="@(Model.StatLookup["BT"].Base * 3)"></div>
+		<div class="stat-block calculated" title="LEAP=(BT)*3/4"><label>LEAP:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["BT"].Base * 3) / 4)"></div>
+		<div class="stat-block calculated" title="LIFT=(BT)*10"><label>LIFT:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["BT"].Base * 10))"></div>
+	</div>
+	@{
+		var j = 0;
+	}
+	<hr />
+	<div class="pagesTab">
+		<div class="tab active" data-tabname="Skills">Skills</div>
+		<div class="tab" data-tabname="Cybernetics">Cybernetics</div>
+		<div class="tab" data-tabname="Weapons">Weapons</div>
+		<div class="tab" data-tabname="Gear">Gear</div>
+	</div>
+	<div class="skillsPage page active" id="SkillsTab">
+		@foreach (var stat in Model.PlayerSkill.GroupBy(x => x.Skill.SkillType))
+		{
+			<div class="PlayerSkill">
+				<div class="SkillType expanded">
+					<h2 class="SkillHeader" onclick="toggleCollapse(this.parentElement.parentElement)">@stat.First().Skill.SkillTypes.Name<span class="fa chevron"></span></h2>
+					@foreach (var elem in stat)
+					{
+						<div class="stat-block" style="--ranks:@elem.Ranks; --currentIP:@elem.CurrentIP; --multiplier:@elem.Skill.Multiplier">
+							<input type="hidden" value="@elem.id" name="PlayerSkill[@j].id" />
+							<input type="hidden" value="@elem.SkillID" name="PlayerSkill[@j].SkillID" />
+							<input type="hidden" value="@elem.Bonus" name="PlayerSkill[@j].Bonus" />
+							<input type="hidden" value="@elem.PlayerID" name="PlayerSkill[@j].PlayerID" />
+							<label>@elem.Skill.Name</label>
+							<input type="Number" value="@elem.CurrentIP" name="PlayerSkill[@j].CurrentIP" title="Current IP" onchange="CurrentIPChange(this)" />
+							<input type="number" value="@elem.Ranks" name="PlayerSkill[@j].Ranks" title="Ranks" onchange="CurrentRankChange(this)" />
+						</div>
+						j++;
+					}
+				</div>
+			</div>
+		}
+	</div>
+	<div class="CyberneticsPage page" id="CyberneticsTab" data-tabname="Cybernetics">
+	</div>
+	<div class="WeaponsPage page" id="WeaponsTab" data-tabname="Weapons">
+	</div>
+	<div class="GearPage page" id="GearTab" data-tabname="Gear">
+		<div class="PlayerElectronics">
+			<div class="ElectronicsType expanded">
+				<h2 class="ElectronicsHeader" onclick="toggleCollapse(this.parentElement.parentElement)">Electronics<span class="fa chevron"></span></h2>
+				@{
+					j = 0;
+				}
+				<div class="CyberdeckSection">
+					@foreach (var elem in Model.PlayerCyberdeck)
+					{
+
+						<div class="CyberdeckBlock" data-id="@elem.id">
 							<input type="text" name="PlayerCyberdeck[@j].name" value="@elem.name">
 							<div class="ElectronicsStatDiv">
 								<label>MU</label><input type="number" class="AvailableMemory" value="@((elem.TotalMemory*10) - elem.TotalMemoryCost)"><span>/</span><div class="TotalMemory">@(elem.TotalMemory * 10)</div>
@@ -374,14 +407,103 @@
 							@{
 								var k = 0;
 							}
-							<div class="ProgramSection" data-playerdeviceid="@j">
-								<div class="ProgramBlock">
-									<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
+						<div class="ProgramSection" data-playerdeviceid="@j">
+							@foreach (var prog in elem.PlayerCyberdeckPrograms)
+							{
+								<div class="ProgramBlock" style="--rezzed:@prog.Rezzed; --packed:@prog.Packed" data-id="@prog.id" >
+									<div class="ProgName"><label>@prog.Program.name</label></div><div><button>Uninstall</button></div><div><button type="button" onclick="deleteCyberdeckProgram(this)"><i class="fa fa-trash"></i></button></div>
 								</div>
-								@foreach (var prog in elem.PlayerCyberdeckPrograms)
+								k++;
+							}
+							<div class="newProgram">
+								<select class="programListSelect">
+									@for (var i = 0; i < ViewBag.ProgramData.Count; i++)
+									{
+										<option value="@i">@ViewBag.ProgramData[i].name</option>
+									}
+								</select><button type="button" onclick="addProgram(this.parentElement,'Cyberdeck',@j)"><i class="fa fa-plus"></i></button>
+							</div>
+						</div>
+						</div>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProgram" onclick="setModalTarget(this.parentElement)"><i class="fa fa-plus"></i></button>
+						j++;
+					}
+				</div>
+				<div class="ProgramSection" data-playercomputerid="-1">
+					@{
+						j = 0;
+					}
+					@foreach (var elem in Model.PlayerPrograms)
+					{
+						<div class="ProgramBlock" style="--rezzed:@elem.Rezzed;" data-id="@elem.id">
+							<div><label>@elem.Program.name</label></div>
+							<button type="button" onclick='this.parentElement.classList.toggle("Expand")'>Install</button>
+							<select data-programindex="@j" onchange="InstallProgram(@elem.ProgramID,this)">
+								<option value="">--Select Device --</option>
+								@for (var index = 0; index < Model.PlayerCyberdeck.Count; index++)
 								{
-									<div class="ProgramBlock" data-programIndex="@k">
-										<div><label>@prog.Program.name</label></div><div><input class="programStrength" type="number" value="@prog.Strength" /></div><div><label class="MU">@prog.MU</label></div><div><button>Uninstall</button></div>
+									<option data-devicetype="Cyberdeck" value="@index">@Model.PlayerCyberdeck[index].name</option>
+								}
+								@for (var index = 0; index < Model.PlayerComputer.Count; index++)
+								{
+									<option data-devicetype="Computer" value="@index">@Model.PlayerComputer[index].name</option>
+								}
+							</select>
+							<div><button type="button" onclick="deletePlayerProgram(this)"><i class="fa fa-trash"></i></button></div>
+						</div>
+						j++;
+					}
+					<div class="newProgram">
+						<select class="programListSelect">
+							@for (var i = 0; i < ViewBag.ProgramData.Count; i++)
+							{
+								<option value="@i">@ViewBag.ProgramData[i].name</option>
+							}
+						</select><button type="button" onclick="addProgram(this.parentElement)"><i class="fa fa-plus"></i></button>
+					</div>
+				</div>
+				<div class="computerSection">
+					@{
+						j = 0;
+					}
+					@foreach (var elem in Model.PlayerComputer)
+					{
+						<div class="ComputerBlock" data-index="@j">
+							<input type="hidden" value="@elem.id" name="PlayerComputer[@j].id" />
+							<input type="hidden" value="@elem.ComputerID" name="PlayerComputer[@j].ProgramID" />
+							<label class="nameHeader">@elem.name</label>
+							@{
+								var k = 0;
+							}
+							<div class="ElectronicsStatDiv">
+								<label>MU</label><input type="number" class="AvailableMemory" value="@((elem.TotalMemory*10) - elem.TotalMemoryCost)"><span>/</span><div class="TotalMemory">@(elem.TotalMemory * 10)</div>
+								<label>Speed</label><input type="number" class="AvailableSpeed" value="@elem.TotalSpeed"><span>/</span><div>@elem.TotalSpeed</div>
+								<label>Wall Strength</label><div>@elem.Computer.WallStrength</div><div></div><div></div>
+								<label>Chip Slots</label><div>@elem.TotalChipslots</div><div></div><div></div>
+								<label>Portable</label><div><input type="checkbox" checked="@(elem.Computer.IsPortable)" /></div><div></div><div></div>
+								<label>Cyber Enabled</label><div><input type="checkbox" checked="@(elem.isCyberEnabled)" /></div><div></div><div></div>
+								<label>Int</label><div>@elem.Computer.Int</div><div></div><div></div>
+							</div>
+							<div class="OptionsDiv">
+								@foreach (var prog in elem.PlayerComputerImprovements)
+								{
+									<div class="OptionBlock">
+										<div><label>@prog.ComputerImprovements.name X @prog.Quantity</label></div>
+									</div>
+								}
+								@foreach (var prog in elem.PlayerComputerOptions)
+								{
+									<div class="OptionBlock">
+										<div><label>@prog.ComputerPeripherals.name</label></div>
+									</div>
+								}
+
+							</div>
+							<div class="ProgramSection" data-playercomputerid="@j">
+								@foreach (var prog in elem.PlayerComputerPrograms)
+								{
+									<div class="ProgramBlock"  style="--rezzed:@prog.Rezzed; --packed:@prog.Packed" data-id="@prog.id">
+										<div><label>@prog.Program.name</label></div><div><button>Uninstall</button></div><div><button type="button" onclick="deleteComputerProgram(this)"><i class="fa fa-trash"></i></button></div>
 									</div>
 									k++;
 								}
@@ -391,134 +513,76 @@
 										{
 											<option value="@i">@ViewBag.ProgramData[i].name</option>
 										}
-									</select><button type="button" onclick="addProgram(this.parentElement,'Cyberdeck',@j)"><i class="fa fa-plus"></i></button>
+									</select><button type="button" onclick="addProgram(this.parentElement,'Computer',@j)"><i class="fa fa-plus"></i></button>
 								</div>
 							</div>
 						</div>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProgram" onclick="setModalTarget(this.parentElement)"><i class="fa fa-plus"></i></button>
-							j++;
-						}
-					</div>
-					<div class="ProgramSection" data-playercomputerid="-1">
-						@{
-							j = 0;
-						}
-						<div class="ProgramBlock">
-							<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
-						</div>
-						@foreach (var elem in Model.PlayerPrograms)
-						{
-							<div class="ProgramBlock">
-								<div><label>@elem.Program.name</label></div><div><label>@elem.Program.Strength</label></div><div><label>@elem.Program.MU</label></div><div><button type="button" onclick='this.parentElement.classList.toggle("Expand")'>Install</button>
-																																										   <select data-programindex="@j" onchange="installProduct(@j,this)">
-																																											   <option value="">--Select Device --</option>
-																																										   	@for(var index=0;index<Model.PlayerCyberdeck.Count;index++)
-																																											{
-																																												<option data-devicetype="Cyberdeck" value="@index" >@Model.PlayerCyberdeck[index].name</option>
-																																											}
-																																											@for(var index=0;index<Model.PlayerComputer.Count;index++)
-																																											{
-																																												<option data-devicetype="Computer" value="@index" >@Model.PlayerComputer[index].name</option>
-																																											}
-																																										   </select>
-								</div>
-							</div>
-							j++;
-						}
-						<div class="newProgram">
-							<select class="programListSelect">
-								@for (var i = 0; i < ViewBag.ProgramData.Count; i++)
-								{
-									<option value="@i">@ViewBag.ProgramData[i].name</option>
-								}
-							</select><button type="button" onclick="addProgram(this.parentElement)"><i class="fa fa-plus"></i></button>
-						</div>
-					</div>
-					<div class="computerSection">
-						@{
-							j = 0;
-						}
-						@foreach (var elem in Model.PlayerComputer)
-						{
-							<div class="ComputerBlock">
-								<input type="hidden" value="@elem.id" name="PlayerComputer[@j].id" />
-								<input type="hidden" value="@elem.ComputerID" name="PlayerComputer[@j].ProgramID" />
-								<label class="nameHeader">@elem.name</label>
-								@{
-									var k = 0;
-								}
-								<div class="ProgramSection" data-playercomputerid="@j">
-									<div class="ProgramBlock">
-										<div><label>Name</label></div><div><label>Str</label></div><div><label>MU</label></div><div></div>
-									</div>
-									@foreach (var prog in elem.PlayerComputerPrograms)
-									{
-										<div class="ProgramBlock">
-											<input type="hidden" value="@prog.id" name="PlayerComputer[@j].PlayerComputerPrograms[@k].id" />
-											<div><label>@prog.Program.name</label></div><div><input type="number" name="PlayerCyberdeck[@j].PlayerCyberdeckPrograms[@k].Strength" value="@prog.Program.Strength" /></div><div><label>@prog.Program.MU</label></div><div><button>Uninstall</button></div>
-										</div>
-										k++;
-									}
-								</div>
-							</div>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProgram" onclick="setModalTarget(this.parentElement)"><i class="fa fa-plus"></i></button>
-							j++;
-						}
-					</div>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProgram" onclick="setModalTarget(this.parentElement)"><i class="fa fa-plus"></i></button>
+						j++;
+					}
 				</div>
 			</div>
-
 		</div>
-		<input type="submit" value="Save" class="btn btn-default" />
+
+	</div>
+	<button type="button" class="btn btn-default" onclick="submit()">Save</button>
 	</div>
 
-</form>
-<div>
-	@Html.ActionLink("Back to List", "Index")
-</div>
-<!-- Modal -->
-<div class="modal fade" id="addProgram" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add Program</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<!-- Form -->
-				<form action="addProgram(this);return false;">
-					<!-- ID (hidden) -->
-					<input type="hidden" id="id" name="id">
-					<!-- Name -->
-					<div class="form-group">
-						<label for="name">Name</label>
+	</form>
+	<div>
+		@Html.ActionLink("Back to List", "Index")
+	</div>
+	<div id="infoModal" class="infoModal" data-modalfor="-1">
+		<div><label>Name:</label><label class="InfoName"></label></div>
+		<div><label>Strength:</label><label class="InfoStr"></label></div>
+		<div><label>MU:</label><label class="InfoMU"></label></div>
+		<div><label>Packed:</label><input type="checkbox" class="InfoPacked"></div>
+		<div><label>Rezzed:</label><input type="checkbox" class="InfoRezzed"></div>
+		<div><label>Description:</label><label class="InfoDescription"></label></div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="addProgram" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Add Program</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- Form -->
+					<form action="addProgram(this);return false;">
+						<!-- ID (hidden) -->
+						<input type="hidden" id="id" name="id">
+						<!-- Name -->
+						<div class="form-group">
+							<label for="name">Name</label>
 
-						<input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
-					</div>
-					<!-- MU -->
-					<div class="form-group">
-						<label for="mu">MU</label>
-						<input type="number" class="form-control" id="mu" name="mu" placeholder="Enter MU">
-					</div>
-					<!-- STR -->
-					<div class="form-group">
-						<label for="str">STR</label>
-						<input type="number" class="form-control" id="str" name="str" placeholder="Enter STR">
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+							<input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+						</div>
+						<!-- MU -->
+						<div class="form-group">
+							<label for="mu">MU</label>
+							<input type="number" class="form-control" id="mu" name="mu" placeholder="Enter MU">
+						</div>
+						<!-- STR -->
+						<div class="form-group">
+							<label for="str">STR</label>
+							<input type="number" class="form-control" id="str" name="str" placeholder="Enter STR">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-@section Scripts {
-	<script>
+	@section Scripts {
+		<script>
 		var PlayerOBJ =@Html.Raw(@ViewBag.JSON);
 		var ProgramData =@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ProgramData));
 		var modalTarget = null;
@@ -734,6 +798,13 @@
 				return newDiv;
 			}
 		}
+
+		function ShowProgramInfoModal(elem)
+		{
+			var programID = elem.dataset["id"];
+			var programDataSource = elem.dataset["DataSource"];
+			var program=PlayerOBJ
+		}
 		function getCyberdecks()
 		{
 			var sections = document.querySelectorAll(".CyberdeckBlock");
@@ -742,41 +813,59 @@
 				for (var section of sections)
 				{
 
-					var sectionIndex = section.dataset["index"]
-					var playerCyberdeck = PlayerOBJ.PlayerCyberdeck[sectionIndex];
+					var sectionIndex = section.dataset["id"]
+					var playerCyberdeck = PlayerOBJ.PlayerCyberdeck.find(x => x.id == sectionIndex);
 					var programs = section.querySelectorAll(".ProgramBlock");
 					for (var program of programs)
 					{
-						var programIndex = program.dataset["programindex"];
-						var prog = playerCyberdeck.PlayerCyberdeckPrograms[programIndex];
-						var strInput = program.querySelectorAll("input.programStrength")[0];
-						if (strInput != null)
+						var programId = program.dataset["id"];
+						var prog = playerCyberdeck.PlayerCyberdeckPrograms.find(x => x.id == programId);
+						var progNameDiv = program.querySelectorAll(".ProgName")[0];
+						progNameDiv.addEventListener("click", function (e, prog)
 						{
+							var infoModal = document.getElementById("infoModal");
+							infoModal.querySelectorAll(".InfoName")[0].innerText = prog.Program.name;
+							infoModal.querySelectorAll(".InfoStr")[0].innerText = prog.Strength;
+							infoModal.querySelectorAll(".InfoMU")[0].innerText = prog.MU;
+							var packed = infoModal.querySelectorAll(".InfoPacked")[0];
+							packed.checked = prog.Packed;
+							var Rezzed = infoModal.querySelectorAll(".InfoRezzed")[0];
+							Rezzed.checked = prog.Rezzed;
+							infoModal.querySelectorAll(".InfoDescription")[0].innerText = prog.Program.Description;
+							infoModal.style.position = "absolute";
+							infoModal.style.left = this.getClientRects()[0].x + "px "
+							infoModal.style.top = this.getClientRects()[0].y + "px ";
 
-							strInput.addEventListener("change", function (e, prog)
-							{
-								prog.Strength = parseInt(this.value);
-								if (prog.Strength <= 0)
-								{
-									prog.Strength = 0;
-									prog.Rezzed = false;
-								}
-							}.bind(strInput,event,prog));
-						}
+
+						}.bind(program, event, prog));
+						//var strInput = program.querySelectorAll("input.programStrength")[0];
+						//if (strInput != null)
+						//{
+
+						//	strInput.addEventListener("change", function (e, prog)
+						//	{
+						//		prog.Strength = parseInt(this.value);
+						//		if (prog.Strength <= 0)
+						//		{
+						//			prog.Strength = 0;
+						//			prog.Rezzed = false;
+						//		}
+						//	}.bind(strInput,event,prog));
+						//}
 					}
 				}
 
 			}
 
 		}
-		function installProduct(programID, selectElem)
+		function InstallProgram(programID, selectElem)
 		{
 			var DeviceType = selectElem.selectedOptions[0].dataset["devicetype"];
 			var DeviceID = selectElem.value;
-			var program = PlayerOBJ.PlayerPrograms[programID].Program;
-			
+			var program = PlayerOBJ.PlayerPrograms.find(x => x.ProgramID == programID).Program;//PlayerOBJ.PlayerPrograms[programID].Program;
 			var newProg = new IncludedProgram(program, DeviceID);
 			var elem = null;
+			var deviceBlock = null;
 			if (DeviceType == null)
 			{
 				return;
@@ -784,15 +873,17 @@
 			else if (DeviceType == "Cyberdeck")
 			{
 				PlayerOBJ.PlayerCyberdeck[DeviceID].PlayerCyberdeckPrograms.push(newProg);
-				elem = document.querySelectorAll(`.CyberdeckBlock[data-index="${DeviceID}"] .newProgram`)[0];
+				deviceBlock = document.querySelectorAll(`.CyberdeckBlock[data-index="${DeviceID}"]`)[0];
+				elem = deviceBlock.querySelectorAll(`.newProgram`)[0];
 			}
 			else if (DeviceType == "Computer")
 			{
 				PlayerOBJ.PlayerComputer[DeviceID].PlayerComputerPrograms.push(newProg);
-				elem = document.querySelectorAll(`.ComputerBlock[data-index="${DeviceID}"] .newProgram`)[0];
+				deviceBlock = document.querySelectorAll(`.ComputerBlock[data-index="${DeviceID}"]`)[0];
+				elem = deviceBlock.querySelectorAll(`.newProgram`)[0];
 			}
 			var newDiv = newProg.getHTML();
-			PlayerOBJ.PlayerPrograms.splice(programID,1);
+			PlayerOBJ.PlayerPrograms.splice(PlayerOBJ.PlayerPrograms.indexOf(PlayerOBJ.PlayerPrograms.find(x => x.ProgramID == programID)),1);
 			elem.parentElement.insertBefore(newDiv, elem);
 			selectElem.parentElement.parentElement.parentElement.removeChild(selectElem.parentElement.parentElement);
 
@@ -801,13 +892,13 @@
 		{
 			try
 			{
-				//var res = await fetch("",
-				//	{
-				//	method: 'POST',
-				//	headers: { 'Content-Type': 'application/json' },
-				//	body: JSON.stringify(PlayerOBJ)
-				//	}
-				//);
+				var res = fetch("",
+					{
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(PlayerOBJ)
+					}
+				);
 			}
 			catch (ex)
 			{
@@ -877,5 +968,5 @@
 
 		}
 		getCyberdecks();
-	</script>
-}
+		</script>
+	}

@@ -68,6 +68,7 @@
 		<hr />
 		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 		@Html.HiddenFor(model => model.id)
+		<button type="button" onclick="testJackIn(3)">Test Jack In</button>
 		<div style="display: grid; grid-template-columns: 30% 1fr; grid-gap: 10px;">
 			<div style="border: solid 1px;border-radius: 10px;"></div>
 			<div style="padding: 20px;border: solid 1px;border-radius: 10px;">
@@ -148,6 +149,11 @@
 			}
 			
 		});
+		contosoChatHubProxy.on('JackInRequestAccepted', function (playerData , subgriddata)
+		{
+			console.log("Accepted request");
+
+		});
 		connection.reconnecting(function () {
 			console.log("reconnecting");
 		});
@@ -183,6 +189,16 @@
 		var Netrunners = {};
 		NetOBJTypesLookup = {};
 		var activeNetOBJType = null;
+		function testJackIn(id)
+		{
+			contosoChatHubProxy.invoke('JackInRequest',id).done(function ()
+			{
+				console.log('Invocation of JackInRequest succeeded');
+			}).fail(function (error)
+			{
+				console.log('Invocation of AcceptJackInRequest failed. Error: ' + error);
+			});
+		}
 		function addPlayerToGrid(playerData,x,y)
 		{
 			playerData.xPos = x;

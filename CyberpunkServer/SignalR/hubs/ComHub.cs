@@ -24,7 +24,7 @@ namespace CyberpunkServer.SignalR.hubs
         }
         public void AcceptJackInRequest(Models.DTO.PlayerData player, Models.DTO.SubgridData gridData)
         {
-            Clients.Others.JackInRequestAccepted(player, gridData);
+            Clients.Others.JackInRequestAccepted(player.id,player.xPos,player.yPos,gridData);
         }
         public void RejectJackInRequest(Models.DTO.PlayerData player)
         {
@@ -41,7 +41,8 @@ namespace CyberpunkServer.SignalR.hubs
                 .Include("Player.PlayerWeapon")
                 .Include("Player.PlayerArmor")
                 .Include("Player.PlayerCybernetics")
-                .Include("Player.Program")
+                .Include("Player.PlayerPrograms")
+                .Include("Player.PlayerPrograms.Program")
                 .Include("Player.PlayerCyberdeck")
                 .Include("Player.PlayerComputer")
                 .Include("Player.PlayerCyberdeck.PlayerCyberdeckImprovements")
@@ -85,9 +86,9 @@ namespace CyberpunkServer.SignalR.hubs
                 .Include(p => p.PlayerCyberdeck)
                 .Include(p => p.PlayerComputer)
                 .Include("PlayerCyberdeck.PlayerCyberdeckImprovements")
-                .Include("PlayerCyberdeck.CyberdeckOptions")
-                .Include("PlayerCyberdeck.Program")
-                .Include("PlayerCyberdeck.Program.Program")
+                .Include("PlayerCyberdeck.PlayerCyberdeckOptions")
+                .Include("PlayerCyberdeck.PlayerCyberdeckPrograms")
+                .Include("PlayerCyberdeck.PlayerCyberdeckPrograms.Program")
                 .Include("PlayerComputer.PlayerComputerImprovements")
                 .Include("PlayerComputer.PlayerComputerOptions")
                 .Include("PlayerComputer.PlayerComputerPrograms")
@@ -105,8 +106,9 @@ namespace CyberpunkServer.SignalR.hubs
             //    .Single();
             //Models.DTO.SubgridData gridData = (Models.DTO.SubgridData)grid;
             Models.DTO.PlayerData playerData = (Models.DTO.PlayerData)player;
-            
+
             Clients.Others.JackInRequestReceived(playerData);
+            //Clients.All.JackInRequestReceived(playerData);
             //Clients.All.JackInRequestAccepted(playerData);
         }
     }

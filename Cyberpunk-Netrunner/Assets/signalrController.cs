@@ -3,13 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CyberpunkServer.Models.DTO;
+using System.IO;
+using System.Text;
+using System.Linq;
 
 public static class ProgramData
 {
+    public static Dictionary<int, PlayerData> PlayerLookup = new Dictionary<int, PlayerData>();
+    public static List<PlayerData> Characters
+    {
+        get
+        {
+            return PlayerLookup.Values.ToList(); 
+        }
+        set
+        {   
+            PlayerLookup = value.ToDictionary(x => x.id, x => x);
+        }
+    }
     public static PlayerData player;
     public static SubgridData subgrid;
-
-
+}
+public class MessageWriter : TextWriter
+{
+    public override Encoding Encoding => Encoding.UTF8;
+    public override void Write(char value)
+    {
+        base.Write(value);
+        //Debug.Log(value);
+    }
+    public override void Write(char[] buffer)
+    {
+        base.Write(buffer);
+        Debug.Log(buffer);
+    }
 
 }
 
@@ -18,8 +45,8 @@ public static class SignalrHandler
 
     static HubConnection connection;
     static IHubProxy myHub;
-    public delegate void JackInRequestAccepted(PlayerData player, SubgridData subgrid);
-    public delegate void JackInRequestRejected(PlayerData player);
+    public delegate void JackInRequestAccepted(int playerID,int x, int y, SubgridData subgrid);
+    public delegate void JackInRequestRejected(int playerID);
     public static event JackInRequestAccepted onJackInRequestAccepted;
     public static event JackInRequestRejected onJackInRequestRejected;
     public delegate void LoginSuccessful(List<PlayerData> player);
@@ -29,7 +56,15 @@ public static class SignalrHandler
     public static void CreateConnection(string address,string hub)
     {
         connection = new HubConnection(address);
+        var strWriter = new MessageWriter();
+        var fileWriter = new StreamWriter(new FileStream("signalrLog.log", FileMode.OpenOrCreate));
+        connection.TraceLevel = TraceLevels.Messages;
+
+        connection.TraceWriter = fileWriter;
+
         myHub = connection.CreateHubProxy(hub);
+        
+
         connection.Start().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -41,20 +76,20 @@ public static class SignalrHandler
                 Debug.Log("Connected");
             }
         }).Wait();
-        myHub.On<PlayerData, SubgridData>("JackInRequestAccepted", (player, subgrid) =>
+        myHub.On<int,int,int, SubgridData>("JackInRequestAccepted", (playerID,x,y,subgrid) =>
         {
-            Debug.Log($"Player {player.Handle} has Jacked IN!");
+            Debug.Log($"Player has Jacked IN!");
             UnityThread.executeInUpdate(() =>
             {
-                onJackInRequestAccepted.Invoke(player, subgrid);
+                onJackInRequestAccepted.Invoke(playerID,x,y, subgrid);
             });
         });
-        myHub.On<PlayerData>("JackInRequestRejected", (player) =>
+        myHub.On<int>("JackInRequestRejected", (PlayerID) =>
         {
 
             UnityThread.executeInUpdate(() =>
             {
-                onJackInRequestRejected.Invoke(player);
+                onJackInRequestRejected.Invoke(PlayerID);
             });
 
         });
@@ -183,7 +218,7 @@ public class signalrController : MonoBehaviour
         //    Debug.Log($"Name: {name}, message: {message}");
         //});
 
-        SignalrHandler.onJackInRequestAccepted += SignalrHandler_onJackInRequestAccepted;
+        
         //connection.StateChanged += connection_StateChanged;
         
         //myHub.Invoke("Send", "tuseroni", "HELLO World ").ContinueWith(task => {
@@ -199,9 +234,6 @@ public class signalrController : MonoBehaviour
 
     }
 
-    private void SignalrHandler_onJackInRequestAccepted(PlayerData player, SubgridData subgrid)
-    {
-    }
 
     // Update is called once per frame
     void Update()

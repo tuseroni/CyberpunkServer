@@ -428,7 +428,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProgramID" Type="int" />
-          <Property Name="PlayerID" Type="int" />
+          <Property Name="PlayerID" Type="int" Nullable="false" />
           <Property Name="Rezzed" Type="bit" Nullable="false" />
           <Property Name="Strength" Type="int" />
         </EntityType>
@@ -1233,7 +1233,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__PlayerPro__Playe__025D5595">
-          <End Role="Player" Type="Self.Player" Multiplicity="0..1">
+          <End Role="Player" Type="Self.Player" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="PlayerPrograms" Type="Self.PlayerPrograms" Multiplicity="*" />
@@ -2744,9 +2744,9 @@
           <Property Name="PlayerComputerID" Type="Int32" />
           <Property Name="Rezzed" Type="Boolean" Nullable="false" />
           <Property Name="Strength" Type="Int32" />
+          <Property Name="Packed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.FK__PlayerCom__Playe__78D3EB5B" FromRole="PlayerComputerPrograms" ToRole="PlayerComputer" />
           <NavigationProperty Name="Program" Relationship="CyberpunkModel.FK__PlayerCom__Progr__77DFC722" FromRole="PlayerComputerPrograms" ToRole="Program" />
-          <Property Name="Packed" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerCyberdeck">
           <Key>
@@ -2793,9 +2793,9 @@
           <Property Name="PlayerCyberdeckID" Type="Int32" />
           <Property Name="Rezzed" Type="Boolean" Nullable="false" />
           <Property Name="Strength" Type="Int32" />
+          <Property Name="Packed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PlayerCyberdeck" Relationship="CyberpunkModel.FK__PlayerCyb__Playe__740F363E" FromRole="PlayerCyberdeckPrograms" ToRole="PlayerCyberdeck" />
           <NavigationProperty Name="Program" Relationship="CyberpunkModel.FK__PlayerCyb__Progr__731B1205" FromRole="PlayerCyberdeckPrograms" ToRole="Program" />
-          <Property Name="Packed" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerCybernetics">
           <Key>
@@ -2815,7 +2815,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProgramID" Type="Int32" />
-          <Property Name="PlayerID" Type="Int32" />
+          <Property Name="PlayerID" Type="Int32" Nullable="false" />
           <Property Name="Rezzed" Type="Boolean" Nullable="false" />
           <Property Name="Strength" Type="Int32" />
           <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK__PlayerPro__Playe__025D5595" FromRole="PlayerPrograms" ToRole="Player" />
@@ -3608,10 +3608,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__PlayerPro__Playe__025D5595">
-          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="0..1">
+          <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="CyberpunkModel.PlayerPrograms" Role="PlayerPrograms" Multiplicity="*" />
+          <End Type="CyberpunkModel.PlayerPrograms" Role="PlayerPrograms" Multiplicity="*" ></End>
           <ReferentialConstraint>
             <Principal Role="Player">
               <PropertyRef Name="id" />

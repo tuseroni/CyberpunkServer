@@ -14,13 +14,9 @@ namespace CyberpunkServer.Models.DTO
 
     public partial class NetObjTypeData
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        
         public NetObjTypeData()
         {
-            this.FortressCodeGates = new HashSet<FortressCodeGatesData>();
-            this.FortressCPU = new HashSet<FortressCPUData>();
-            this.FortressMemory = new HashSet<FortressMemoryData>();
-            this.FortressWalls = new HashSet<FortressWallsData>();
         }
 
         public int id { get; set; }
@@ -28,13 +24,5 @@ namespace CyberpunkServer.Models.DTO
         public string Title { get; set; }
         public string SVG { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FortressCodeGatesData> FortressCodeGates { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FortressCPUData> FortressCPU { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FortressMemoryData> FortressMemory { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FortressWallsData> FortressWalls { get; set; }
     }
 }

@@ -20,9 +20,7 @@ namespace CyberpunkServer.Models.DTO
         public int yPos { get; set; }
         public int FortressID { get; set; }
         public int Type { get; set; }
-        [Newtonsoft.Json.JsonIgnore]
-
-        public virtual FortressData Fortress { get; set; }
+        
         [Newtonsoft.Json.JsonIgnore]
         public virtual NetObjTypeData NetObjType { get; set; }
     }

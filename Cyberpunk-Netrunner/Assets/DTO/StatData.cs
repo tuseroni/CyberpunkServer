@@ -14,24 +14,17 @@ namespace CyberpunkServer.Models.DTO
 
     public partial class StatData
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        
         public StatData()
         {
-            this.PlayerStat = new HashSet<PlayerStatData>();
-            this.Skill = new HashSet<SkillData>();
+            
         }
-       
+
 
         public int id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string ABBR { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        [Newtonsoft.Json.JsonIgnore]
-        public virtual ICollection<PlayerStatData> PlayerStat { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        [Newtonsoft.Json.JsonIgnore]
-        public virtual ICollection<SkillData> Skill { get; set; }
+
     }
 }
