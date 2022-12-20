@@ -266,9 +266,12 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProgramID" Type="int" />
-          <Property Name="FortressID" Type="int" />
+          <Property Name="FortressID" Type="int" Nullable="false" />
           <Property Name="Rezzed" Type="bit" Nullable="false" />
-          <Property Name="Strength" Type="int" />
+          <Property Name="Strength" Type="int" Nullable="false" />
+          <Property Name="xPos" Type="int" Nullable="false" />
+          <Property Name="yPos" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="FortressRemotes">
           <Key>
@@ -371,7 +374,7 @@
           <Property Name="ProgramID" Type="int" />
           <Property Name="PlayerComputerID" Type="int" />
           <Property Name="Rezzed" Type="bit" Nullable="false" />
-          <Property Name="Strength" Type="int" />
+          <Property Name="Strength" Type="int" Nullable="false" />
           <Property Name="Packed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerCyberdeck">
@@ -409,7 +412,7 @@
           <Property Name="ProgramID" Type="int" />
           <Property Name="PlayerCyberdeckID" Type="int" />
           <Property Name="Rezzed" Type="bit" Nullable="false" />
-          <Property Name="Strength" Type="int" />
+          <Property Name="Strength" Type="int" Nullable="false" />
           <Property Name="Packed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerCybernetics">
@@ -869,7 +872,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__FortressP__Fortr__7D98A078">
-          <End Role="Fortress" Type="Self.Fortress" Multiplicity="0..1">
+          <End Role="Fortress" Type="Self.Fortress" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="FortressPrograms" Type="Self.FortressPrograms" Multiplicity="*" />
@@ -1542,6 +1545,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_FortressPrograms_NetObjType">
+          <End Role="NetObjType" Type="Self.NetObjType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FortressPrograms" Type="Self.FortressPrograms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NetObjType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressPrograms">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_FortressRemotes_Fortress">
           <End Role="Fortress" Type="Self.Fortress" Multiplicity="1" />
           <End Role="FortressRemotes" Type="Self.FortressRemotes" Multiplicity="*" />
@@ -1941,6 +1958,10 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK_FortressPrograms_NetObjType" Association="Self.FK_FortressPrograms_NetObjType">
+            <End Role="NetObjType" EntitySet="NetObjType" />
+            <End Role="FortressPrograms" EntitySet="FortressPrograms" />
+          </AssociationSet>
           <AssociationSet Name="FK_FortressRemotes_Fortress" Association="Self.FK_FortressRemotes_Fortress">
             <End Role="Fortress" EntitySet="Fortress" />
             <End Role="FortressRemotes" EntitySet="FortressRemotes" />
@@ -2303,6 +2324,10 @@
             <End Role="Program" EntitySet="Program" />
             <End Role="Program1" EntitySet="Program" />
           </AssociationSet>
+          <AssociationSet Name="FK_FortressPrograms_NetObjType" Association="CyberpunkModel.FK_FortressPrograms_NetObjType">
+            <End Role="NetObjType" EntitySet="NetObjType" />
+            <End Role="FortressPrograms" EntitySet="FortressPrograms" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -2604,11 +2629,15 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProgramID" Type="Int32" />
-          <Property Name="FortressID" Type="Int32" />
+          <Property Name="FortressID" Type="Int32" Nullable="false" />
           <Property Name="Rezzed" Type="Boolean" Nullable="false" />
-          <Property Name="Strength" Type="Int32" />
+          <Property Name="Strength" Type="Int32" Nullable="false" />
+          <Property Name="xPos" Type="Int32" Nullable="false" />
+          <Property Name="yPos" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Fortress" Relationship="CyberpunkModel.FK__FortressP__Fortr__7D98A078" FromRole="FortressPrograms" ToRole="Fortress" />
           <NavigationProperty Name="Program" Relationship="CyberpunkModel.FK__FortressP__Progr__7CA47C3F" FromRole="FortressPrograms" ToRole="Program" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NetObjType" Relationship="CyberpunkModel.FK_FortressPrograms_NetObjType" FromRole="FortressPrograms" ToRole="NetObjType" />
         </EntityType>
         <EntityType Name="FortressRemotes">
           <Key>
@@ -2658,6 +2687,7 @@
           <NavigationProperty Name="FortressMemory" Relationship="CyberpunkModel.FK__FortressMe__Type__6383C8BA" FromRole="NetObjType" ToRole="FortressMemory" />
           <NavigationProperty Name="FortressRemotes" Relationship="CyberpunkModel.FK_FortressRemotes_NetObjType" FromRole="NetObjType" ToRole="FortressRemotes" />
           <NavigationProperty Name="FortressWalls" Relationship="CyberpunkModel.FK__FortressWa__Type__59FA5E80" FromRole="NetObjType" ToRole="FortressWalls" />
+          <NavigationProperty Name="FortressPrograms" Relationship="CyberpunkModel.FK_FortressPrograms_NetObjType" FromRole="NetObjType" ToRole="FortressPrograms" />
         </EntityType>
         <EntityType Name="Player">
           <Key>
@@ -2743,7 +2773,7 @@
           <Property Name="ProgramID" Type="Int32" />
           <Property Name="PlayerComputerID" Type="Int32" />
           <Property Name="Rezzed" Type="Boolean" Nullable="false" />
-          <Property Name="Strength" Type="Int32" />
+          <Property Name="Strength" Type="Int32" Nullable="false" />
           <Property Name="Packed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PlayerComputer" Relationship="CyberpunkModel.FK__PlayerCom__Playe__78D3EB5B" FromRole="PlayerComputerPrograms" ToRole="PlayerComputer" />
           <NavigationProperty Name="Program" Relationship="CyberpunkModel.FK__PlayerCom__Progr__77DFC722" FromRole="PlayerComputerPrograms" ToRole="Program" />
@@ -2792,7 +2822,7 @@
           <Property Name="ProgramID" Type="Int32" />
           <Property Name="PlayerCyberdeckID" Type="Int32" />
           <Property Name="Rezzed" Type="Boolean" Nullable="false" />
-          <Property Name="Strength" Type="Int32" />
+          <Property Name="Strength" Type="Int32" Nullable="false" />
           <Property Name="Packed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PlayerCyberdeck" Relationship="CyberpunkModel.FK__PlayerCyb__Playe__740F363E" FromRole="PlayerCyberdeckPrograms" ToRole="PlayerCyberdeck" />
           <NavigationProperty Name="Program" Relationship="CyberpunkModel.FK__PlayerCyb__Progr__731B1205" FromRole="PlayerCyberdeckPrograms" ToRole="Program" />
@@ -3402,7 +3432,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__FortressP__Fortr__7D98A078">
-          <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="0..1">
+          <End Type="CyberpunkModel.Fortress" Role="Fortress" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="CyberpunkModel.FortressPrograms" Role="FortressPrograms" Multiplicity="*" />
@@ -3611,7 +3641,7 @@
           <End Type="CyberpunkModel.Player" Role="Player" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="CyberpunkModel.PlayerPrograms" Role="PlayerPrograms" Multiplicity="*" ></End>
+          <End Type="CyberpunkModel.PlayerPrograms" Role="PlayerPrograms" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Player">
               <PropertyRef Name="id" />
@@ -3917,6 +3947,20 @@
           <End Type="CyberpunkModel.Program" Role="Program" Multiplicity="*" />
           <End Type="CyberpunkModel.Program" Role="Program1" Multiplicity="*" />
         </Association>
+        <Association Name="FK_FortressPrograms_NetObjType">
+          <End Type="CyberpunkModel.NetObjType" Role="NetObjType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.FortressPrograms" Role="FortressPrograms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NetObjType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FortressPrograms">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4192,6 +4236,9 @@
           <EntitySetMapping Name="FortressPrograms">
             <EntityTypeMapping TypeName="CyberpunkModel.FortressPrograms">
               <MappingFragment StoreEntitySet="FortressPrograms">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="yPos" ColumnName="yPos" />
+                <ScalarProperty Name="xPos" ColumnName="xPos" />
                 <ScalarProperty Name="Strength" ColumnName="Strength" />
                 <ScalarProperty Name="Rezzed" ColumnName="Rezzed" />
                 <ScalarProperty Name="FortressID" ColumnName="FortressID" />

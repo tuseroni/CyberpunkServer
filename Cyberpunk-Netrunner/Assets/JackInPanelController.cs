@@ -27,9 +27,9 @@ public class JackInPanelController : MonoBehaviour
     }
     private void OnEnable()
     {
-        if(ProgramData.player != null)
+        if(AppData.player != null)
         {
-            Player = ProgramData.player;
+            Player = AppData.player;
         }
     }
 
@@ -40,9 +40,9 @@ public class JackInPanelController : MonoBehaviour
     }
     public void JackIn()
     {
-        if (ProgramData.player != null)
+        if (AppData.player != null)
         {
-            SignalrHandler.InvokeJackInRequest(ProgramData.player.id);
+            SignalrHandler.InvokeJackInRequest(AppData.player.id);
         }
     }
 }

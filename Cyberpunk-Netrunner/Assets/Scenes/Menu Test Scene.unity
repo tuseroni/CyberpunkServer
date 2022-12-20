@@ -7503,7 +7503,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1304422205212833
 GameObject:
   m_ObjectHideFlags: 0
@@ -8135,7 +8135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1446416634826601
 GameObject:
   m_ObjectHideFlags: 0
@@ -11379,13 +11379,27 @@ GameObject:
   - component: {fileID: 224216850929389919}
   - component: {fileID: 222215105647092487}
   - component: {fileID: 95680839276458937}
+  - component: {fileID: 1963815516716292}
   m_Layer: 5
   m_Name: NewGame_Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
+--- !u!114 &1963815516716292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963815516716291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ef4aff3d58012c4aa7d58cc1081245c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CharacterName: {fileID: 114333286356556527}
 --- !u!1 &1967069381034497
 GameObject:
   m_ObjectHideFlags: 0
@@ -12102,9 +12116,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114417321256682019}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: LoadNewLevel
+      - m_Target: {fileID: 1963815516716292}
+        m_TargetAssemblyTypeName: JackInPanelController, Assembly-CSharp
+        m_MethodName: JackIn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

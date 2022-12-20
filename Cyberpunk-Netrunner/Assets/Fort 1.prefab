@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2113416682671294027}
   - component: {fileID: 2113416682671294026}
+  - component: {fileID: 2704393607597228080}
   m_Layer: 0
   m_Name: Fort 1
   m_TagString: Untagged
@@ -27,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -54,4 +56,27 @@ MonoBehaviour:
   CPUPrefab: {fileID: 4582262474360825239, guid: 683e2ef3a96bafc48948495dd59a9c23, type: 3}
   MemoryPrefab: {fileID: 6135335201624355408, guid: 7b21e53d2c0a82741ba15f32b9a20ebb, type: 3}
   CodeGatePrefab: {fileID: 1860801743792057660, guid: d5ad38957a07d3b449212058df2edf63, type: 3}
+  ProgramPrefab: {fileID: 5391188661660834519, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
+  boundingBox: {fileID: 2704393607597228080}
   Grid: {fileID: 0}
+--- !u!65 &2704393607597228080
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113416682671294025}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

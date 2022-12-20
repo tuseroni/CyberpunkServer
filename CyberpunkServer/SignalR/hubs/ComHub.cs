@@ -22,6 +22,10 @@ namespace CyberpunkServer.SignalR.hubs
         {
             Clients.Others.PlayerMove(PlayerID, x, y);
         }
+        public void ProgramMove(int FortressProgramID,int FortressID, int x, int y)
+        {
+            Clients.Others.ProgramMove(FortressProgramID, FortressID, x, y);
+        }
         public void AcceptJackInRequest(Models.DTO.PlayerData player, Models.DTO.SubgridData gridData)
         {
             Clients.Others.JackInRequestAccepted(player.id,player.xPos,player.yPos,gridData);

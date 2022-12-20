@@ -22,6 +22,7 @@ namespace CyberpunkServer.Models
             this.FortressMemory = new HashSet<FortressMemory>();
             this.FortressRemotes = new HashSet<FortressRemotes>();
             this.FortressWalls = new HashSet<FortressWalls>();
+            this.FortressPrograms = new HashSet<FortressPrograms>();
         }
     
         public int id { get; set; }
@@ -39,5 +40,7 @@ namespace CyberpunkServer.Models
         public virtual ICollection<FortressRemotes> FortressRemotes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FortressWalls> FortressWalls { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FortressPrograms> FortressPrograms { get; set; }
     }
 }

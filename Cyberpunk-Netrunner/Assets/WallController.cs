@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallController : MonoBehaviour,NetItem
+public class WallController : MonoBehaviour, NetItem
 {
     int _WallStrength = 2;
     public GameObject[] wallCubes;
@@ -22,6 +22,9 @@ public class WallController : MonoBehaviour,NetItem
         }
     }
     bool _isSolid = true;
+
+    public int xPos { get; set; }
+    public int yPos { get; set; }
     public bool Solid
     {
         get
@@ -42,6 +45,8 @@ public class WallController : MonoBehaviour,NetItem
     public GameObject Object { get => gameObject; set { } }
 
     public NetObjType Type { get => NetObjType.Wall; set { } }
+
+    public ProgramSummoner Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     // Start is called before the first frame update
     void Start()

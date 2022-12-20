@@ -80,6 +80,11 @@ namespace CyberpunkServer.Controllers
                .Include("Fortress.FortressCPU.NetObjType")
                .Include("Fortress.FortressMemory.NetObjType")
                .Include("Fortress.FortressWalls.NetObjType")
+               .Include("Fortress.FortressPrograms")
+               .Include("Fortress.FortressPrograms.Program")
+               .Include("Fortress.FortressPrograms.Program")
+               .Include("Fortress.FortressPrograms.Program.ProgramFunctions")
+               .Include("Fortress.FortressPrograms.Program.ProgramOptions")
                .AsNoTracking()
                .Where(x=>x.id==id)
                .Single();

@@ -16,7 +16,8 @@ public enum NetObjType
     CPU,
     Memory,
     CodeGate,
-    Program
+    Program,
+    NetRunner
 }
 public enum ProgramType
 {
@@ -91,7 +92,7 @@ public class CodeGate : FortObj
     public int WallStrength;
 }
 
-public class FortressController : MonoBehaviour
+public class FortressController : MonoBehaviour, ProgramSummoner
 {
     public int NumCPU = 1;
     public int NumMemory = 4;
@@ -104,25 +105,69 @@ public class FortressController : MonoBehaviour
     public GameObject CPUPrefab = null;
     public GameObject MemoryPrefab = null;
     public GameObject CodeGatePrefab = null;
+    public GameObject ProgramPrefab = null;
     List<WallController> Walls = new List<WallController>();
     List<CPUController> CPUs = new List<CPUController>();
     List<MemoryController> Memory = new List<MemoryController>();
     List<CodeGateController> CodeGate = new List<CodeGateController>();
+    public BoxCollider boundingBox;
     public GridController Grid = null;
-    
-    
+
+    public Bounds bounds 
+    {
+        get
+        {
+            return new Bounds(new Vector3(boundingBox.bounds.center.x * 60, boundingBox.bounds.center.y * 30, boundingBox.bounds.center.z * 60)
+                , new Vector3(boundingBox.bounds.size.x * 60, boundingBox.bounds.size.y * 60, boundingBox.bounds.size.z * 60));
+        }
+        set
+        {
+            boundingBox.center = new Vector3(value.center.x * 60, value.center.y * 30, value.center.z * 60);
+            boundingBox.size = new Vector3(value.size.x * 60, value.size.y * 60, value.size.z * 60);
+        }
+    }
+
     public void addFort(CyberpunkServer.Models.DTO.FortressData fort)
     {
-        foreach(var wall in fort.FortressWalls)
+        int MaxX = 0;
+        int MaxY = 0;
+        int MinX = 999;
+        int MinY = 999;
+        
+        foreach (var wall in fort.FortressWalls)
         {
             var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value].GetComponent<TileController>();
-            Tile.ContainedItem = WallPrefab.GetComponent<WallController>();
-            ((WallController)Tile.ContainedItem).WallStrength = WallStrength;
+            var wallObj = GameObject.Instantiate(WallPrefab,Vector3.zero, Quaternion.identity);
+            var wallController= wallObj.GetComponent<WallController>();
+            wallController.WallStrength = WallStrength;
+            Tile.ContainedItem.Add(wallController);
+            if (wall.xPos > MaxX)
+            {
+                MaxX = wall.xPos.Value;
+            }
+            if (wall.yPos > MaxY)
+            {
+                MaxY = wall.yPos.Value;
+            }
+            if (wall.xPos < MinX)
+            {
+                MinX = wall.xPos.Value;
+            }
+            if (wall.yPos < MinY)
+            {
+                MinY = wall.yPos.Value;
+            }
+
         }
+        var offset = new Vector3(MinX, WallStrength * 30, MinY);
+        var size = new Vector3(MaxX - MinX, WallStrength, MaxY - MinY);
+        var newBounds = new Bounds((size/2)+offset, size);
+        bounds = newBounds;
         foreach (var wall in fort.FortressCPU)
         {
             var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value].GetComponent<TileController>();
-            Tile.ContainedItem = CPUPrefab.GetComponent<CPUController>();
+            var wallObj = GameObject.Instantiate(CPUPrefab, Vector3.zero, Quaternion.identity);
+            Tile.ContainedItem.Add(wallObj.GetComponent<CPUController>());
 
             //var Tile = Grid.gridTiles[wall.yPos][wall.xPos];
             //var pos = Tile.transform.position + new Vector3(0, 30, 0);
@@ -131,18 +176,25 @@ public class FortressController : MonoBehaviour
         foreach (var wall in fort.FortressMemory)
         {
             var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value].GetComponent<TileController>();
-            Tile.ContainedItem = MemoryPrefab.GetComponent<MemoryController>( );
+            var wallObj = GameObject.Instantiate(MemoryPrefab, Vector3.zero, Quaternion.identity);
+            Tile.ContainedItem.Add(wallObj.GetComponent<MemoryController>());
         }
         foreach (var wall in fort.FortressCodeGates)
         {
             var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value].GetComponent<TileController>();
-            Tile.ContainedItem = CodeGatePrefab.GetComponent<CodeGateController>();
-            ((CodeGateController)Tile.ContainedItem).WallStrength = wall.WallStrength.Value;
-
-            //var Tile = Grid.gridTiles[wall.yPos][wall.xPos];
-            //var pos = Tile.transform.position + new Vector3(0, 30, 0);
-            //GameObject newWall = Instantiate(CodeGatePrefab, pos, Quaternion.identity, Tile.transform.parent);
-            //newWall.GetComponent<CodeGateController>().WallStrength = wall.WallStrength;
+            var wallObj = GameObject.Instantiate(CodeGatePrefab, Vector3.zero, Quaternion.identity);
+            var codeGateController= wallObj.GetComponent<CodeGateController>();
+            codeGateController.WallStrength = wall.WallStrength.Value;
+            Tile.ContainedItem.Add(codeGateController);
+        }
+        foreach(var program in fort.FortressPrograms)
+        {
+            if (program.Strength > 0)
+            {
+                var wallObj = GameObject.Instantiate(ProgramPrefab, Vector3.zero, Quaternion.identity);
+                
+                wallObj.GetComponent<ProgramController>().addProgram(Grid, fort, program,this);
+            }
         }
         Int = CPUs.Count * 3;
     }

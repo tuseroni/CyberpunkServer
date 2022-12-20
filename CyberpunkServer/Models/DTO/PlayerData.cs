@@ -12,7 +12,7 @@ namespace CyberpunkServer.Models.DTO
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    [Serializable]
     public partial class PlayerData
     {
         

@@ -43,6 +43,10 @@ public class CodeGateController : MonoBehaviour,NetItem
 
     public NetObjType Type { get => NetObjType.CodeGate; set { } }
 
+    public int xPos { get; set; }
+    public int yPos { get; set; }
+    public ProgramSummoner Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
     // Start is called before the first frame update
     void Start()
     {

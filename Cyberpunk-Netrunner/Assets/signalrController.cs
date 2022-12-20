@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Linq;
 
-public static class ProgramData
+public static class AppData
 {
     public static Dictionary<int, PlayerData> PlayerLookup = new Dictionary<int, PlayerData>();
     public static List<PlayerData> Characters
@@ -56,11 +56,11 @@ public static class SignalrHandler
     public static void CreateConnection(string address,string hub)
     {
         connection = new HubConnection(address);
-        var strWriter = new MessageWriter();
-        var fileWriter = new StreamWriter(new FileStream("signalrLog.log", FileMode.OpenOrCreate));
-        connection.TraceLevel = TraceLevels.Messages;
+        //var strWriter = new MessageWriter();
+        //var fileWriter = new StreamWriter(new FileStream("signalrLog.log", FileMode.OpenOrCreate));
+        //connection.TraceLevel = TraceLevels.Messages;
 
-        connection.TraceWriter = fileWriter;
+        //connection.TraceWriter = fileWriter;
 
         myHub = connection.CreateHubProxy(hub);
         
@@ -110,7 +110,29 @@ public static class SignalrHandler
     }
     public static void InvokePlayerMove(int playerID, int x, int y)
     {
+        if(myHub==null)
+        {
+            return;
+        }
         myHub.Invoke("PlayerMove", playerID, x, y).ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
+            }
+            else
+            {
+                Debug.Log("Send Complete.");
+            }
+        });
+    }
+    public static void InvokeProgramMove(int FortressProgramID,int FortressID, int x, int y)
+    {
+        if (myHub == null)
+        {
+            return;
+        }
+        myHub.Invoke("ProgramMove", FortressProgramID, FortressID, x, y).ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
@@ -124,6 +146,10 @@ public static class SignalrHandler
     }
     public static void InvokeLogin(string email, string password)
     {
+        if (myHub == null)
+        {
+            return;
+        }
         myHub.Invoke("Login", email, password).ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -137,8 +163,13 @@ public static class SignalrHandler
         });
     }
 
+    
     public static void InvokeSend()
     {
+        if (myHub == null)
+        {
+            return;
+        }
         myHub.Invoke("Send", "tuseroni", "HELLO World ").ContinueWith(task => {
             if (task.IsFaulted)
             {
@@ -165,6 +196,10 @@ public static class SignalrHandler
     //}
     public static void InvokeJackInRequest(int PlayerID)
     {
+        if (myHub == null)
+        {
+            return;
+        }
         myHub.Invoke("JackInRequest", PlayerID).ContinueWith(task => {
             if (task.IsFaulted)
             {

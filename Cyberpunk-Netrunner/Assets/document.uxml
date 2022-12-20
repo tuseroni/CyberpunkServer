@@ -1,0 +1,29 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/menu.uss?fileID=7433441132597879392&amp;guid=8dd3e29c9ef78de4481a574f5ca0e8b2&amp;type=3#menu" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); overflow: hidden;">
+        <ui:Button text="Menu" display-tooltip-when-elided="true" name="MenuButton" style="height: 46px; width: 50%; left: 49%; font-size: 50%; -unity-font-style: normal; white-space: nowrap; -unity-text-align: middle-center;" />
+        <ui:GroupBox name="MenuBox" class="Hidden" style="width: auto; right: auto; position: relative; left: 0; background-color: rgba(0, 0, 0, 0.57); color: rgb(219, 219, 219);">
+            <ui:Label tabindex="-1" text="LOCATE REMOTE" display-tooltip-when-elided="true" name="LocateRemote" style="width: auto;" />
+            <ui:Label tabindex="-1" text="CONTROL REMOTE" display-tooltip-when-elided="true" name="ControlRemote" />
+            <ui:Label tabindex="-1" text="LOG OFF" display-tooltip-when-elided="true" name="LogOff" />
+            <ui:Label tabindex="-1" text="RUN PROGRAM" display-tooltip-when-elided="true" name="RunProgram" />
+            <ui:GroupBox name="ProgramList" class="Hidden" style="overflow: visible; visibility: visible; height: 237px; transition-duration: 0.3s;">
+                <ui:ScrollView horizontal-scroller-visibility="Hidden" touch-scroll-type="Elastic" style="height: auto;">
+                    <ui:VisualElement name="ProgramHolder" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                        <ui:Label tabindex="-1" text="CYBERDECK PROGRAMS" display-tooltip-when-elided="true" class="Program Header" style="height: auto;" />
+                        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />
+                        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />
+                        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />
+                        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />
+                        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />
+                    </ui:VisualElement>
+                </ui:ScrollView>
+            </ui:GroupBox>
+            <ui:Label tabindex="-1" text="LONG DISTANCE LINK" display-tooltip-when-elided="true" name="LDL" />
+            <ui:Label tabindex="-1" text="COPY" display-tooltip-when-elided="true" name="Copy" />
+            <ui:Label tabindex="-1" text="ERASE" display-tooltip-when-elided="true" name="Erase" />
+            <ui:Label tabindex="-1" text="READ" display-tooltip-when-elided="true" name="Read" />
+            <ui:Label tabindex="-1" text="CREATE/DELETE" display-tooltip-when-elided="true" name="CreateDelete" />
+        </ui:GroupBox>
+    </ui:VisualElement>
+</ui:UXML>

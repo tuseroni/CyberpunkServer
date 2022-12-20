@@ -240,11 +240,32 @@ public class UIManagerTech : MonoBehaviour
         SignalrHandler.onJackInRequestRejected += SignalrHandler_onJackInRequestRejected;
         SignalrHandler.onLoginSuccessful += SignalrHandler_onLoginSuccessful;
         SignalrHandler.onLoginFailure += SignalrHandler_onLoginFailure;
-        //SignalrHandler.CreateConnection(ProductionConnection, "ComHub");
-        SignalrHandler.CreateConnection(debugConnection, "ComHub");
-		//CharactersPanel = GameObject.Find("CharactersPanel");
 		JackInButton = GameObject.Find("Btn_NewGame");
 		JackInButton.SetActive(false);
+#if (DEBUG)
+		try
+		{
+			SignalrHandler.CreateConnection(debugConnection, "ComHub");
+		}
+		catch(Exception ex)
+        {
+			menuBar.SetActive(true);
+			dateDisplay.text = ex.Message;
+        }
+		//SignalrHandler.CreateConnection(debugConnection, "ComHub");
+#else
+		try
+		{
+			SignalrHandler.CreateConnection(ProductionConnection, "ComHub");
+		}
+		catch(Exception ex)
+        {
+			menuBar.SetActive(true);
+			dateDisplay.text = ex.Message;
+        }
+#endif
+		//CharactersPanel = GameObject.Find("CharactersPanel");
+
 	}
 	public void CharacterSet(PlayerData Player)
     {
@@ -255,7 +276,7 @@ public class UIManagerTech : MonoBehaviour
 		logPassword.text = "";
 		error_LogIn.text = "";
 		DecryptedPass = "";
-		ProgramData.player = Player;
+		AppData.player = Player;
 		databaseScreen.SetActive(false);
 		JackInButton.SetActive(true);
 	}
@@ -277,7 +298,7 @@ public class UIManagerTech : MonoBehaviour
 		}
 		MessageDisplayDatabase(loginMessageDisplay, successColor);
 		print("Login Successful");
-		ProgramData.Characters = players;
+		AppData.Characters = players;
 		databaseScreen.SetActive(true);
 		loginScreen.SetActive(false);
 
@@ -292,12 +313,12 @@ public class UIManagerTech : MonoBehaviour
 
     private void SignalrHandler_onJackInRequestAccepted(int PlayerID,int x, int y, SubgridData subgrid)
     {
-		if (ProgramData.PlayerLookup.ContainsKey(PlayerID))
+		if (AppData.PlayerLookup.ContainsKey(PlayerID))
 		{
-			var player = ProgramData.PlayerLookup[PlayerID];
+			var player = AppData.PlayerLookup[PlayerID];
 			player.xPos = x;
 			player.yPos = y;
-			ProgramData.subgrid = subgrid;
+			AppData.subgrid = subgrid;
 			if (newSceneName != "")
 			{
 				StartCoroutine(LoadAsynchronously(newSceneName));
@@ -365,7 +386,7 @@ public class UIManagerTech : MonoBehaviour
 			// Menu Bar and Clock/Date Elements
 			DateTime time = DateTime.Now;
 			if(showTime){timeDisplay.text = time.Hour + ":" + time.Minute + ":" + time.Second;}else if(!showTime){timeDisplay.text = "";}
-			if(showDate){dateDisplay.text = System.DateTime.Now.ToString("yyyy/MM/dd");}else if(!showDate){dateDisplay.text = "";}
+			//if(showDate){dateDisplay.text = System.DateTime.Now.ToString("yyyy/MM/dd");}else if(!showDate){dateDisplay.text = "";}
 		}
 	}
 
@@ -444,9 +465,9 @@ public class UIManagerTech : MonoBehaviour
 
 	// Called when loading new game scene
 	public void LoadNewLevel (){
-		if (ProgramData.player != null)
+		if (AppData.player != null)
 		{
-			SignalrHandler.InvokeJackInRequest(ProgramData.player.id);
+			SignalrHandler.InvokeJackInRequest(AppData.player.id);
 		}
 	}
 

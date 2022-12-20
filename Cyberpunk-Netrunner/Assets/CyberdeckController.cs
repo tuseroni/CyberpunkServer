@@ -19,7 +19,7 @@ public class CyberdeckController : MonoBehaviour
         AvailMU = MU;
         foreach(var prog in Programs)
         {
-            AvailMU -= prog.MU;
+            //AvailMU -= prog.MU;
         }
     }
 

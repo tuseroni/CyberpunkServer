@@ -23,7 +23,7 @@ namespace CyberpunkServer.Models.DTO
             this.FortressWalls = new List<FortressWallsData>();
             this.FortressRemotes = new List<FortressRemotesData>();
             this.FortressSkills = new List<FortressSkillsData>();
-            this.Program = new List<ProgramData>();
+            this.FortressPrograms = new List<FortressProgramsData>();
         }
 
         public int id { get; set; }
@@ -37,7 +37,7 @@ namespace CyberpunkServer.Models.DTO
         public virtual List<FortressWallsData> FortressWalls { get; set; }
         public virtual List<FortressRemotesData> FortressRemotes { get; set; }
         public virtual List<FortressSkillsData> FortressSkills { get; set; }
-        public virtual List<ProgramData> Program { get; set; }
+        public virtual List<FortressProgramsData> FortressPrograms { get; set; }
 
 
     }

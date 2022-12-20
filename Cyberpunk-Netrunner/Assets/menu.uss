@@ -1,0 +1,43 @@
+Button {
+    font-size: 107px;
+}
+
+Label {
+    font-size: 100%;
+    height: auto;
+}
+
+.Program {
+    left: 5%;
+    background-color: rgba(164, 164, 164, 0.5);
+    width: 95%;
+}
+
+Label:hover {
+    background-color: rgba(165, 177, 248, 0.7);
+    border-left-color: rgb(3, 0, 255);
+    border-right-color: rgb(3, 0, 255);
+    border-top-color: rgb(3, 0, 255);
+    border-bottom-color: rgb(3, 0, 255);
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    transition-duration: 0.3s;
+    display: flex;
+}
+
+.Hidden {
+    display: none;
+}
+
+.Header {
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    font-size: 100%;
+    background-color: rgba(255, 0, 0, 0.5);
+}

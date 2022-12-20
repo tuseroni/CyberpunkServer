@@ -833,11 +833,14 @@
 							Rezzed.checked = prog.Rezzed;
 							infoModal.querySelectorAll(".InfoDescription")[0].innerText = prog.Program.Description;
 							infoModal.style.position = "absolute";
-							infoModal.style.left = this.getClientRects()[0].x + "px "
-							infoModal.style.top = this.getClientRects()[0].y + "px ";
+							infoModal.style.left = event.pageX + "px";// this.getClientRects()[0].x + "px "
+							infoModal.style.top = event.pageY+"px";//this.getClientRects()[0].y + "px ";
+							infoModal.classList.add("shown");
+							event.stopPropagation();
 
 
 						}.bind(program, event, prog));
+						document.getElementsByTagName("body")[0].addEventListener("click", function (e) { document.getElementById("infoModal").classList.remove("shown") });
 						//var strInput = program.querySelectorAll("input.programStrength")[0];
 						//if (strInput != null)
 						//{

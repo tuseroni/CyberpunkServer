@@ -100,7 +100,8 @@
 			yPos=0;
 			FortressID=0;
 			Type=0;
-			NetObjType=null;
+			NetObjType = null;
+			SVGElem = null;
 			constructor()
 			{
 			}
@@ -131,6 +132,16 @@
 		contosoChatHubProxy.on('PlayerMove', function (PlayerID, x, y) {
 			var gridtileData = subgridLookup[y][x];
 			var svgElem = Netrunners[PlayerID].SVGElem;
+			svgElem.parentElement.removeChild(svgElem);
+			gridtileData.gElem.appendChild(svgElem);
+
+			console.log(x, y);
+		});
+		contosoChatHubProxy.on('ProgramMove', function (PlayerID,FortressID, x, y)
+		{
+			var gridtileData = subgridLookup[y][x];
+			var prog = subgridData.Fortress.find(x => x.id == FortressID).FortressPrograms.find(x => x.id == PlayerID);
+			var svgElem = prog.SVGElem;
 			svgElem.parentElement.removeChild(svgElem);
 			gridtileData.gElem.appendChild(svgElem);
 
@@ -234,13 +245,15 @@
 					}
 				};
 				var tileData = subgridLookup[yPos][xPos];
-				var gElem = placeElem(elem, tileData);
+				
 				var newNetOBJ = new NetOBJ();
 				newNetOBJ.NetObjType=Object.assign(new NetOBJType(), activeNetOBJType);
 				newNetOBJ.FortressID = subgridData.Fortress[0].id;
 				newNetOBJ.Type = activeNetOBJType.id;
 				newNetOBJ.xPos = xPos;
 				newNetOBJ.yPos = yPos;
+				var gElem = placeElem(newNetOBJ, tileData);
+				//newNetOBJ.SVGElem = gElem;
 				switch (activeNetOBJType.id)
 				{
 					case 1:
@@ -256,7 +269,7 @@
 						subgridData.Fortress[0].FortressCodeGates.push(newNetOBJ);
 						break;
 					case 5:
-						//subgridData.Fortress[0].FortressProgram.push(newNetOBJ);
+						subgridData.Fortress[0].FortressPrograms.push(newNetOBJ);
 						break;
 					case 6:
 						//subgridData.Fortress[0].FortressRemotes.push(newNetOBJ);
@@ -359,7 +372,11 @@
                 for (var gate of fort.FortressCodeGates)
                 {
 					addFortElem(gate)
-                }
+				}
+				for (var prog of fort.FortressPrograms)
+				{
+					addFortElem(prog);
+				}
             }
             gridHolder.appendChild(layoutSVG);
         }
@@ -376,6 +393,7 @@
 			codeGateSvg = gridTile.children[0];
 			codeGateSvg.dataset["elemdata"] = JSON.stringify(elem);
 			gridtileData.ContainedElement = codeGateSvg;
+			elem.SVGElem = codeGateSvg;
 			return codeGateSvg;
         }
         function addFortElem(elem)
@@ -388,6 +406,7 @@
             codeGateSvg = gridTile.children[0];
             codeGateSvg.dataset["elemdata"] = JSON.stringify(elem);
 			gridtileData.ContainedElement = codeGateSvg;
+			elem.SVGElem = codeGateSvg;
 			return codeGateSvg;
 		}
 		function submitForm(theForm)

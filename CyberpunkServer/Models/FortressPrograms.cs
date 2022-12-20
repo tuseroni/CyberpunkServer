@@ -16,11 +16,15 @@ namespace CyberpunkServer.Models
     {
         public int id { get; set; }
         public Nullable<int> ProgramID { get; set; }
-        public Nullable<int> FortressID { get; set; }
+        public int FortressID { get; set; }
         public bool Rezzed { get; set; }
-        public Nullable<int> Strength { get; set; }
+        public int Strength { get; set; }
+        public int xPos { get; set; }
+        public int yPos { get; set; }
+        public int Type { get; set; }
     
         public virtual Fortress Fortress { get; set; }
         public virtual Program Program { get; set; }
+        public virtual NetObjType NetObjType { get; set; }
     }
 }

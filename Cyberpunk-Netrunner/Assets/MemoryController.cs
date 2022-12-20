@@ -18,6 +18,11 @@ public class MemoryController : MonoBehaviour,NetItem
     public GameObject Object { get => gameObject; set { } }
 
     public NetObjType Type { get => NetObjType.Memory; set { } }
+
+    public int xPos { get; set; }
+    public int yPos { get; set; }
+    public ProgramSummoner Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
     // Start is called before the first frame update
     void Start()
     {

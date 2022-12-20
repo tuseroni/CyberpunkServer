@@ -18,7 +18,7 @@ namespace CyberpunkServer.Models
         public Nullable<int> ProgramID { get; set; }
         public Nullable<int> PlayerComputerID { get; set; }
         public bool Rezzed { get; set; }
-        public Nullable<int> Strength { get; set; }
+        public int Strength { get; set; }
         public bool Packed { get; set; }
     
         public virtual PlayerComputer PlayerComputer { get; set; }

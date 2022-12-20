@@ -75,6 +75,7 @@ namespace CyberpunkServer.Controllers
                     .Include(x => x.FortressCPU)
                     .Include(x => x.FortressMemory)
                     .Include(x => x.FortressWalls)
+                    .Include(x => x.FortressPrograms)
                     .AsNoTracking()
                     .Where(x => x.id == id).Single();
             if (fortress == null)
