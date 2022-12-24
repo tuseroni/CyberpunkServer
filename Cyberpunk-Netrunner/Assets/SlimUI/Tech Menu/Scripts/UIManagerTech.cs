@@ -319,6 +319,7 @@ public class UIManagerTech : MonoBehaviour
 			player.xPos = x;
 			player.yPos = y;
 			AppData.subgrid = subgrid;
+			AppData.player = player;
 			if (newSceneName != "")
 			{
 				StartCoroutine(LoadAsynchronously(newSceneName));

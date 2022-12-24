@@ -15,6 +15,19 @@ public class CPUController : MonoBehaviour,NetItem
         {
         }
     }
+    public GameController GameController;
+    public GameController Ref
+    {
+        get
+        {
+            return GameController;
+        }
+        set
+        {
+            GameController = value;
+        }
+
+    }
     public GameObject Object { get => gameObject; set { } }
 
     public NetObjType Type { get => NetObjType.CPU; set { } }
@@ -22,6 +35,16 @@ public class CPUController : MonoBehaviour,NetItem
     public int xPos { get; set; }
     public int yPos { get; set; }
     public ProgramSummoner Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+    public int RollToBeHit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public int RollToHit()
+    {
+        throw new System.NotImplementedException();
+    }
 
     // Start is called before the first frame update
     void Start()

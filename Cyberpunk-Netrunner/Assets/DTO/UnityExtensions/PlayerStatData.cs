@@ -12,23 +12,14 @@ namespace CyberpunkServer.Models.DTO
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    [Serializable]
     public partial class PlayerStatData
     {
-        public PlayerStatData()
+        public int Total
         {
-            this.PlayerStatModifiers = new List<PlayerStatModifiersData>();
+            get
+            {
+                return (Base ?? 0) + PlayerStatModifiers.Sum(x => (int)x.amount);
+            }
         }
-        public int id { get; set; }
-        public Nullable<int> StatID { get; set; }
-        public Nullable<int> Base { get; set; }
-        public Nullable<int> Bonus { get; set; }
-        public Nullable<int> Current { get; set; }
-        public Nullable<int> PlayerID { get; set; }
-
-        public virtual StatData Stat { get; set; }
-        public virtual List<PlayerStatModifiersData> PlayerStatModifiers { get; set; }
-
-
     }
 }

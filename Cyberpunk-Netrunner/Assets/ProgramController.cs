@@ -4,16 +4,42 @@ using UnityEngine;
 using CyberpunkServer.Models.DTO;
 using System.Linq;
 using TMPro;
+using UnityEngine.UIElements;
 
 public enum ProgramState
 {
     idle,
     patrolling,
     chasing,
-    guarding
+    guarding,
+    Moving
 }
-public class ProgramController : MonoBehaviour, NetItem
+public class ProgramController : MonoBehaviour, NetActor
 {
+    public GameController GameController;
+    public GameController Ref
+    {
+        get
+        {
+            return GameController;
+        }
+        set
+        {
+            GameController = value;
+        }
+
+    }
+    public string Name
+    {
+        get
+        {
+            return Program.name;
+        }
+    }
+    public void BeginTurn()
+    {
+        CheckedFor.Clear();
+    }
     public GameObject Object { get => gameObject; set { } }
     ProgramData _Program;
     RunningProgram _FortressProgram;
@@ -22,6 +48,8 @@ public class ProgramController : MonoBehaviour, NetItem
     public FortressController Fortress;
     public TextMeshProUGUI ProgramName;
     public BoundingSphere Detector;
+    
+    public bool DetectInvisibility { get; set; } = false;
     public RunningProgram FortressProgram
     {
         get
@@ -32,7 +60,6 @@ public class ProgramController : MonoBehaviour, NetItem
         {
             _FortressProgram = value;
             Program = value.Program;
-            Str = value.Strength;
         }
     }
     public ProgramData Program
@@ -65,30 +92,134 @@ public class ProgramController : MonoBehaviour, NetItem
 
     public int xPos { get; set; }
     public int yPos { get; set; }
+    public int NumActions { get; set; } = 1;
 
     public Dictionary<string, ProgramFunctionsData> Functions = new Dictionary<string, ProgramFunctionsData>();
     public Dictionary<string, ProgramOptionsData> Options = new Dictionary<string, ProgramOptionsData>();
     public ProgramController[] Subroutines;
-    public int Str = 1;
-    public bool Rezzed = false;
-    int MaxX = 0;
-    int MaxY = 0;
-    int MinX = 999;
-    int MinY = 999;
-    TileController currentTile;
-    GridController grid;
+    public int Strength
+    {
+        get
+        {
+            return FortressProgram?.Strength ?? 0;
+        }
+        set
+        {
+            if(FortressProgram!=null)
+            {
+                FortressProgram.Strength = value;
+            }
+        }
+    }
+    public virtual bool Rezzed 
+    {
+        get
+        {
+            return ActiveProgramController?.ProgramRezzed??true;
+        }
+        set
+        {
+            if (ActiveProgramController != null)
+            {
+                ActiveProgramController.ProgramRezzed = value;
+            }
+        }
+    }
+    public int MaxX = 0;
+    public int MaxY = 0;
+    public int MinX = 999;
+    public int MinY = 999;
+    public TileController currentTile;
+    public GridController grid;
     public bool canLeaveFort = false;
     public bool canMove = false;
-    public void addProgram(GridController grid, RunningProgram program,ProgramSummoner Summoner)
+    public int ActionsDone { get; set; } = 0;
+    public virtual bool canBePlaced { get; set; } = true;
+    public bool Invisible { get; set; } = false;
+    
+    public int RollInitiative()
+    {
+        Initiative = 0;
+        if(Owner is PlayerController)
+        {
+            Initiative= ((PlayerController)Owner).RollInitiative();
+        }
+        else if(Owner is FortressController)
+        {
+            Initiative = ((FortressController)Owner).RollInitiative();
+        }
+        else
+        {
+            
+        }
+        return Initiative;
+    }
+    
+    public virtual int DoAction(NetActor target=null)
+    {
+        if(ActionsDone>=NumActions)
+        {
+            return 0;
+        }
+        int damage = 0;
+        if(!GameController.RollToHit(target, this))
+        {
+            GameController.EndTurn(this);
+            return 0;
+        }
+        if (target.Type==NetObjType.Program)
+        {
+            if(Functions.ContainsKey("Anti Program"))
+            {
+                var newDamage = new Damage { Type = DamageType.Strength, Value = damage = GameController.RollD6() };
+                GameController.DoDamage(target, newDamage);
+            }
+        }
+        else if(target.Type==NetObjType.NetRunner)
+        {
+            if (Functions.ContainsKey("Anti-Personnel"))
+            {
+                var newDamage = new Damage { Type = DamageType.HP, Value = damage = GameController.RollD6() };
+                GameController.DoDamage(target, newDamage);
+            }
+        }
+        GameController.EndTurn(this);
+        return damage;
+    }
+    public int TakeDamage(Damage damage)
+    {
+        if (damage.Type != DamageType.Strength)
+        {
+            return 0;
+        }
+        else
+        {
+            Strength -= damage.Value;
+            return damage.Value;
+        }
+    }
+    public virtual void addProgram(GridController grid, RunningProgram program, ProgramSummoner Summoner)
     {
         MaxX = -1;
         MaxY = -1;
         MinX = -1;
         MinY = -1;
         FortressProgram = program;
-        var tile = grid.gridTiles[FortressProgram.yPos][FortressProgram.xPos].GetComponent<TileController>();
-        tile.ContainedItem.Add(this);
-        currentTile = tile;
+        if (canBePlaced)
+        {
+            var tile = grid.gridTiles[FortressProgram.yPos][FortressProgram.xPos].GetComponent<TileController>();
+            tile.ContainedItem.Add(this);
+            currentTile = tile;
+        }
+        else
+        {
+            transform.parent = ((PlayerController)Summoner).Object.transform;
+            if (!canBePlaced)
+            {
+                transform.localPosition = new Vector3(0f, 34f, 6f);
+            }
+            return;
+        }
         this.grid = grid;
         this.xPos = program.xPos;
         this.yPos = program.yPos;
@@ -100,9 +231,16 @@ public class ProgramController : MonoBehaviour, NetItem
             State = ProgramState.patrolling;
         }
         canLeaveFort = true;
-        if (program.Program != null)
+        if (program.Program != null && ProgramName != null)
         {
             ProgramName.text = program.Program.name;
+        }
+        Search();
+        if (canSeeTarget && Target != null)
+        {
+
+            DoAction(Target);
+
         }
     }
     public void addProgram(GridController grid, FortressData fortress, FortressProgramsData program,FortressController Summoner)
@@ -143,21 +281,32 @@ public class ProgramController : MonoBehaviour, NetItem
         {
             canLeaveFort = true;
         }
-        if (program.Program != null)
+        if (Options.ContainsKey("Invisible"))
+        {
+            Invisible = true;
+        }
+
+        if (program.Program != null && ProgramName != null)
         {
             ProgramName.text = program.Program.name;
         }
     }
-    public List<Vector2Int> path = new List<Vector2Int>();
+   
+    
+    public List<Vector2Int> path { get; set; } = new List<Vector2Int>();
     public LayerMask targetMask;
     public LayerMask PlayerMask;
     public LayerMask ProgramMask;
     public LayerMask obstructionMask;
     float radius = 20.0f * 60.0f;
     float angle = 360;
+    public VisualTreeAsset ActiveProgramAsset;
+    public ActiveProgramController ActiveProgramController;
 
-    public bool canSeePlayer;
+    public bool canSeeTarget;
+    public NetActor Target;
     TileController lastSeenTile;
+    List<NetActor> CheckedFor = new List<NetActor>();
     private void FieldOfViewCheck()
     {
         if (Functions.ContainsKey("Anti Program"))
@@ -168,7 +317,8 @@ public class ProgramController : MonoBehaviour, NetItem
         {
             targetMask |= PlayerMask;
         }
-
+        Target = null;
+        canSeeTarget = false;
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
 
         if (rangeChecks.Length != 0)
@@ -189,46 +339,62 @@ public class ProgramController : MonoBehaviour, NetItem
 
                     if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
                     {
-                        
-                        NetItem foundItem = target.gameObject.GetComponent<NetItem>();
+
+                        NetActor foundItem = target.gameObject.GetComponent<NetActor>();
                         if (foundItem != null)
                         {
-                            if(foundItem is ProgramController)
+
+                            if (foundItem is ProgramController)
                             {
                                 if (this.Owner != foundItem.Owner)
                                 {
-                                    canSeePlayer = true;
-                                    lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos].GetComponent<TileController>();
-                                    break;
+                                    if (!CheckedFor.Contains(foundItem))
+                                    {
+                                        CheckedFor.Add(foundItem);
+                                        if (GameController.DoISeeTarget(foundItem, this))
+                                        {
+                                            canSeeTarget = true;
+                                            Target = foundItem;
+                                            lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos].GetComponent<TileController>();
+                                            if (Owner is PlayerController)
+                                            {
+                                                ((PlayerController)Owner).AddSpottedProgram((ProgramController)foundItem);
+                                            }
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                             else
                             {
-                                canSeePlayer = true;
-                                lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos].GetComponent<TileController>();
-                                break;
-                            }   
+                                if (!CheckedFor.Contains(foundItem))
+                                {
+                                    CheckedFor.Add(foundItem);
+                                    if (GameController.DoISeeTarget(foundItem, this))
+                                    {
+                                        canSeeTarget = true;
+                                        Target = foundItem;
+                                        lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos].GetComponent<TileController>();
+                                        break;
+                                    }
+                                }
+                            }
+
                         }
                     }
-                    else
-                        canSeePlayer = false;
                 }
-                else
-                    canSeePlayer = false;
             }
         }
-        else if (canSeePlayer)
-            canSeePlayer = false;
     }
-    public void Search()
+    public virtual void Search()
     {
         FieldOfViewCheck();
     }
-    public void Attack()
+    public virtual void Attack()
     {
 
     }
-    public float Patrol(int maxMove)
+    public virtual float Patrol(int maxMove)
     {
         float WaitSeconds = 0.2f;
         if (path.Count == maxMove)
@@ -239,9 +405,17 @@ public class ProgramController : MonoBehaviour, NetItem
                 {
 
                     //maxMove = Random.Range(1, 6);
-                    path.Clear();
-                    amble();
-                    Continue = false;
+                    //path.Clear();
+                    //amble();
+                    //Continue = false;
+                    if (Target!=null)
+                    {
+                        DoAction(Target);
+                    }
+                    else
+                    {
+                        GameController.EndTurn(this);
+                    }
                     return 1.0f;
                 }
             }
@@ -256,13 +430,13 @@ public class ProgramController : MonoBehaviour, NetItem
         else
         {
             Search();
-            if (!canSeePlayer)
+            if (Target==null)
             {
                 amble();
             }
             else
             {
-
+                DoAction(Target);
             }
         }
         return WaitSeconds;
@@ -270,21 +444,125 @@ public class ProgramController : MonoBehaviour, NetItem
 
 
     }
-    public void Guard()
+    public virtual float MoveToTile(int maxMove)
+    {
+        float WaitSeconds = 0.2f;
+        if (path.Count == maxMove)
+        {
+            if (WaitForSignal)
+            {
+                if (Continue)
+                {
+
+                    //maxMove = Random.Range(1, 6);
+                    //path.Clear();
+                    //amble();
+                    //Continue = false;
+                    if (Target != null)
+                    {
+                        DoAction(Target);
+                    }
+                    else
+                    {
+                        GameController.EndTurn(this);
+                    }
+                    return 1.0f;
+                }
+            }
+            else
+            {
+
+                path.Clear();
+                MoveToTargetTile();
+                return 1.0f;
+            }
+        }
+        else
+        {
+            Search();
+            if (Target == null)
+            {
+                MoveToTargetTile();
+            }
+            else
+            {
+                DoAction(Target);
+            }
+        }
+        return WaitSeconds;
+
+
+
+    }
+    void MoveToTargetTile()
+    {
+        if (canMove == false)
+        {
+            return;
+        }
+        if(TargetTile==null)
+        {
+            return;
+        }
+        var neighbors = new List<TileController>
+            {
+                grid.gridTiles[yPos+1][xPos].GetComponent<TileController>(),
+                grid.gridTiles[yPos][xPos+1].GetComponent<TileController>(),
+                grid.gridTiles[(yPos-1)>=0?yPos-1:0][xPos].GetComponent<TileController>(),
+                grid.gridTiles[yPos][(xPos-1)>=0?xPos-1:0].GetComponent<TileController>()
+            };
+        var validNeighors = new List<TileController>();
+        var vectorToTile = new Vector2Int(TargetTile.xPos, TargetTile.yPos);
+        var topSqDist = 9999999;
+        TileController bestTile = null;
+        foreach (var neighbor in neighbors)
+        {
+            if (!neighbor.ContainedItem.Where(x => x.Solid).Any())
+            {
+                var newPos = new Vector2Int(neighbor.xPos, neighbor.yPos);
+                if (path.Contains(newPos))
+                {
+                    continue;
+                }
+                if (bestTile == null)
+                {
+                    topSqDist = (newPos - vectorToTile).sqrMagnitude;
+                    bestTile = neighbor;
+                }
+                else
+                {
+                    var sqDis = (newPos - vectorToTile).sqrMagnitude;
+                    if (sqDis < topSqDist)
+                    {
+                        topSqDist = sqDis;
+                        bestTile = neighbor;
+                    }
+                }
+                //validNeighors.Add(neighbor);
+            }
+        }
+        if (bestTile != null)
+        {
+            MoveProgram(bestTile, new Vector2Int(bestTile.xPos, bestTile.yPos));
+        }
+    }
+
+    public virtual void Guard()
     {
         Search();
     }
-    public void Follow(PlayerController player)
+    public virtual void Follow(PlayerController player)
     {
 
     }
-    public void MoveToTile(TileController tile)
-    {
-
-    }
-    public float DoAction()
+    
+    public float DoStateAction()
     {
         float WaitSeconds = 0.2f;
+        if(WaitForSignal && !Continue)
+        {
+            return 1.0f;
+        }
         switch (State)
         {
             case ProgramState.patrolling:
@@ -298,10 +576,19 @@ public class ProgramController : MonoBehaviour, NetItem
                 break;
             case ProgramState.chasing:
                 break;
+            case ProgramState.Moving:
+                MoveToTile(5);
+                break;
         }
         return WaitSeconds;
     }
-    public void amble()
+    TileController TargetTile;
+    public void OrderMove(TileController tile)
+    {
+        State = ProgramState.Moving;
+        TargetTile = tile;
+    }
+    public virtual void amble()
     {
         TileController tile = null;
         bool validMove = true;
@@ -394,14 +681,14 @@ public class ProgramController : MonoBehaviour, NetItem
         StartCoroutine(HandleState());
 
     }
-    public bool WaitForSignal = false;
-    public bool Continue = true;
+    public bool WaitForSignal { get; set; } = true;
+    public bool Continue { get; set; } = true;
     IEnumerator HandleState()
     {
 
         while (true)
         {
-            var waitTime = DoAction();
+            var waitTime = DoStateAction();
             yield return new WaitForSeconds(waitTime);
         }
     }
@@ -409,5 +696,27 @@ public class ProgramController : MonoBehaviour, NetItem
     void Update()
     {
 
+    }
+    public int Initiative { get; set; }
+    public int doEvasionCheck()
+    {
+        var D10 = GameController.RollD10();
+        return D10 + Strength;
+    }
+
+    public int doDetectionCheck()
+    {
+        var D10 = GameController.RollD10();
+        return D10 + Strength;
+    }
+
+    public int RollToBeHit()
+    {
+        return Strength + Owner.Int + Owner.Interface + GameController.RollD10();
+    }
+
+    public int RollToHit()
+    {
+        return FortressProgram.Strength + Owner.Int + Owner.Interface + GameController.RollD10();
     }
 }

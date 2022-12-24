@@ -14,6 +14,12 @@ namespace CyberpunkServer.Models
     
     public partial class PlayerStat
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PlayerStat()
+        {
+            this.PlayerStatModifiers = new HashSet<PlayerStatModifiers>();
+        }
+    
         public int id { get; set; }
         public Nullable<int> StatID { get; set; }
         public Nullable<int> Base { get; set; }
@@ -23,5 +29,7 @@ namespace CyberpunkServer.Models
     
         public virtual Player Player { get; set; }
         public virtual Stat Stat { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlayerStatModifiers> PlayerStatModifiers { get; set; }
     }
 }

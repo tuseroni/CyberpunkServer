@@ -9,7 +9,7 @@ Label {
 
 .Program {
     left: 5%;
-    background-color: rgba(164, 164, 164, 0.5);
+    background-color: rgb(164, 164, 164);
     width: 95%;
 }
 
@@ -40,4 +40,110 @@ Label:hover {
     -unity-text-align: upper-center;
     font-size: 100%;
     background-color: rgba(255, 0, 0, 0.5);
+}
+
+#ActiveProgramHolder .Program {
+    left: 0;
+}
+
+.MenuBox {
+    background-color: rgba(0, 0, 0, 0.57);
+}
+
+.MenuBox Label {
+    color: rgb(219, 219, 219);
+}
+
+.DamageBox {
+    overflow: hidden;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.DamageToggle {
+    flex-direction: row;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.MessageLabel {
+    color: rgb(45, 136, 255);
+    border-left-color: rgba(0, 20, 255, 0);
+    border-right-color: rgba(0, 20, 255, 0);
+    border-top-color: rgba(0, 20, 255, 0);
+    border-bottom-color: rgba(0, 20, 255, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    -unity-text-outline-width: 0;
+    -unity-text-outline-color: rgba(0, 31, 255, 0);
+    text-shadow: 0 0 17px rgba(0, 31, 255, 0);
+    transition-property: all;
+    transition-duration: 0s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+    translate: -200% 0;
+}
+
+.SlideIn {
+    transition-property: translate;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in;
+    translate: 0 0;
+}
+
+.SlideOut {
+    transition-property: translate;
+    translate: 200% 0;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out-sine;
+    transition-delay: 1s;
+}
+
+#MessageLabel {
+}
+
+.ResetSlide {
+    translate: -200% 0;
+    transition-property: translate;
+    transition-duration: 0.01s;
+    transition-timing-function: linear;
+}
+
+.ActiveProgramActionBlock {
+    background-color: rgba(79, 79, 79, 0.94);
+    margin-top: 0;
+}
+
+.ActiveProgramBlock {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
 }

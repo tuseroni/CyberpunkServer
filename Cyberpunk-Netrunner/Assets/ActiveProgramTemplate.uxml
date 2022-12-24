@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ActiveProgramController>
+        <ui:GroupBox class="ActiveProgramBlock">
+            <ui:Label tabindex="-1" text="Ninja" display-tooltip-when-elided="true" enable-rich-text="false" name="MenuButton" class="Program" style="height: auto;" />
+            <ui:GroupBox name="MenuBox" class="ActiveProgramActionBlock Hidden">
+                <ui:Label tabindex="-1" text="Move" display-tooltip-when-elided="true" name="MoveAction" />
+                <ui:Label tabindex="-1" text="Attack" display-tooltip-when-elided="true" name="AttackAction" />
+                <ui:Label tabindex="-1" text="Re-Rezz" display-tooltip-when-elided="true" name="RerezActionLabel" class="Hidden" />
+            </ui:GroupBox>
+        </ui:GroupBox>
+    </ActiveProgramController>
+</ui:UXML>

@@ -327,7 +327,9 @@
     <Compile Include="Models\DTO\PlayerProgramsData.cs" />
     <Compile Include="Models\DTO\PlayerRolesData.cs" />
     <Compile Include="Models\DTO\PlayerSkillData.cs" />
+    <Compile Include="Models\DTO\PlayerSkillModifiersData.cs" />
     <Compile Include="Models\DTO\PlayerStatData.cs" />
+    <Compile Include="Models\DTO\PlayerStatModifiersData.cs" />
     <Compile Include="Models\DTO\PlayerWeaponData.cs" />
     <Compile Include="Models\DTO\Program.cs" />
     <Compile Include="Models\DTO\ProgramFunctions.cs" />
@@ -408,7 +410,9 @@
     <Compile Include="Models\Interface\PlayerProgramsData.cs" />
     <Compile Include="Models\Interface\PlayerRolesData.cs" />
     <Compile Include="Models\Interface\PlayerSkillData.cs" />
+    <Compile Include="Models\Interface\PlayerSkillModifiersData.cs" />
     <Compile Include="Models\Interface\PlayerStatData.cs" />
+    <Compile Include="Models\Interface\PlayerStatModifiersData.cs" />
     <Compile Include="Models\Interface\PlayerWeaponData.cs" />
     <Compile Include="Models\Interface\Program.cs" />
     <Compile Include="Models\Interface\ProgramFunctions.cs" />
@@ -469,7 +473,13 @@
     <Compile Include="Models\PlayerSkill.cs">
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PlayerSkillModifiers.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PlayerStat.cs">
+      <DependentUpon>Cyberpunk.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PlayerStatModifiers.cs">
       <DependentUpon>Cyberpunk.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlayerWeapon.cs">

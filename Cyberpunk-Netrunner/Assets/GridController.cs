@@ -12,10 +12,32 @@ public interface NetItem
         set;
     }
     ProgramSummoner Owner { get; set; }
+    GameController Ref { get; set; }
     bool Solid { get; set; }
     NetObjType Type { get; set; }
     int xPos { get; set; }
     int yPos { get; set; }
+    int RollToBeHit();
+    int RollToHit();
+    
+}
+public interface NetActor:NetItem
+{
+    int RollInitiative();
+    int doEvasionCheck();
+    int doDetectionCheck();
+    int TakeDamage(Damage damage);
+    void BeginTurn();
+    string Name { get; }
+    int NumActions { get; set; }
+    int ActionsDone { get; set; }
+    int Initiative { get; set; }
+    bool WaitForSignal { get; set; }
+    bool Continue { get; set;}
+    bool Invisible { get; set; }
+    bool DetectInvisibility { get; set; }
+    List<Vector2Int> path { get; set; }
+
 }
 
 public class GridController : MonoBehaviour
@@ -28,12 +50,15 @@ public class GridController : MonoBehaviour
     public GameObject FortressPrefab;
     public PlayerController PlayerController;
     bool offline = false;
+    public GameController GameController;
     // Start is called before the first frame update
     void Start()
     {
         BuildGrid(AppData.subgrid);
         placePlayer(AppData.player);
-        
+        GameController.BeginGame();
+
+
     }
     private void Awake()
     {
@@ -62,7 +87,9 @@ public class GridController : MonoBehaviour
         var y = player.yPos;
         var tileObj = gridTiles[y][x];
         PlayerController.playerData = player;
-        PlayerController.MoveToTile(tileObj);
+        PlayerController.MoveToTile(tileObj.GetComponent<TileController>());
+        PlayerController.path.Clear();
+        GameController.addPlayer(PlayerController);
     }
     
     public void BuildGrid(CyberpunkServer.Models.DTO.SubgridData grid)
@@ -85,6 +112,7 @@ public class GridController : MonoBehaviour
                 var tileController = tile.GetComponent<TileController>();
                 tileController.xPos = j;
                 tileController.yPos = i;
+                tileController.grid = this;
             }
         }
         transform.position = new Vector3(Width * -30, 0, Height * 30);
@@ -93,6 +121,7 @@ public class GridController : MonoBehaviour
             var fortPrefab = GameObject.Instantiate(FortressPrefab);
             FortressController fortController = fortPrefab.GetComponent<FortressController>();
             fortController.Grid = this;
+            fortController.GameController = GameController;
             fortController.addFort(fort);
         }
     }

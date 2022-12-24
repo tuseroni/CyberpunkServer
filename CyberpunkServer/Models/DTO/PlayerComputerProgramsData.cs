@@ -18,7 +18,7 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> PlayerComputerID { get; set; }
         public bool Rezzed { get; set; }
         public bool Packed { get; set; }
-        public Nullable<int> Strength { get; set; }
+        public int Strength { get; set; }
         public int MU
         {
             get

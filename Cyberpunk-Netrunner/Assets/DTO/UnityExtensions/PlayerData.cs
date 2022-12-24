@@ -21,5 +21,34 @@ namespace CyberpunkServer.Models.DTO
         public PlayerComputerData EquippedComputer { get; set; }
         public PlayerCyberdeckData EquippedCyberdeck { get; set; }
         public VisualElement UIElement { get; set; }
+        public int BTM
+        {
+            get
+            {
+                int btm = 0;
+                var body = StatLookup["BT"].Total;
+                if (body <= 2)
+                {
+                    btm = 0;
+                }
+                else if (body <= 4)
+                {
+                    btm = -1;
+                }
+                else if (body <= 7)
+                {
+                    btm = -2;
+                }
+                else if (body <= 9)
+                {
+                    btm = -3;
+                }
+                else if (body == 10)
+                {
+                    btm = -4;
+                }
+                return btm;
+            }
+        }
     }
 }

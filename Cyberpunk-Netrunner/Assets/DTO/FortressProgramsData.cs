@@ -15,6 +15,9 @@ namespace CyberpunkServer.Models.DTO
         public int xPos { get; set; }
         public int yPos { get; set; }
         public virtual ProgramData Program { get; set; }
-        
+        public int Type { get; set; }
+
+        public virtual NetObjTypeData NetObjType { get; set; }
+
     }
 }

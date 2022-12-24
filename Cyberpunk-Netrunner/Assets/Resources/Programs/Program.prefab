@@ -130,7 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cb4fe38e3484d4895109a3a67dfc24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameController: {fileID: 0}
   State: 0
   Player: {fileID: 0}
   Fortress: {fileID: 0}
@@ -138,14 +137,9 @@ MonoBehaviour:
   Subroutines: []
   Str: 1
   Rezzed: 0
-  MaxX: 0
-  MaxY: 0
-  MinX: 999
-  MinY: 999
-  currentTile: {fileID: 0}
-  grid: {fileID: 0}
   canLeaveFort: 0
   canMove: 0
+  path: []
   targetMask:
     serializedVersion: 2
     m_Bits: 8
@@ -158,8 +152,9 @@ MonoBehaviour:
   obstructionMask:
     serializedVersion: 2
     m_Bits: 64
-  ActiveProgramAsset: {fileID: 9197481963319205126, guid: d1ff996386d5b22428b79a70454b54a8, type: 3}
-  canSeeTarget: 0
+  canSeePlayer: 0
+  WaitForSignal: 0
+  Continue: 1
 --- !u!65 &4809081277955118715
 BoxCollider:
   m_ObjectHideFlags: 0

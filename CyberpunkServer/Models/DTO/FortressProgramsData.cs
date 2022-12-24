@@ -11,7 +11,7 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> ProgramID { get; set; }
         public Nullable<int> FortressID { get; set; }
         public bool Rezzed { get; set; }
-        public Nullable<int> Strength { get; set; }
+        public int Strength { get; set; }
         public int xPos { get; set; }
         public int yPos { get; set; }
         public virtual ProgramData Program { get; set; }

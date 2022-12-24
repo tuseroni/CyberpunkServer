@@ -14,20 +14,13 @@ namespace CyberpunkServer.Models.DTO
     using System.Linq;
     public partial class PlayerSkillData
     {
-        public PlayerSkillData()
+        public int Total
         {
-            this.PlayerSkillModifiers = new List<PlayerSkillModifiersData>();
+            get
+            {
+                return Ranks??0 + PlayerSkillModifiers.Sum(x => (int)x.amount);
+            }
         }
-        public int id { get; set; }
-        public Nullable<int> Ranks { get; set; }
-        public Nullable<int> Bonus { get; set; }
-        public Nullable<int> CurrentIP { get; set; }
-        public Nullable<int> PlayerID { get; set; }
-        public Nullable<int> SkillID { get; set; }
-    
-        public virtual SkillData Skill { get; set; }
-        public virtual List<PlayerSkillModifiersData> PlayerSkillModifiers { get; set; }
-
 
     }
 }

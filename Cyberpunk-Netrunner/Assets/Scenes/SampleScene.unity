@@ -158,6 +158,7 @@ MonoBehaviour:
   Width: 20
   FortressPrefab: {fileID: 2113416682671294025, guid: 43a6164ca2a12524f97c462f267135bb, type: 3}
   PlayerController: {fileID: 1019538834}
+  GameController: {fileID: 550931407}
 --- !u!4 &411193484
 Transform:
   m_ObjectHideFlags: 0
@@ -194,6 +195,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 834610453907473733, guid: e751ea833580c7f4eb74c5c9529fbe7d, type: 3}
   m_PrefabInstance: {fileID: 1886158834}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &550931406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 550931408}
+  - component: {fileID: 550931407}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &550931407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550931406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eccad38b2e3f55647bdab2e12d8fff46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Document: {fileID: 1063834463}
+  PlayerState: 0
+  grid: {fileID: 411193483}
+--- !u!4 &550931408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550931406}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -279.3363, y: -407.2921, z: 289.06467}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &552858160
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,7 +400,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1063834464}
   - component: {fileID: 1063834463}
-  - component: {fileID: 1063834465}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -391,18 +438,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1063834465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063834462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b449541133956cd41b2174dcc33cb7e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1235531667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -435,6 +470,10 @@ PrefabInstance:
       propertyPath: ProgramPrefab
       value: 
       objectReference: {fileID: 5391188661660834519, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
+    - target: {fileID: 6869772532249433214, guid: f8b6d84b141720140b1c1d0ea51ca1b8, type: 3}
+      propertyPath: GameController
+      value: 
+      objectReference: {fileID: 550931407}
     - target: {fileID: 7244916888485098395, guid: f8b6d84b141720140b1c1d0ea51ca1b8, type: 3}
       propertyPath: touchSensitivity
       value: 10
@@ -960,6 +999,10 @@ PrefabInstance:
       propertyPath: ProgramPrefab
       value: 
       objectReference: {fileID: 5391188661660834519, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
+    - target: {fileID: 2113416682671294026, guid: 43a6164ca2a12524f97c462f267135bb, type: 3}
+      propertyPath: GameController
+      value: 
+      objectReference: {fileID: 550931407}
     - target: {fileID: 2113416682671294027, guid: 43a6164ca2a12524f97c462f267135bb, type: 3}
       propertyPath: m_RootOrder
       value: 7

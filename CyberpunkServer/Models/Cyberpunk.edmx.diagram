@@ -132,6 +132,10 @@
         <AssociationConnector Association="CyberpunkModel.ProgramProgramOptions" />
         <AssociationConnector Association="CyberpunkModel.ProgramSubroutines" />
         <AssociationConnector Association="CyberpunkModel.FK_FortressPrograms_NetObjType" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerSkillModifiers" Width="1.5" PointX="9.75" PointY="45.875" />
+        <EntityTypeShape EntityType="CyberpunkModel.PlayerStatModifiers" Width="1.5" PointX="9.75" PointY="7.875" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerSki__Playe__4F9CCB9E" />
+        <AssociationConnector Association="CyberpunkModel.FK__PlayerSta__Playe__4CC05EF3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

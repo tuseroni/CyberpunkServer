@@ -21,6 +21,19 @@ public class WallController : MonoBehaviour, NetItem
             }
         }
     }
+    public GameController GameController;
+    public GameController Ref
+    {
+        get
+        {
+            return GameController;
+        }
+        set
+        {
+            GameController = value;
+        }
+
+    }
     bool _isSolid = true;
 
     public int xPos { get; set; }
@@ -58,5 +71,15 @@ public class WallController : MonoBehaviour, NetItem
     void Update()
     {
         
+    }
+
+    public int RollToBeHit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public int RollToHit()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -81,5 +81,7 @@ namespace CyberpunkServer.Models
         public virtual DbSet<WeaponConcTypes> WeaponConcTypes { get; set; }
         public virtual DbSet<Weapons> Weapons { get; set; }
         public virtual DbSet<WeaponTypes> WeaponTypes { get; set; }
+        public virtual DbSet<PlayerSkillModifiers> PlayerSkillModifiers { get; set; }
+        public virtual DbSet<PlayerStatModifiers> PlayerStatModifiers { get; set; }
     }
 }

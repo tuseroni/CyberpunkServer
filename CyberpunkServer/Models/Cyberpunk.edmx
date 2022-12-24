@@ -453,6 +453,19 @@
           <Property Name="PlayerID" Type="int" />
           <Property Name="SkillID" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Cyberpunk.dbo.PlayerSkillModifiers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PlayerSkillModifiers">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="PlayerSkillID" />
+            <PropertyRef Name="amount" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerSkillID" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" />
+          <Property Name="amount" Type="float" Nullable="false" />
+        </EntityType>
         <EntityType Name="PlayerStat">
           <Key>
             <PropertyRef Name="id" />
@@ -463,6 +476,19 @@
           <Property Name="Bonus" Type="int" />
           <Property Name="Current" Type="int" />
           <Property Name="PlayerID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Cyberpunk.dbo.PlayerStatModifiers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PlayerStatModifiers">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="PlayerStatID" />
+            <PropertyRef Name="amount" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerStatID" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" />
+          <Property Name="amount" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerWeapon">
           <Key>
@@ -1263,6 +1289,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__PlayerSki__Playe__4F9CCB9E">
+          <End Role="PlayerSkill" Type="Self.PlayerSkill" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PlayerSkillModifiers" Type="Self.PlayerSkillModifiers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayerSkill">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerSkillModifiers">
+              <PropertyRef Name="PlayerSkillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__PlayerSki__Playe__7A672E12">
           <End Role="Player" Type="Self.Player" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -1288,6 +1328,20 @@
             </Principal>
             <Dependent Role="PlayerSkill">
               <PropertyRef Name="SkillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerSta__Playe__4CC05EF3">
+          <End Role="PlayerStat" Type="Self.PlayerStat" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PlayerStatModifiers" Type="Self.PlayerStatModifiers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayerStat">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerStatModifiers">
+              <PropertyRef Name="PlayerStatID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1682,6 +1736,22 @@
           <EntitySet Name="WeaponConcTypes" EntityType="Self.WeaponConcTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Weapons" EntityType="Self.Weapons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WeaponTypes" EntityType="Self.WeaponTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayerSkillModifiers" EntityType="Self.PlayerSkillModifiers" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PlayerSkillModifiers].[id] AS [id], 
+    [PlayerSkillModifiers].[PlayerSkillID] AS [PlayerSkillID], 
+    [PlayerSkillModifiers].[name] AS [name], 
+    [PlayerSkillModifiers].[amount] AS [amount]
+    FROM [dbo].[PlayerSkillModifiers] AS [PlayerSkillModifiers]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PlayerStatModifiers" EntityType="Self.PlayerStatModifiers" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PlayerStatModifiers].[id] AS [id], 
+    [PlayerStatModifiers].[PlayerStatID] AS [PlayerStatID], 
+    [PlayerStatModifiers].[name] AS [name], 
+    [PlayerStatModifiers].[amount] AS [amount]
+    FROM [dbo].[PlayerStatModifiers] AS [PlayerStatModifiers]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__ComputerP__Compu__02C769E9" Association="Self.FK__ComputerP__Compu__02C769E9">
             <End Role="ComputerPeripherals" EntitySet="ComputerPeripherals" />
             <End Role="ComputerPeripheralSkillModifiers" EntitySet="ComputerPeripheralSkillModifiers" />
@@ -1874,6 +1944,10 @@
             <End Role="Program" EntitySet="Program" />
             <End Role="PlayerPrograms" EntitySet="PlayerPrograms" />
           </AssociationSet>
+          <AssociationSet Name="FK__PlayerSki__Playe__4F9CCB9E" Association="Self.FK__PlayerSki__Playe__4F9CCB9E">
+            <End Role="PlayerSkill" EntitySet="PlayerSkill" />
+            <End Role="PlayerSkillModifiers" EntitySet="PlayerSkillModifiers" />
+          </AssociationSet>
           <AssociationSet Name="FK__PlayerSki__Playe__7A672E12" Association="Self.FK__PlayerSki__Playe__7A672E12">
             <End Role="Player" EntitySet="Player" />
             <End Role="PlayerSkill" EntitySet="PlayerSkill" />
@@ -1881,6 +1955,10 @@
           <AssociationSet Name="FK__PlayerSki__Skill__797309D9" Association="Self.FK__PlayerSki__Skill__797309D9">
             <End Role="Skill" EntitySet="Skill" />
             <End Role="PlayerSkill" EntitySet="PlayerSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerSta__Playe__4CC05EF3" Association="Self.FK__PlayerSta__Playe__4CC05EF3">
+            <End Role="PlayerStat" EntitySet="PlayerStat" />
+            <End Role="PlayerStatModifiers" EntitySet="PlayerStatModifiers" />
           </AssociationSet>
           <AssociationSet Name="FK__PlayerSta__Playe__6E01572D" Association="Self.FK__PlayerSta__Playe__6E01572D">
             <End Role="Player" EntitySet="Player" />
@@ -2327,6 +2405,16 @@
           <AssociationSet Name="FK_FortressPrograms_NetObjType" Association="CyberpunkModel.FK_FortressPrograms_NetObjType">
             <End Role="NetObjType" EntitySet="NetObjType" />
             <End Role="FortressPrograms" EntitySet="FortressPrograms" />
+          </AssociationSet>
+          <EntitySet Name="PlayerSkillModifiers" EntityType="CyberpunkModel.PlayerSkillModifiers" />
+          <EntitySet Name="PlayerStatModifiers" EntityType="CyberpunkModel.PlayerStatModifiers" />
+          <AssociationSet Name="FK__PlayerSki__Playe__4F9CCB9E" Association="CyberpunkModel.FK__PlayerSki__Playe__4F9CCB9E">
+            <End Role="PlayerSkill" EntitySet="PlayerSkill" />
+            <End Role="PlayerSkillModifiers" EntitySet="PlayerSkillModifiers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerSta__Playe__4CC05EF3" Association="CyberpunkModel.FK__PlayerSta__Playe__4CC05EF3">
+            <End Role="PlayerStat" EntitySet="PlayerStat" />
+            <End Role="PlayerStatModifiers" EntitySet="PlayerStatModifiers" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
@@ -2871,6 +2959,7 @@
           <Property Name="SkillID" Type="Int32" />
           <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK__PlayerSki__Playe__7A672E12" FromRole="PlayerSkill" ToRole="Player" />
           <NavigationProperty Name="Skill" Relationship="CyberpunkModel.FK__PlayerSki__Skill__797309D9" FromRole="PlayerSkill" ToRole="Skill" />
+          <NavigationProperty Name="PlayerSkillModifiers" Relationship="CyberpunkModel.FK__PlayerSki__Playe__4F9CCB9E" FromRole="PlayerSkill" ToRole="PlayerSkillModifiers" />
         </EntityType>
         <EntityType Name="PlayerStat">
           <Key>
@@ -2884,6 +2973,7 @@
           <Property Name="PlayerID" Type="Int32" />
           <NavigationProperty Name="Player" Relationship="CyberpunkModel.FK__PlayerSta__Playe__6E01572D" FromRole="PlayerStat" ToRole="Player" />
           <NavigationProperty Name="Stat" Relationship="CyberpunkModel.FK__PlayerSta__StatI__6EF57B66" FromRole="PlayerStat" ToRole="Stat" />
+          <NavigationProperty Name="PlayerStatModifiers" Relationship="CyberpunkModel.FK__PlayerSta__Playe__4CC05EF3" FromRole="PlayerStat" ToRole="PlayerStatModifiers" />
         </EntityType>
         <EntityType Name="PlayerWeapon">
           <Key>
@@ -3961,6 +4051,58 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PlayerSkillModifiers">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="PlayerSkillID" />
+            <PropertyRef Name="amount" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerSkillID" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="Double" Nullable="false" />
+          <NavigationProperty Name="PlayerSkill" Relationship="CyberpunkModel.FK__PlayerSki__Playe__4F9CCB9E" FromRole="PlayerSkillModifiers" ToRole="PlayerSkill" />
+        </EntityType>
+        <EntityType Name="PlayerStatModifiers">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="PlayerStatID" />
+            <PropertyRef Name="amount" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerStatID" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="Double" Nullable="false" />
+          <NavigationProperty Name="PlayerStat" Relationship="CyberpunkModel.FK__PlayerSta__Playe__4CC05EF3" FromRole="PlayerStatModifiers" ToRole="PlayerStat" />
+        </EntityType>
+        <Association Name="FK__PlayerSki__Playe__4F9CCB9E">
+          <End Type="CyberpunkModel.PlayerSkill" Role="PlayerSkill" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.PlayerSkillModifiers" Role="PlayerSkillModifiers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayerSkill">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerSkillModifiers">
+              <PropertyRef Name="PlayerSkillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerSta__Playe__4CC05EF3">
+          <End Type="CyberpunkModel.PlayerStat" Role="PlayerStat" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CyberpunkModel.PlayerStatModifiers" Role="PlayerStatModifiers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayerStat">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PlayerStatModifiers">
+              <PropertyRef Name="PlayerStatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4642,6 +4784,26 @@
               <ScalarProperty Name="id" ColumnName="ProgramID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="PlayerSkillModifiers">
+            <EntityTypeMapping TypeName="CyberpunkModel.PlayerSkillModifiers">
+              <MappingFragment StoreEntitySet="PlayerSkillModifiers">
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="PlayerSkillID" ColumnName="PlayerSkillID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerStatModifiers">
+            <EntityTypeMapping TypeName="CyberpunkModel.PlayerStatModifiers">
+              <MappingFragment StoreEntitySet="PlayerStatModifiers">
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="PlayerStatID" ColumnName="PlayerStatID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

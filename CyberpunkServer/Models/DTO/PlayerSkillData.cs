@@ -14,6 +14,10 @@ namespace CyberpunkServer.Models.DTO
     using System.Linq;
     public partial class PlayerSkillData
     {
+        public PlayerSkillData()
+        {
+            this.PlayerSkillModifiers = new List<PlayerSkillModifiersData>();
+        }
         public int id { get; set; }
         public Nullable<int> Ranks { get; set; }
         public Nullable<int> Bonus { get; set; }
@@ -22,7 +26,8 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> SkillID { get; set; }
     
         public virtual SkillData Skill { get; set; }
+        public virtual List<PlayerSkillModifiersData> PlayerSkillModifiers { get; set; }
 
-       
+
     }
 }

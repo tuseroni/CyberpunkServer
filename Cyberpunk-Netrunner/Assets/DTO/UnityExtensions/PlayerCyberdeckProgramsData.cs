@@ -31,6 +31,8 @@ public interface RunningProgram
 public interface ProgramSummoner
 {
     Bounds bounds { get; set; }
+    int Int { get; set; }
+    int Interface { get; set; }
 }
 namespace CyberpunkServer.Models.DTO
 {

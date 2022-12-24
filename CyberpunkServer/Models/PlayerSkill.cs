@@ -14,6 +14,12 @@ namespace CyberpunkServer.Models
     
     public partial class PlayerSkill
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PlayerSkill()
+        {
+            this.PlayerSkillModifiers = new HashSet<PlayerSkillModifiers>();
+        }
+    
         public int id { get; set; }
         public Nullable<int> Ranks { get; set; }
         public Nullable<int> Bonus { get; set; }
@@ -23,5 +29,7 @@ namespace CyberpunkServer.Models
     
         public virtual Player Player { get; set; }
         public virtual Skill Skill { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PlayerSkillModifiers> PlayerSkillModifiers { get; set; }
     }
 }

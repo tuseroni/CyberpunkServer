@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CyberpunkServer.Models.DTO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //[System.Serializable]
@@ -100,7 +101,8 @@ public class FortressController : MonoBehaviour, ProgramSummoner
     public int height = 10;
     public int WallStrength = 3;
     public SkillController[] skills;
-    public int Int = 3;
+    public int Int { get; set; } = 3;
+    public int Interface { get; set; } = 10;
     public GameObject WallPrefab = null;
     public GameObject CPUPrefab = null;
     public GameObject MemoryPrefab = null;
@@ -112,6 +114,20 @@ public class FortressController : MonoBehaviour, ProgramSummoner
     List<CodeGateController> CodeGate = new List<CodeGateController>();
     public BoxCollider boundingBox;
     public GridController Grid = null;
+    public GameController GameController;
+    
+    public GameController Ref
+    {
+        get
+        {
+            return GameController;
+        }
+        set
+        {
+            GameController = value;
+        }
+
+    }
 
     public Bounds bounds 
     {
@@ -126,9 +142,14 @@ public class FortressController : MonoBehaviour, ProgramSummoner
             boundingBox.size = new Vector3(value.size.x * 60, value.size.y * 60, value.size.z * 60);
         }
     }
-
+    public int RollInitiative()
+    {
+        return GameController.RollD10() + Int;
+    }
+    public FortressData Fortress;
     public void addFort(CyberpunkServer.Models.DTO.FortressData fort)
     {
+        Fortress = fort;
         int MaxX = 0;
         int MaxY = 0;
         int MinX = 999;
@@ -167,7 +188,9 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         {
             var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value].GetComponent<TileController>();
             var wallObj = GameObject.Instantiate(CPUPrefab, Vector3.zero, Quaternion.identity);
-            Tile.ContainedItem.Add(wallObj.GetComponent<CPUController>());
+            var controller = wallObj.GetComponent<CPUController>();
+            CPUs.Add(controller);
+            Tile.ContainedItem.Add(controller);
 
             //var Tile = Grid.gridTiles[wall.yPos][wall.xPos];
             //var pos = Tile.transform.position + new Vector3(0, 30, 0);
@@ -192,8 +215,9 @@ public class FortressController : MonoBehaviour, ProgramSummoner
             if (program.Strength > 0)
             {
                 var wallObj = GameObject.Instantiate(ProgramPrefab, Vector3.zero, Quaternion.identity);
-                
-                wallObj.GetComponent<ProgramController>().addProgram(Grid, fort, program,this);
+
+                GameController.addProgram(wallObj.GetComponent<ProgramController>(), this, program);
+                //wallObj.GetComponent<ProgramController>().addProgram(Grid, fort, program,this);
             }
         }
         Int = CPUs.Count * 3;

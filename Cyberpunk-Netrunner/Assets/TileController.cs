@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 public class TileController : MonoBehaviour
 {
     public Material NonSelectedMaterial = null;
     public Material HighlightMaterial = null;
+    public Material SelectedMaterial = null;
     public MeshRenderer MR = null;
+    public GridController grid;
     ObservableCollection<NetItem> _containedItem = new ObservableCollection<NetItem>();
     public ObservableCollection<NetItem> ContainedItem
     {
@@ -36,6 +38,29 @@ public class TileController : MonoBehaviour
         
     }
 
+    private void OnMouseUp()
+    {
+        if (grid.GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            //MR.material = SelectedMaterial;
+            grid.GameController.TileSelect(this);
+            MR.material = NonSelectedMaterial;
+        }
+    }
+    private void OnMouseEnter()
+    {
+        if (grid.GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            MR.material = HighlightMaterial;
+        }
+    }
+    private void OnMouseExit()
+    {
+        if (grid.GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            MR.material = NonSelectedMaterial;
+        }
+    }
     private void _containedItem_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
         if(e.Action==System.Collections.Specialized.NotifyCollectionChangedAction.Add)

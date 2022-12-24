@@ -15,6 +15,10 @@ namespace CyberpunkServer.Models.DTO
     [Serializable]
     public partial class PlayerStatData
     {
+        public PlayerStatData()
+        {
+            this.PlayerStatModifiers = new List<PlayerStatModifiersData>();
+        }
         public int id { get; set; }
         public Nullable<int> StatID { get; set; }
         public Nullable<int> Base { get; set; }
@@ -23,8 +27,8 @@ namespace CyberpunkServer.Models.DTO
         public Nullable<int> PlayerID { get; set; }
 
         public virtual StatData Stat { get; set; }
+        public virtual List<PlayerStatModifiersData> PlayerStatModifiers { get; set; }
 
 
-        
     }
 }
