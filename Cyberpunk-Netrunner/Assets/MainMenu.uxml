@@ -1,0 +1,44 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="Stat" src="project://database/Assets/UI/Stat.uxml?fileID=9197481963319205126&amp;guid=7af8b1c78fb5c3d41a0f3c348d153b83&amp;type=3#Stat" />
+    <Style src="project://database/Assets/MainMenu.uss?fileID=7433441132597879392&amp;guid=e4070b339a97699419d90dda009cb2f3&amp;type=3#MainMenu" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.66); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; height: auto;">
+        <ui:GroupBox style="flex-direction: row; margin-bottom: 0; padding-bottom: 0;">
+            <ui:Button text="Stats" display-tooltip-when-elided="true" class="Tab" style="margin-bottom: 0; padding-bottom: 0;" />
+            <ui:Button text="Skills" display-tooltip-when-elided="true" class="Tab" />
+            <ui:Button text="Gear" display-tooltip-when-elided="true" class="Tab" />
+            <ui:Button text="Cybernetics" display-tooltip-when-elided="true" class="Tab" />
+            <ui:Button text="Jack In" display-tooltip-when-elided="true" class="Tab" />
+        </ui:GroupBox>
+    </ui:VisualElement>
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.66); color: rgb(255, 255, 255); flex-shrink: 1; flex-direction: column; align-self: auto; align-items: stretch; justify-content: flex-start; translate: 0 0; text-overflow: clip;">
+        <ui:GroupBox name="StatTab" class="TabContainer" style="height: auto; margin-left: 0; margin-right: 0; padding-left: 0;">
+            <ui:GroupBox style="flex-direction: row; flex-wrap: nowrap; flex-shrink: 0.5; height: auto;">
+                <ui:GroupBox style="flex-direction: row; flex-shrink: 0.5; overflow: hidden; height: 44px;">
+                    <ui:Label tabindex="-1" text="Handle" display-tooltip-when-elided="true" style="width: 50%; color: rgb(255, 255, 255);" />
+                    <ui:TextField picking-mode="Ignore" style="width: 68px; -unity-text-align: upper-center; flex-shrink: 0.5;" />
+                </ui:GroupBox>
+                <ui:GroupBox style="flex-direction: row; height: 44px;">
+                    <ui:Label tabindex="-1" text="S.I.N." display-tooltip-when-elided="true" enable-rich-text="true" style="width: auto; color: rgb(255, 255, 255);" />
+                    <ui:TextField picking-mode="Ignore" style="width: 68px;" />
+                </ui:GroupBox>
+            </ui:GroupBox>
+            <ui:GroupBox style="flex-wrap: wrap; flex-direction: row; height: auto; font-size: 15px; text-overflow: clip; -unity-text-align: upper-center; overflow: visible; scale: 1 1; translate: 0 0; max-height: 100%; width: 100%;">
+                <ui:Instance template="Stat" name="Stat" style="height: auto; max-height: 100%;" />
+                <ui:Instance template="Stat" name="Stat" />
+                <ui:Instance template="Stat" name="Stat" />
+                <ui:Instance template="Stat" name="Stat" />
+                <ui:Instance template="Stat" name="Stat" />
+                <ui:Instance template="Stat" name="Stat" />
+                <ui:Instance template="Stat" name="Stat" />
+                <ui:Instance template="Stat" name="Stat" />
+                <ui:Instance template="Stat" name="Stat" />
+                <ui:Instance template="Stat" name="Stat" />
+                <ui:Instance template="Stat" name="Stat" />
+                <ui:Instance template="Stat" name="Stat" />
+            </ui:GroupBox>
+        </ui:GroupBox>
+    </ui:VisualElement>
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.66);">
+        <ui:Button text="Save" display-tooltip-when-elided="true" style="width: 20%; align-self: flex-end;" />
+    </ui:VisualElement>
+</ui:UXML>

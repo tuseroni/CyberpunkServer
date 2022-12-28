@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3312779729759857721}
   - component: {fileID: 8669948733035698535}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: ICON
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 982f22aba684c954a8146bb76daf8dc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -136,8 +136,6 @@ MonoBehaviour:
   Fortress: {fileID: 0}
   ProgramName: {fileID: 2394941190138409539}
   Subroutines: []
-  Str: 1
-  Rezzed: 0
   MaxX: 0
   MaxY: 0
   MinX: 999

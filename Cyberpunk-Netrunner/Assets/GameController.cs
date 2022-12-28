@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Security.Cryptography;
 
 public enum DamageType
 {
@@ -65,7 +66,7 @@ public class GameController : MonoBehaviour
         PlayerState = PlayerInteractionState.Idle;
         WaitingProgram.OrderMove(tile);
     }
-    public bool DoISeeTarget(NetActor Target, NetActor Seeker)
+    public async Task<bool> DoISeeTarget(NetActor Target, NetActor Seeker)
     {
 
         var targetHide = Target.doEvasionCheck();
@@ -81,7 +82,7 @@ public class GameController : MonoBehaviour
 
         if(SeekerSeek>targetHide)
         {
-            SendUIMessage($"{Seeker.Name} Spotted {Target.Name}!");
+            await SendUIMessage($"{Seeker.Name} Spotted {Target.Name}!");
             return true;
         }
         else
@@ -116,47 +117,54 @@ public class GameController : MonoBehaviour
         Initiative[0].Continue = true;
         CurrentActorInInitiative = Initiative[0];
     }
-    public bool RollToHit(NetActor target,NetActor Attacker)
+    public async Task<bool> RollToHit(NetActor target,NetActor Attacker)
     {
-        SendUIMessage($"{Attacker.Name} is Attacking {target.Name}");
+        List<Task> Messages = new List<Task>();
+        bool ret = false;
+        Messages.Add(SendUIMessage($"{Attacker.Name} is Attacking {target.Name}"));
         int attack = Attacker.RollToHit();
         int defense = target.RollToBeHit();
         if(attack>=defense)
         {
-            SendUIMessage("HIT!!");
-            return true;
+            Messages.Add(SendUIMessage("HIT!!"));
+            ret = true;
+            //return true;
         }
         else
         {
-            SendUIMessage("MISS!!");
-            return false;
+            Messages.Add(SendUIMessage("MISS!!"));
+            ret = false;
+            //return false;
         }
+        await Task.WhenAll(Messages);
+        return ret;
+
     }
-    public void SendUIMessage(string Message)
+    public async Task SendUIMessage(string Message)
     {
-        MenuController.ShowMessage(Message);
+        await MenuController.ShowMessage(Message);
     }
-    public void DoDamage(NetActor Target, Damage damage)
+    public async Task DoDamage(NetActor Target, Damage damage)
     {
         
         var damageTaken=Target.TakeDamage(damage);
-        SendUIMessage($"{Target.Name} takes {damageTaken} of damage to {getNameFromDamageType(damage)}");
+        await SendUIMessage($"{Target.Name} takes {damageTaken} of damage to {getNameFromDamageType(damage)}");
         if (Target is ProgramController)
         {
             if (((ProgramController)Target).Strength <= 0)
             {
-                DestroyProgram(((ProgramController)Target));
+                await DestroyProgram(((ProgramController)Target));
             }
         }
         
     }
     public void SetPlayerStunned(PlayerController player, bool stunned)
     {
-
+        MenuController.Stunned = stunned;
     }
-    public void DestroyProgram(ProgramController Program)
+    public async Task DestroyProgram(ProgramController Program)
     {
-        SendUIMessage($"{Program.Name} Has Been Destroyed");
+        await SendUIMessage($"{Program.Name} Has Been Destroyed");
         Program.Rezzed = false;
         int index = Initiative.IndexOf(Program);
         if (index >= 0)
@@ -214,23 +222,91 @@ public class GameController : MonoBehaviour
         CurrentActorInInitiative.Continue = true;
         CurrentActorInInitiative.BeginTurn();
     }
-    public static int RollD10()
+    /// <summary>
+    /// Generates a random integer within a specified range using the 
+    /// System.Security.Cryptography.RandomNumberGenerator class.
+    /// </summary>
+    /// <param name="low">The minimum value for the random integer.(Inclusive)</param>
+    /// <param name="high">The maximum value for the random integer.(Exclusive)</param>
+    /// <returns>A random integer within the specified range.</returns>
+    static int GetRandomRange(int low, int high)
+    {
+        int rand;
+        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+        {
+            byte[] randomBytes = new byte[1];
+            rng.GetBytes(randomBytes);
+            rand = (int)(randomBytes[0] % (high - low)) + low;
+        }
+        return rand;
+    }
+    /// <summary>
+    /// Generates a random integer within the range of 1 to 10 using the 
+    /// GenerateRandomInt function and the "exploding dice" rule, where 
+    /// if a 10 is rolled, another roll is added to the result until a 
+    /// number other than 10 is rolled.
+    /// </summary>
+    /// <param name="canCrit">Determines whether or not to apply the "exploding dice" rule. 
+    /// If set to true, the function will keep generating random 
+    /// integers until a number other than 10 is rolled. If set to false, the function will 
+    /// only roll once</param>
+    /// <returns>The final result of the "exploding dice" roll.</returns>
+    public static int RollD10(bool canCrit = true)
+    {
+        int ret = 0;
+        int rand;
+
+        ret= rand = GetRandomRange(1, 11);
+
+        Debug.Log($"First Roll {rand}");
+        if (canCrit)
+        {
+            while (rand == 10)
+            {
+                Debug.Log("CRIT");
+                Debug.Log($"CritRoll {rand}");
+                rand =GetRandomRange(1, 11);
+                Debug.Log(rand);
+                ret += rand;
+            }
+        }
+        Debug.Log($"Total {rand}");
+        return ret;
+    }
+    public static int RollND10(int n)
     {
         var ret = 0;
-        int rand= ret = UnityEngine.Random.Range(1, 11);
-        while(rand==10)
+        for(var i=0;i<n;i++)
         {
-            rand = UnityEngine.Random.Range(1, 11);
-            ret += rand;
+            ret += RollD10(false);
         }
         return ret;
     }
+
+    //public static int RollD10(bool canCrit = true)
+    //{
+    //    var ret = 0;
+    //    int rand = ret = UnityEngine.Random.Range(1, 11);
+    //    Debug.Log(rand);
+    //    if (canCrit)
+    //    {
+    //        while (rand == 10)
+    //        {
+    //            Debug.Log("CRIT");
+    //            rand = UnityEngine.Random.Range(1, 11);
+    //            Debug.Log(rand);
+    //            ret += rand;
+    //        }
+    //    }
+    //    Debug.Log(ret);
+    //    return ret;
+    //}
     public static int RollND6(int n)
     {
         var ret = 0;
         for (var i = 0; i < n; i++)
         {
-            int rand = UnityEngine.Random.Range(1, 6);
+            int rand = GetRandomRange(1, 7);
             ret += rand;
         }
         return ret;

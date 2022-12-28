@@ -245,7 +245,7 @@ public class UIManagerTech : MonoBehaviour
 #if (DEBUG)
 		try
 		{
-			SignalrHandler.CreateConnection(debugConnection, "ComHub");
+			SignalrHandler.CreateConnection(ProductionConnection, "ComHub");
 		}
 		catch(Exception ex)
         {

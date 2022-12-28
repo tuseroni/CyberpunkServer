@@ -4,7 +4,7 @@ using UnityEngine;
 using CyberpunkServer.Models.DTO;
 using System.Linq;
 using TMPro;
-
+using System.Threading.Tasks;
 
 class Armor : ProgramController
 {
@@ -24,12 +24,17 @@ class Armor : ProgramController
             {
                 Player.ProgramSP -= 3;
             }
+            else
+            {
+                Player.ProgramSP += 3;
+            }
         }
     }
-    public override void Search()
+    public override async Task<NetActor> Search()
     {
+        return null;
     }
-    public override float Patrol(int maxMove)
+    public override async Task<float> Patrol(int maxMove)
     {
         return 1.0f;
     }
@@ -46,9 +51,9 @@ class Armor : ProgramController
         transform.localPosition = new Vector3(0f, 34f, -39.8f);
         DoAction();
     }
-    public override int DoAction(NetActor target = null)
+    public override async Task<int> DoAction(NetActor target = null)
     {
-        Player.ProgramSP += 3;
+        await Task.Run(() => Player.ProgramSP += 3);
         return 0;
     }
 }

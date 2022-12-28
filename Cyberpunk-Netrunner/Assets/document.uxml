@@ -2,86 +2,34 @@
     <ui:Template name="ActiveProgramTemplate" src="project://database/Assets/ActiveProgramTemplate.uxml?fileID=9197481963319205126&amp;guid=d1ff996386d5b22428b79a70454b54a8&amp;type=3#ActiveProgramTemplate" />
     <Style src="project://database/Assets/menu.uss?fileID=7433441132597879392&amp;guid=8dd3e29c9ef78de4481a574f5ca0e8b2&amp;type=3#menu" />
     <MenuController name="MenuController" style="height: 100%;">
-        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); overflow: hidden;">
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); overflow: hidden; background-image: url(&apos;project://database/Assets/Cyberpunk%20Interface.png?fileID=2800000&amp;guid=c1cd2274e16e1ad42baa8c68edd71518&amp;type=3#Cyberpunk Interface&apos;);">
             <ui:Label tabindex="-1" text="Ninja Destroyed Killer VI" display-tooltip-when-elided="true" name="MessageLabel" class="MessageLabel" style="-unity-text-align: upper-center; font-size: 24px; -unity-font-style: normal; overflow: visible; white-space: normal; position: absolute; top: 50%;" />
-            <ui:Button text="Active Programs" display-tooltip-when-elided="true" name="ActiveProgramButton" style="height: 46px; width: 45%; font-size: 15%; -unity-font-style: normal; white-space: nowrap; -unity-text-align: middle-center;" />
-            <ui:GroupBox style="height: 20%; flex-direction: row; flex-wrap: wrap; position: absolute; top: 48px;">
-                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row; overflow: hidden;">
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                </ui:GroupBox>
-                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                </ui:GroupBox>
-                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                </ui:GroupBox>
-                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                </ui:GroupBox>
-                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                </ui:GroupBox>
-                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                </ui:GroupBox>
-                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                </ui:GroupBox>
-                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                </ui:GroupBox>
-                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                </ui:GroupBox>
-                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
-                </ui:GroupBox>
+            <ui:GroupBox style="position: absolute; right: 0; bottom: 0; flex-wrap: wrap; flex-direction: row;">
+                <ui:Button text="^" display-tooltip-when-elided="true" name="btnForward" style="position: absolute; right: 35px; bottom: 77px; width: 36px; border-top-left-radius: 5px; border-top-right-radius: 5px;" />
+                <ui:Button text="&lt;" display-tooltip-when-elided="true" name="btnLeft" style="right: 70px; position: absolute; bottom: 38px; border-top-left-radius: 5px; border-bottom-left-radius: 5px;" />
+                <ui:Button text="&gt;" display-tooltip-when-elided="true" name="btnRight" style="position: absolute; right: 0; bottom: 40px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;" />
+                <ui:Button text="V" display-tooltip-when-elided="true" name="btnBack" style="flex-wrap: nowrap; position: absolute; bottom: 0; right: 35px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;" />
             </ui:GroupBox>
-            <ui:Button text="Menu" display-tooltip-when-elided="true" name="MenuButton" style="height: 46px; width: 46%; font-size: 50%; -unity-font-style: normal; white-space: nowrap; -unity-text-align: middle-center; align-self: flex-end; align-items: auto; top: 0; position: absolute;" />
-            <ui:GroupBox name="ActiveProgramBox" class="MenuBox Hidden" style="position: relative; height: auto; width: auto; overflow: visible; margin-top: 0; margin-right: 0; margin-left: 0; margin-bottom: 0; padding-left: 0; padding-top: 0;">
+            <ui:GroupBox name="ActiveProgramBox" class="MenuBox ResetSlide" style="position: absolute; height: auto; width: 101px; overflow: visible; margin-top: 0; margin-right: 0; margin-left: 0; margin-bottom: 0; padding-left: 0; padding-top: 0; top: 114px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; left: 34px; transition-property: translate; transition-duration: 0.25s;">
                 <ui:GroupBox name="ActiveProgramList" style="overflow: visible; visibility: visible; height: 237px; transition-duration: 0.3s; margin-left: 0; padding-left: 0; margin-right: 0; padding-bottom: 0; padding-top: 0;">
                     <ui:ScrollView horizontal-scroller-visibility="Hidden" touch-scroll-type="Elastic" style="height: auto;">
                         <ui:VisualElement name="ActiveProgramHolder" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-                            <ui:Instance template="ActiveProgramTemplate" name="ActiveProgramTemplate" />
-                            <ui:Instance template="ActiveProgramTemplate" name="ActiveProgramTemplate" />
-                            <ui:Instance template="ActiveProgramTemplate" name="ActiveProgramTemplate" />
+                            <ui:Instance template="ActiveProgramTemplate" name="ActiveProgramTemplate">
+                                <AttributeOverrides element-name="MenuButton" text="Ninja" />
+                            </ui:Instance>
+                            <ui:Instance template="ActiveProgramTemplate" name="ActiveProgramTemplate">
+                                <AttributeOverrides element-name="MenuButton" text="Invisibility" />
+                            </ui:Instance>
+                            <ui:Instance template="ActiveProgramTemplate" name="ActiveProgramTemplate">
+                                <AttributeOverrides element-name="MenuButton" text="Armor" />
+                            </ui:Instance>
                             <ui:Instance template="ActiveProgramTemplate" name="ActiveProgramTemplate" />
                             <ui:Instance template="ActiveProgramTemplate" name="ActiveProgramTemplate" />
                         </ui:VisualElement>
                     </ui:ScrollView>
                 </ui:GroupBox>
             </ui:GroupBox>
-            <ui:GroupBox name="MenuBox" class="MenuBox Hidden" style="width: auto; right: auto; position: relative; left: 0; color: rgb(219, 219, 219); -unity-text-align: upper-right; align-self: flex-end;">
+            <ui:GroupBox name="MenuBox" class="MenuBox Menu SlideIn SlideOut" style="width: auto; right: 39px; position: absolute; left: auto; color: rgb(219, 219, 219); -unity-text-align: upper-right; align-self: flex-end; background-color: rgb(32, 60, 69); margin-top: 0; background-image: none; top: 117px; transition-duration: 0.25s; transition-property: translate; border-top-left-radius: 20px; border-bottom-left-radius: 20px; transition-delay: 0s;">
                 <ui:Label tabindex="-1" text="LOCATE REMOTE" display-tooltip-when-elided="true" name="LocateRemote" style="width: auto;" />
                 <ui:Label tabindex="-1" text="CONTROL REMOTE" display-tooltip-when-elided="true" name="ControlRemote" />
                 <ui:Label tabindex="-1" text="LOG OFF" display-tooltip-when-elided="true" name="LogOff" />
@@ -104,7 +52,72 @@
                 <ui:Label tabindex="-1" text="READ" display-tooltip-when-elided="true" name="Read" />
                 <ui:Label tabindex="-1" text="CREATE/DELETE" display-tooltip-when-elided="true" name="CreateDelete" />
             </ui:GroupBox>
-            <ui:Button text="End Turn" display-tooltip-when-elided="true" name="btnEndTurn" style="position: absolute; bottom: 0; width: 30%; height: 10%; font-size: 19px; right: 0; border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px;" />
+            <ui:VisualElement focusable="false" name="overlay" picking-mode="Ignore" class="Overlay" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-image: url(&apos;project://database/Assets/Cyberpunk%20Interface(Grey).png?fileID=2800000&amp;guid=e00d8dc03e02219419189d072e3ab103&amp;type=3#Cyberpunk Interface(Grey)&apos;);" />
+            <ui:Button text="End Turn" display-tooltip-when-elided="true" name="btnEndTurn" style="position: absolute; bottom: 0; width: 30%; height: 10%; right: auto; border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px;" />
+            <ui:GroupBox style="height: 20%; flex-direction: row; flex-wrap: wrap; position: absolute; top: -6px;">
+                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row; overflow: hidden;">
+                    <ui:Toggle class="DamageToggle" style="width: 25%; background-color: rgb(255, 0, 0); background-image: none;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                </ui:GroupBox>
+                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                </ui:GroupBox>
+                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                </ui:GroupBox>
+                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                </ui:GroupBox>
+                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                </ui:GroupBox>
+                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                </ui:GroupBox>
+                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                </ui:GroupBox>
+                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                </ui:GroupBox>
+                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                </ui:GroupBox>
+                <ui:GroupBox class="DamageBox" style="width: 20%; align-self: auto; align-items: flex-start; flex-direction: row;">
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                    <ui:Toggle class="DamageToggle" style="width: 25%;" />
+                </ui:GroupBox>
+            </ui:GroupBox>
+            <ui:Button text="&gt;" display-tooltip-when-elided="true" name="ActiveProgramButton" style="height: 39px; width: 29px; -unity-font-style: bold; white-space: nowrap; -unity-text-align: middle-center; font-size: 22px; top: 183px; position: absolute; background-color: rgba(87, 211, 250, 0); color: rgb(255, 255, 255);" />
+            <ui:Button text="&lt;" display-tooltip-when-elided="true" name="MenuButton" style="height: 68px; width: 44px; -unity-font-style: bold; white-space: nowrap; -unity-text-align: middle-center; align-self: flex-end; align-items: auto; top: 167px; position: absolute; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; background-image: none; background-color: rgba(87, 211, 250, 0); color: rgb(255, 255, 255); font-size: 31px;" />
         </ui:VisualElement>
     </MenuController>
 </ui:UXML>

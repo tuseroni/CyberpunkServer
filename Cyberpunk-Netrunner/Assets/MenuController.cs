@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,6 +19,7 @@ public class MenuController : VisualElement
 
     private GroupBox ProgramList;
     private Label MessageLabel;
+    private VisualElement OverlayElem;
     List<string> Messages = new List<string>();
     int PlayerDamage = 0;
 
@@ -34,24 +36,53 @@ public class MenuController : VisualElement
     public MenuController()
     {
         this.RegisterCallback<GeometryChangedEvent>(onGeometryChange);
-        doMessageLoop();
+        //doMessageLoop();
     }
     public void PlayerEndsTurn()
     {
         
         btnEndTurn.AddToClassList("Hidden");
     }
-    public void PlayerBeginsTurn()
+    public bool Stunned
     {
-        ShowMessage("Your Turn");
+        get
+        {
+            return OverlayElem.ClassListContains("Stunned");
+        }
+        set
+        {
+            if (value)
+            {
+                OverlayElem.AddToClassList("Stunned");
+            }
+            else
+            {
+                OverlayElem.RemoveFromClassList("Stunned");
+            }
+        }
+    }
+    public async Task PlayerBeginsTurn()
+    {
+        await ShowMessage("Your Turn");
         btnEndTurn.RemoveFromClassList("Hidden");
     }
     Task MessageTask;
     bool AnimationPlaying = false;
-    public void ShowMessage(string Message)
+    public async Task ShowMessage(string Message)
     {
-        
-        Messages.Add(Message);
+        while (AnimationPlaying)
+        {
+            await Task.Delay(250);
+        }
+        var newMessage = Message;
+        MessageLabel.text = newMessage;
+        AnimationPlaying = true;
+        MessageLabel.AddToClassList("SlideIn");
+        while(AnimationPlaying)
+        {
+            await Task.Delay(250);
+        }
+        //Messages.Add(Message);
         //if (!MessageLabel.ClassListContains("SlideIn") && !MessageLabel.ClassListContains("SlideOut"))
         //{
         //    //if (MessageLabel.ClassListContains("ResetSlide"))
@@ -97,7 +128,7 @@ public class MenuController : VisualElement
     }
     void closeAllMenus()
     {
-        MenuBox.AddToClassList("Hidden");
+        MenuBox.AddToClassList("SlideOut");
         ActiveProgramBox.AddToClassList("Hidden");
     }
 
@@ -156,12 +187,15 @@ public class MenuController : VisualElement
         ActiveProgramHolder = document.Query<VisualElement>("ActiveProgramHolder");
         ProgramList = document.Query<GroupBox>("ProgramList");
         MessageLabel = document.Query<Label>("MessageLabel");
+        OverlayElem = document.Query<VisualElement>("overlay");
         MenuButton.RegisterCallback<ClickEvent>(MenuButton_clicked);
+        
         ActiveProgramButton.RegisterCallback<ClickEvent>(ActiveProgramButton_clicked);
         RunProgramLabel.RegisterCallback<ClickEvent>(RunProgramClicked);
         MessageLabel.RegisterCallback<TransitionEndEvent>(onMessageTransitionEnd);
         MenuBox.RegisterCallback<ClickEvent>(MenuClick);
         ActiveProgramBox.RegisterCallback<ClickEvent>(ActiveProgramBoxClick);
+        
         document.Query<Scroller>().ForEach(x => x.RegisterCallback<ClickEvent>(ev => ev.StopPropagation()));
         
         updateDamageGui();
@@ -173,12 +207,12 @@ public class MenuController : VisualElement
 
     private void ActiveProgramBoxClick(ClickEvent evt)
     {
-        ActiveProgramBox.AddToClassList("Hidden");
+        ActiveProgramBox.AddToClassList("ResetSlide");
     }
 
     private void MenuClick(ClickEvent evt)
     {
-        MenuBox.AddToClassList("Hidden");
+        MenuBox.AddToClassList("SlideOut");
     }
 
     private void onMessageTransitionEnd(TransitionEndEvent evt)
@@ -188,28 +222,28 @@ public class MenuController : VisualElement
 
     private void MenuButton_clicked(ClickEvent ev)
     {
-        if (MenuBox.ClassListContains("Hidden"))
+        if (MenuBox.ClassListContains("SlideOut"))
         {
-            ActiveProgramBox.AddToClassList("Hidden");
-            MenuBox.RemoveFromClassList("Hidden");
+            ActiveProgramBox.AddToClassList("ResetSlide");
+            MenuBox.RemoveFromClassList("SlideOut");
         }
         else
         {
-            MenuBox.AddToClassList("Hidden");
+            MenuBox.AddToClassList("SlideOut");
             
         }
         //toggleClass(MenuBox, "Hidden");
     }
     private void ActiveProgramButton_clicked(ClickEvent ev)
     {
-        if(ActiveProgramBox.ClassListContains("Hidden"))
+        if(ActiveProgramBox.ClassListContains("ResetSlide"))
         {
-            MenuBox.AddToClassList("Hidden");
-            ActiveProgramBox.RemoveFromClassList("Hidden");
+            MenuBox.AddToClassList("SlideOut");
+            ActiveProgramBox.RemoveFromClassList("ResetSlide");
         }
         else
         {
-            ActiveProgramBox.AddToClassList("Hidden");
+            ActiveProgramBox.AddToClassList("ResetSlide");
         }
         
         

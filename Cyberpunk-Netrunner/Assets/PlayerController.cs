@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 //using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -210,7 +211,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
     {
         int stunBonus = 0 + (int)Math.Floor((playerData.Dammage - 1) / 4f);
         var bt = playerData.StatLookup["BT"].Total;
-        var d10 = GameController.RollD10();
+        var d10 = GameController.RollD10(false);
         if (d10 > (bt - stunBonus))
         {
             return true;
@@ -323,6 +324,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         var programElem = controller.ActiveProgramAsset.CloneTree();
         ActiveProgramController Progcontroller = programElem.Query<ActiveProgramController>();
         Progcontroller.controller = controller;
+        Progcontroller.GC = GameController;
         Progcontroller.onActionCalled += Progcontroller_onActionCalled;
         controller.ActiveProgramController = Progcontroller;
         controller.GameController = GameController;
@@ -371,7 +373,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
             y = 0;
         }
         var tileObj = grid.gridTiles[y][x];
-        var tile = tileObj.GetComponent<TileController>();
+        var tile = tileObj;
         if (tile.ContainedItem.Where(t => t.Solid).Any())
         {
             return null;
@@ -404,18 +406,42 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         btnEndTurn= Document.rootVisualElement.Query<Button>("btnEndTurn");
         ActiveProgramHolder = Document.rootVisualElement.Query<VisualElement>("ActiveProgramHolder");
         MenuController= Document.rootVisualElement.Query<MenuController>("MenuController");
+        ((Button)Document.rootVisualElement.Query<Button>("btnForward")).RegisterCallback<ClickEvent>(btnForwardClick);
+        ((Button)Document.rootVisualElement.Query<Button>("btnRight")).RegisterCallback<ClickEvent>(btnRightClick);
+        ((Button)Document.rootVisualElement.Query<Button>("btnLeft")).RegisterCallback<ClickEvent>(btnLeftClick);
+        ((Button)Document.rootVisualElement.Query<Button>("btnBack")).RegisterCallback<ClickEvent>(btnBackClick);
+
         btnEndTurn.RegisterCallback<ClickEvent>(btnEndTurnClick);
     }
-    public void BeginTurn()
+
+    private void btnForwardClick(ClickEvent evt)
+    {
+        MoveForward();
+    }
+    private void btnRightClick(ClickEvent evt)
+    {
+        MoveRight();
+    }
+    private void btnLeftClick(ClickEvent evt)
+    {
+        MoveLeft();
+    }
+    private void btnBackClick(ClickEvent evt)
+    {
+        MoveBackward();
+    }
+
+    public async Task BeginTurn()
     {
         ActionsDone = 0;
-        MenuController.PlayerBeginsTurn();
+        await MenuController.PlayerBeginsTurn();
     }
     private void btnEndTurnClick(ClickEvent evt)
     {
         if (Stunned)
         {
             Stunned = CheckStun();
+            GameController.SetPlayerStunned(this, Stunned);
         }
         MenuController.PlayerEndsTurn();
         GameController.EndTurn(this);
@@ -526,7 +552,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         }
 
         var tileObj = grid.gridTiles[y][x];
-        var tile = tileObj.GetComponent<TileController>();
+        var tile = tileObj;
         MoveToTile(tile);
     }
     public void MoveLeft()

@@ -157,7 +157,7 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         
         foreach (var wall in fort.FortressWalls)
         {
-            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value].GetComponent<TileController>();
+            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value];
             var wallObj = GameObject.Instantiate(WallPrefab,Vector3.zero, Quaternion.identity);
             var wallController= wallObj.GetComponent<WallController>();
             wallController.WallStrength = WallStrength;
@@ -186,7 +186,7 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         bounds = newBounds;
         foreach (var wall in fort.FortressCPU)
         {
-            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value].GetComponent<TileController>();
+            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value];
             var wallObj = GameObject.Instantiate(CPUPrefab, Vector3.zero, Quaternion.identity);
             var controller = wallObj.GetComponent<CPUController>();
             CPUs.Add(controller);
@@ -198,13 +198,13 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         }
         foreach (var wall in fort.FortressMemory)
         {
-            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value].GetComponent<TileController>();
+            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value];
             var wallObj = GameObject.Instantiate(MemoryPrefab, Vector3.zero, Quaternion.identity);
             Tile.ContainedItem.Add(wallObj.GetComponent<MemoryController>());
         }
         foreach (var wall in fort.FortressCodeGates)
         {
-            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value].GetComponent<TileController>();
+            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value];
             var wallObj = GameObject.Instantiate(CodeGatePrefab, Vector3.zero, Quaternion.identity);
             var codeGateController= wallObj.GetComponent<CodeGateController>();
             codeGateController.WallStrength = wall.WallStrength.Value;
@@ -214,8 +214,12 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         {
             if (program.Strength > 0)
             {
-                var wallObj = GameObject.Instantiate(ProgramPrefab, Vector3.zero, Quaternion.identity);
-
+                var prefab = Resources.Load<GameObject>($"Programs/{program.Program.name}");
+                if (prefab == null)
+                {
+                    prefab = ProgramPrefab;
+                }
+                var wallObj = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
                 GameController.addProgram(wallObj.GetComponent<ProgramController>(), this, program);
                 //wallObj.GetComponent<ProgramController>().addProgram(Grid, fort, program,this);
             }

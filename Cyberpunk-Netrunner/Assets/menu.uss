@@ -1,5 +1,5 @@
 Button {
-    font-size: 107px;
+    background-color: rgb(87, 211, 250);
 }
 
 Label {
@@ -14,19 +14,11 @@ Label {
 }
 
 Label:hover {
-    background-color: rgba(165, 177, 248, 0.7);
+    background-color: rgba(30, 223, 220, 0.7);
     border-left-color: rgb(3, 0, 255);
     border-right-color: rgb(3, 0, 255);
     border-top-color: rgb(3, 0, 255);
     border-bottom-color: rgb(3, 0, 255);
-    border-left-width: 3px;
-    border-right-width: 3px;
-    border-top-width: 3px;
-    border-bottom-width: 3px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
     transition-duration: 0.3s;
     display: flex;
 }
@@ -47,7 +39,7 @@ Label:hover {
 }
 
 .MenuBox {
-    background-color: rgba(0, 0, 0, 0.57);
+    background-color: rgb(32, 60, 69);
 }
 
 .MenuBox Label {
@@ -127,8 +119,8 @@ Label:hover {
 .ResetSlide {
     translate: -200% 0;
     transition-property: translate;
-    transition-duration: 0.01s;
-    transition-timing-function: linear;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in-out-sine;
 }
 
 .ActiveProgramActionBlock {
@@ -146,4 +138,17 @@ Label:hover {
     padding-top: 0;
     padding-bottom: 0;
     background-color: rgba(0, 0, 0, 0);
+}
+
+.Menu Label {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.Overlay {
+    -unity-background-image-tint-color: rgb(76, 209, 225);
+}
+
+.Overlay.Stunned {
+    -unity-background-image-tint-color: rgb(255, 242, 119);
 }

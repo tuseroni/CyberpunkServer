@@ -5,6 +5,7 @@ using CyberpunkServer.Models.DTO;
 using System.Linq;
 using TMPro;
 using UnityEngine.UIElements;
+using System.Threading.Tasks;
 
 public enum ProgramState
 {
@@ -36,9 +37,9 @@ public class ProgramController : MonoBehaviour, NetActor
             return Program.name;
         }
     }
-    public void BeginTurn()
+    public async Task BeginTurn()
     {
-        CheckedFor.Clear();
+        await Task.Run(()=> CheckedFor.Clear());
     }
     public GameObject Object { get => gameObject; set { } }
     ProgramData _Program;
@@ -73,6 +74,13 @@ public class ProgramController : MonoBehaviour, NetActor
             _Program = value;
             Functions.Clear();
             Options.Clear();
+            var ICON = transform.Find("ICON")?.gameObject;
+            Texture2D img = Resources.Load<Texture2D>($"Icons/{value.name}");
+            if (img != null && ICON !=null)
+            {
+                var mr = ICON.GetComponent<MeshRenderer>();
+                mr.material.mainTexture = img;
+            }
             if (value != null)
             {
                 foreach (var function in value.ProgramFunctions)
@@ -154,15 +162,14 @@ public class ProgramController : MonoBehaviour, NetActor
         }
         return Initiative;
     }
-    
-    public virtual int DoAction(NetActor target=null)
+    public virtual async Task<int> DoAction(NetActor target=null)
     {
         if(ActionsDone>=NumActions)
         {
             return 0;
         }
         int damage = 0;
-        if(!GameController.RollToHit(target, this))
+        if(!await GameController.RollToHit(target, this))
         {
             GameController.EndTurn(this);
             return 0;
@@ -172,7 +179,7 @@ public class ProgramController : MonoBehaviour, NetActor
             if(Functions.ContainsKey("Anti Program"))
             {
                 var newDamage = new Damage { Type = DamageType.Strength, Value = damage = GameController.RollD6() };
-                GameController.DoDamage(target, newDamage);
+                await GameController.DoDamage(target, newDamage);
             }
         }
         else if(target.Type==NetObjType.NetRunner)
@@ -180,7 +187,7 @@ public class ProgramController : MonoBehaviour, NetActor
             if (Functions.ContainsKey("Anti-Personnel"))
             {
                 var newDamage = new Damage { Type = DamageType.HP, Value = damage = GameController.RollD6() };
-                GameController.DoDamage(target, newDamage);
+                await GameController.DoDamage(target, newDamage);
             }
         }
         GameController.EndTurn(this);
@@ -207,7 +214,7 @@ public class ProgramController : MonoBehaviour, NetActor
         FortressProgram = program;
         if (canBePlaced)
         {
-            var tile = grid.gridTiles[FortressProgram.yPos][FortressProgram.xPos].GetComponent<TileController>();
+            var tile = grid.gridTiles[FortressProgram.yPos][FortressProgram.xPos];
             tile.ContainedItem.Add(this);
             currentTile = tile;
         }
@@ -235,13 +242,13 @@ public class ProgramController : MonoBehaviour, NetActor
         {
             ProgramName.text = program.Program.name;
         }
-        Search();
-        if (canSeeTarget && Target != null)
-        {
+        //Search();
+        //if (canSeeTarget && Target != null)
+        //{
 
-            DoAction(Target);
+        //    DoAction(Target);
 
-        }
+        //}
     }
     public void addProgram(GridController grid, FortressData fortress, FortressProgramsData program,FortressController Summoner)
     {
@@ -266,7 +273,7 @@ public class ProgramController : MonoBehaviour, NetActor
         }
         this.Owner = Summoner;
         FortressProgram = program;
-        var tile = grid.gridTiles[FortressProgram.yPos][FortressProgram.xPos].GetComponent<TileController>();
+        var tile = grid.gridTiles[FortressProgram.yPos][FortressProgram.xPos];
         tile.ContainedItem.Add(this);
         currentTile = tile;
         this.grid = grid;
@@ -307,7 +314,7 @@ public class ProgramController : MonoBehaviour, NetActor
     public NetActor Target;
     TileController lastSeenTile;
     List<NetActor> CheckedFor = new List<NetActor>();
-    private void FieldOfViewCheck()
+    private async Task<NetActor> FieldOfViewCheck()
     {
         if (Functions.ContainsKey("Anti Program"))
         {
@@ -351,11 +358,11 @@ public class ProgramController : MonoBehaviour, NetActor
                                     if (!CheckedFor.Contains(foundItem))
                                     {
                                         CheckedFor.Add(foundItem);
-                                        if (GameController.DoISeeTarget(foundItem, this))
+                                        if (await GameController.DoISeeTarget(foundItem, this))
                                         {
                                             canSeeTarget = true;
                                             Target = foundItem;
-                                            lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos].GetComponent<TileController>();
+                                            lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos];
                                             if (Owner is PlayerController)
                                             {
                                                 ((PlayerController)Owner).AddSpottedProgram((ProgramController)foundItem);
@@ -370,11 +377,11 @@ public class ProgramController : MonoBehaviour, NetActor
                                 if (!CheckedFor.Contains(foundItem))
                                 {
                                     CheckedFor.Add(foundItem);
-                                    if (GameController.DoISeeTarget(foundItem, this))
+                                    if (await GameController.DoISeeTarget(foundItem, this))
                                     {
                                         canSeeTarget = true;
                                         Target = foundItem;
-                                        lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos].GetComponent<TileController>();
+                                        lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos];
                                         break;
                                     }
                                 }
@@ -385,66 +392,17 @@ public class ProgramController : MonoBehaviour, NetActor
                 }
             }
         }
+        return Target;
     }
-    public virtual void Search()
+    public virtual async Task<NetActor> Search()
     {
-        FieldOfViewCheck();
+        return await FieldOfViewCheck();
     }
     public virtual void Attack()
     {
 
     }
-    public virtual float Patrol(int maxMove)
-    {
-        float WaitSeconds = 0.2f;
-        if (path.Count == maxMove)
-        {
-            if (WaitForSignal)
-            {
-                if (Continue)
-                {
-
-                    //maxMove = Random.Range(1, 6);
-                    //path.Clear();
-                    //amble();
-                    //Continue = false;
-                    if (Target!=null)
-                    {
-                        DoAction(Target);
-                    }
-                    else
-                    {
-                        GameController.EndTurn(this);
-                    }
-                    return 1.0f;
-                }
-            }
-            else
-            {
-
-                path.Clear();
-                amble();
-                return 1.0f;
-            }
-        }
-        else
-        {
-            Search();
-            if (Target==null)
-            {
-                amble();
-            }
-            else
-            {
-                DoAction(Target);
-            }
-        }
-        return WaitSeconds;
-
-
-
-    }
-    public virtual float MoveToTile(int maxMove)
+    public virtual async Task<float> Patrol(int maxMove)
     {
         float WaitSeconds = 0.2f;
         if (path.Count == maxMove)
@@ -460,13 +418,66 @@ public class ProgramController : MonoBehaviour, NetActor
                     //Continue = false;
                     if (Target != null)
                     {
-                        DoAction(Target);
+                        await DoAction(Target);
                     }
                     else
                     {
                         GameController.EndTurn(this);
                     }
-                    return 1.0f;
+                    WaitSeconds = 1.0f;
+                }
+            }
+            else
+            {
+
+                path.Clear();
+                amble();
+                WaitSeconds = 1.0f;
+            }
+        }
+        else
+        {
+            Target = await Search();
+            if (Target == null)
+            {
+                amble();
+            }
+            else
+            {
+                await DoAction(Target);
+            }
+
+        }
+        
+        return WaitSeconds;
+
+
+
+    }
+    public virtual async Task<float> MoveToTile(int maxMove)
+    {
+        
+        float WaitSeconds = 0.2f;
+        if (path.Count == maxMove)
+        {
+            if (WaitForSignal)
+            {
+                if (Continue)
+                {
+
+                    //maxMove = Random.Range(1, 6);
+                    //path.Clear();
+                    //amble();
+                    //Continue = false;
+                    if (Target != null)
+                    {
+                        await DoAction(Target);
+                    }
+                    else
+                    {
+                        GameController.EndTurn(this);
+                    }
+                    WaitSeconds = 1.0f;
                 }
             }
             else
@@ -474,19 +485,20 @@ public class ProgramController : MonoBehaviour, NetActor
 
                 path.Clear();
                 MoveToTargetTile();
-                return 1.0f;
+                WaitSeconds = 1.0f;
             }
         }
         else
         {
-            Search();
+            Target = await Search();
+
             if (Target == null)
             {
                 MoveToTargetTile();
             }
             else
             {
-                DoAction(Target);
+                await DoAction(Target);
             }
         }
         return WaitSeconds;
@@ -506,10 +518,10 @@ public class ProgramController : MonoBehaviour, NetActor
         }
         var neighbors = new List<TileController>
             {
-                grid.gridTiles[yPos+1][xPos].GetComponent<TileController>(),
-                grid.gridTiles[yPos][xPos+1].GetComponent<TileController>(),
-                grid.gridTiles[(yPos-1)>=0?yPos-1:0][xPos].GetComponent<TileController>(),
-                grid.gridTiles[yPos][(xPos-1)>=0?xPos-1:0].GetComponent<TileController>()
+                grid.gridTiles[yPos+1][xPos],
+                grid.gridTiles[yPos][xPos+1],
+                grid.gridTiles[(yPos-1)>=0?yPos-1:0][xPos],
+                grid.gridTiles[yPos][(xPos-1)>=0?xPos-1:0]
             };
         var validNeighors = new List<TileController>();
         var vectorToTile = new Vector2Int(TargetTile.xPos, TargetTile.yPos);
@@ -547,16 +559,16 @@ public class ProgramController : MonoBehaviour, NetActor
         }
     }
 
-    public virtual void Guard()
+    public virtual async Task Guard()
     {
-        Search();
+        await Search();
     }
     public virtual void Follow(PlayerController player)
     {
 
     }
     
-    public float DoStateAction()
+    public async Task<float> DoStateAction()
     {
         float WaitSeconds = 0.2f;
         if(WaitForSignal && !Continue)
@@ -566,18 +578,18 @@ public class ProgramController : MonoBehaviour, NetActor
         switch (State)
         {
             case ProgramState.patrolling:
-                WaitSeconds = Patrol(5);
+                WaitSeconds = await Patrol(5);
                 break;
             case ProgramState.idle:
-                Search();
+                await Search();
                 break;
             case ProgramState.guarding:
-                Guard();
+                await Guard();
                 break;
             case ProgramState.chasing:
                 break;
             case ProgramState.Moving:
-                MoveToTile(5);
+                await MoveToTile(5);
                 break;
         }
         return WaitSeconds;
@@ -624,7 +636,7 @@ public class ProgramController : MonoBehaviour, NetActor
             }
             if (grid.gridTiles.ContainsKey(newPos.x) && grid.gridTiles.ContainsKey(newPos.y))
             {
-                tile = grid.gridTiles[newPos.y][newPos.x].GetComponent<TileController>();
+                tile = grid.gridTiles[newPos.y][newPos.x];
                 if (tile.ContainedItem.Where(t => t.Solid).Any())
                 {
                     validMove = false;
@@ -678,18 +690,19 @@ public class ProgramController : MonoBehaviour, NetActor
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(HandleState());
+
+        HandleState();
 
     }
     public bool WaitForSignal { get; set; } = true;
     public bool Continue { get; set; } = true;
-    IEnumerator HandleState()
+    async Task HandleState()
     {
 
         while (true)
         {
-            var waitTime = DoStateAction();
-            yield return new WaitForSeconds(waitTime);
+            var waitTime = await DoStateAction();
+            await Task.Delay((int)(waitTime * 1000));
         }
     }
     // Update is called once per frame

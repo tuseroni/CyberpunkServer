@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 53a45040018356444a4968705b9f5a08, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -419,7 +419,7 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: ada98e79416fc914c850d9de3ade139a, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: fc3514a1f8946024291bbb9df6caaf68, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 9b9639fcf4578644f8d8338407e5cf3d, type: 3}
   m_SortingOrder: 0
@@ -990,6 +990,10 @@ PrefabInstance:
     - target: {fileID: 2113416682671294025, guid: 43a6164ca2a12524f97c462f267135bb, type: 3}
       propertyPath: m_Name
       value: Fort
+      objectReference: {fileID: 0}
+    - target: {fileID: 2113416682671294025, guid: 43a6164ca2a12524f97c462f267135bb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2113416682671294026, guid: 43a6164ca2a12524f97c462f267135bb, type: 3}
       propertyPath: Grid

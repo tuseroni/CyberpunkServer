@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Stat.uss?fileID=7433441132597879392&amp;guid=aeb627e0065c2a549af1b9a7c79c6894&amp;type=3#Stat" />
+    <StatController style="height: 100%;">
+        <ui:GroupBox name="EditBox" class="Hidden" style="position: absolute; left: 25%; top: 25%; right: 25%; bottom: 25%; width: 50%; height: 50%; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: rgba(0, 0, 0, 0.69);">
+            <ui:GroupBox style="border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-bottom-width: 1px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                <ui:Label tabindex="-1" text="Stat" display-tooltip-when-elided="true" style="color: rgb(255, 0, 0); -unity-text-align: upper-center; font-size: 19px; -unity-font-style: bold; align-self: auto; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+            </ui:GroupBox>
+            <ui:GroupBox />
+        </ui:GroupBox>
+        <ui:GroupBox name="StatBox" style="width: auto; flex-direction: row;">
+            <ui:Label tabindex="-1" text="Int" display-tooltip-when-elided="true" style="width: auto;" />
+            <ui:Label tabindex="-1" text="0" display-tooltip-when-elided="true" style="width: auto; right: 0; position: absolute;" />
+        </ui:GroupBox>
+    </StatController>
+</ui:UXML>

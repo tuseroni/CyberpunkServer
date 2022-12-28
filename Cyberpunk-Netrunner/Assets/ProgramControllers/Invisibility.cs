@@ -4,7 +4,7 @@ using UnityEngine;
 using CyberpunkServer.Models.DTO;
 using System.Linq;
 using TMPro;
-
+using System.Threading.Tasks;
 
 class Invisibility : ProgramController
 {
@@ -13,10 +13,11 @@ class Invisibility : ProgramController
     {
         
     }
-    public override void Search()
+    public override async Task<NetActor> Search()
     {
+        return null;
     }
-    public override float Patrol(int maxMove)
+    public override async Task<float> Patrol(int maxMove)
     {
         return 1.0f;
     }
@@ -32,9 +33,10 @@ class Invisibility : ProgramController
         transform.localPosition = new Vector3(0f, 34f, -39.8f);
         DoAction();
     }
-    public override int DoAction(NetActor target = null)
+    public override async Task<int> DoAction(NetActor target = null)
     {
-        Player.Invisible = true;
+        await Task.Run(() => Player.Invisible = true);
+        
         return 0;
     }
 }
