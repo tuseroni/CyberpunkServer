@@ -7,12 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using CyberpunkServer.Models.DTO;
 using System;
+public interface iDevicePrograms
+{
+	bool Rezzed { get; set; }
+	bool Packed { get; set; }
+	int Strength { get; set; }
+	ProgramData Program { get; set; }
+	int MU { get; }
+}
 
 namespace CyberpunkServer.Models.DTO
 {
-    public partial class PlayerCyberdeckProgramsData
-    {
+    public partial class PlayerCyberdeckProgramsData: iDevicePrograms
+	{
         public int id { get; set; }
         public Nullable<int> ProgramID { get; set; }
         public Nullable<int> PlayerCyberdeckID { get; set; }

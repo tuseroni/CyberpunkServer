@@ -34,11 +34,31 @@ public class GameController : MonoBehaviour
     Stack<NetActor> InitiativeStack = new Stack<NetActor>();
     Stack<String> Messages = new Stack<string>();
     NetActor CurrentActorInInitiative;
-    public MenuController MenuController;
+    MenuController _menuController;
+    public MenuController MenuController
+	{
+        get
+		{
+            if(_menuController==null)
+			{
+                MenuController = Document.rootVisualElement.Query<MenuController>("MenuController");
+            }
+            return _menuController;
+		}
+        set
+		{
+            _menuController = value;
+		}
+	}
     public UIDocument Document;
     public PlayerInteractionState PlayerState = PlayerInteractionState.Idle;
     int currentRound = 0;
     public GridController grid;
+    public delegate void ProgramDestroyed(ProgramController program);
+    public event ProgramDestroyed onProgramDestroyed;
+    public delegate void ItemSelected(Selectable item);
+    public event ItemSelected onItemSelect;
+    Selectable SelectedItem { get; set; }
     // Start is called before the first frame update
     void Start()
     {
@@ -56,10 +76,14 @@ public class GameController : MonoBehaviour
         WaitingProgram = program;
         PlayerState = PlayerInteractionState.Selecting;
     }
-    public void OrderProgramAttack(ProgramController program, NetItem Target)
+    public void OrderProgramAttack(ProgramController program)
     {
         WaitingProgram = program;
         PlayerState = PlayerInteractionState.Selecting;
+    }
+    public void OrderProgramPatrol(ProgramController program)
+	{
+        program.State = ProgramState.patrolling;
     }
     public void TileSelect(TileController tile)
     {
@@ -71,15 +95,6 @@ public class GameController : MonoBehaviour
 
         var targetHide = Target.doEvasionCheck();
         var SeekerSeek = Seeker.doDetectionCheck();
-        if (Target is ProgramController)
-        {
-            var targetProgram = (ProgramController)Target;
-            if(targetProgram.Options.ContainsKey("Invisibility") && !Seeker.DetectInvisibility)
-            {
-                targetHide = 999;
-            }
-        }
-
         if(SeekerSeek>targetHide)
         {
             await SendUIMessage($"{Seeker.Name} Spotted {Target.Name}!");
@@ -117,7 +132,7 @@ public class GameController : MonoBehaviour
         Initiative[0].Continue = true;
         CurrentActorInInitiative = Initiative[0];
     }
-    public async Task<bool> RollToHit(NetActor target,NetActor Attacker)
+    public async Task<bool> RollToHit(NetItem target,NetActor Attacker)
     {
         List<Task> Messages = new List<Task>();
         bool ret = false;
@@ -144,7 +159,7 @@ public class GameController : MonoBehaviour
     {
         await MenuController.ShowMessage(Message);
     }
-    public async Task DoDamage(NetActor Target, Damage damage)
+    public async Task DoDamage(NetItem Target, Damage damage)
     {
         
         var damageTaken=Target.TakeDamage(damage);
@@ -158,6 +173,14 @@ public class GameController : MonoBehaviour
         }
         
     }
+
+
+    internal void TargetSelect(NetItem _target)
+    {
+        PlayerState = PlayerInteractionState.Idle;
+        WaitingProgram.Attack(_target);
+    }
+
     public void SetPlayerStunned(PlayerController player, bool stunned)
     {
         MenuController.Stunned = stunned;
@@ -165,6 +188,7 @@ public class GameController : MonoBehaviour
     public async Task DestroyProgram(ProgramController Program)
     {
         await SendUIMessage($"{Program.Name} Has Been Destroyed");
+        onProgramDestroyed.Invoke(Program);
         Program.Rezzed = false;
         int index = Initiative.IndexOf(Program);
         if (index >= 0)
@@ -195,6 +219,10 @@ public class GameController : MonoBehaviour
         target.Initiative = ((PlayerController)target.Owner).Initiative + 1;
         if (target.canBePlaced)
         {
+            if (target.currentTile != null && !target.currentTile.ContainedItem.Contains(target))
+            {
+                target.currentTile.ContainedItem.Add(target);
+            }
             target.Continue = false;
             Initiative.Insert(summonerIndex + 1, (NetActor)target);
         }
@@ -202,7 +230,7 @@ public class GameController : MonoBehaviour
         {
             target.Continue = true;
         }
-        target.gameObject.SetActive(false);
+        target.gameObject.SetActive(true);
     }
     public void EndTurn(NetActor actor)
     {
@@ -344,10 +372,14 @@ public class GameController : MonoBehaviour
     public void addUtility(RunningProgram program)
     {
         Utilities.Add(program.Program.name, program);
+        if(program.Program.name== "Flip Switch 3.0")
+		{
+            MenuController.HasGlogo = true;
+		}
     }
     public void addPlayer(PlayerController player)
     {
-        player.GameController = this;
+        player.Ref = this;
         Players.Add(player);
     }
     public void rollInitiative()

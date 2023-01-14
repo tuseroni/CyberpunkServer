@@ -17,10 +17,11 @@ public class CodeGateController : MonoBehaviour,NetItem
             _WallStrength = value;
             for (var i = 0; i < 10; i++)
             {
-                wallCubes[i].SetActive(i <= (value - 1));
+                wallCubes[i].SetActive(i <= (6 - 1));
             }
         }
     }
+    public bool Selected { get; set; }
     public GameController GameController;
     public GameController Ref
     {
@@ -60,10 +61,12 @@ public class CodeGateController : MonoBehaviour,NetItem
     public int yPos { get; set; }
     public ProgramSummoner Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    // Start is called before the first frame update
-    void Start()
+	public string Name => throw new System.NotImplementedException();
+
+	// Start is called before the first frame update
+	void Start()
     {
-        Solid = false;
+        //Solid = false;
     }
 
     // Update is called once per frame
@@ -74,11 +77,28 @@ public class CodeGateController : MonoBehaviour,NetItem
 
     public int RollToBeHit()
     {
-        throw new System.NotImplementedException();
+        var d10 = GameController.RollD10();
+        return d10 + WallStrength;
     }
 
     public int RollToHit()
     {
         throw new System.NotImplementedException();
+    }
+
+	public int TakeDamage(Damage damage)
+	{
+		if(damage.Type==DamageType.Strength)
+		{
+            WallStrength -= damage.Value;
+		}
+        if(WallStrength<=0)
+		{
+            Solid = false;
+            wallCubes[0].SetActive(false);
+
+        }
+        return damage.Value;
+
     }
 }

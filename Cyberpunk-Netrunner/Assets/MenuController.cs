@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -20,11 +19,14 @@ public class MenuController : VisualElement
     private GroupBox ProgramList;
     private Label MessageLabel;
     private VisualElement OverlayElem;
+    private Button Glogo;
     List<string> Messages = new List<string>();
     int PlayerDamage = 0;
 
     public delegate void MessageAnimationEnd();
     public event MessageAnimationEnd onMessageAnimationEnd;
+    public delegate void GlogoClick(bool Checked);
+    public event GlogoClick onGlogoClick;
     bool MessageAnimating = false;
     private Button ActiveProgramButton;
 
@@ -43,6 +45,24 @@ public class MenuController : VisualElement
         
         btnEndTurn.AddToClassList("Hidden");
     }
+    public bool GlogoActive
+	{
+        get
+		{
+            return Glogo.ClassListContains("Glogo_Active");
+		}
+        set
+		{
+            if(value)
+			{
+                Glogo.AddToClassList("Glogo_Active");
+            }
+            else
+			{
+                Glogo.RemoveFromClassList("Glogo_Active");
+            }
+		}
+	}
     public bool Stunned
     {
         get
@@ -129,7 +149,7 @@ public class MenuController : VisualElement
     void closeAllMenus()
     {
         MenuBox.AddToClassList("SlideOut");
-        ActiveProgramBox.AddToClassList("Hidden");
+        ActiveProgramBox.AddToClassList("ResetSlide");
     }
 
     void ShowNextMessage()
@@ -172,10 +192,41 @@ public class MenuController : VisualElement
         checks.ForEach(x => x.value = false);
         for (var i = 0; i < PlayerDamage; i++)
         {
+            if(i>(checks.Count-1))
+			{
+                return;
+			}
             checks[i].value = true;
         }
     }
-    private void onGeometryChange(GeometryChangedEvent evt)
+    bool _hasGlogo = false;
+    public bool HasGlogo
+	{
+        get
+		{
+            return _hasGlogo;
+
+        }
+        set
+		{
+            _hasGlogo = value;
+            if(Glogo!=null)
+			{
+                if(value)
+				{
+                    Glogo.RemoveFromClassList("Hidden");
+				}
+                else
+				{
+                    Glogo.AddToClassList("Hidden");
+                }
+			}
+		}
+	}
+
+	public PromptController Prompt { get; set; }
+
+	private void onGeometryChange(GeometryChangedEvent evt)
     {
         document = this;
         MenuButton = document.Query<Button>("MenuButton");
@@ -188,13 +239,21 @@ public class MenuController : VisualElement
         ProgramList = document.Query<GroupBox>("ProgramList");
         MessageLabel = document.Query<Label>("MessageLabel");
         OverlayElem = document.Query<VisualElement>("overlay");
+        Glogo = document.Query<Button>("btnGlogo");
         MenuButton.RegisterCallback<ClickEvent>(MenuButton_clicked);
+        Prompt = document.Query<PromptController>("Prompt");
+        Prompt.AddToClassList("Hidden");
         
         ActiveProgramButton.RegisterCallback<ClickEvent>(ActiveProgramButton_clicked);
         RunProgramLabel.RegisterCallback<ClickEvent>(RunProgramClicked);
         MessageLabel.RegisterCallback<TransitionEndEvent>(onMessageTransitionEnd);
         MenuBox.RegisterCallback<ClickEvent>(MenuClick);
         ActiveProgramBox.RegisterCallback<ClickEvent>(ActiveProgramBoxClick);
+        if(!HasGlogo)
+		{
+            Glogo.AddToClassList("Hidden");
+		}
+        Glogo.clicked += Glogo_clicked;
         
         document.Query<Scroller>().ForEach(x => x.RegisterCallback<ClickEvent>(ev => ev.StopPropagation()));
         
@@ -203,6 +262,16 @@ public class MenuController : VisualElement
 
 
         this.UnregisterCallback<GeometryChangedEvent>(onGeometryChange);
+    }
+    private void Glogo_clicked()
+    {
+        //Glogo.ToggleInClassList("Glogo_Active");
+        onGlogoClick?.Invoke(!GlogoActive);
+    }
+
+    private void GlogoClickHandler(ClickEvent evt)
+    {
+        //onGlogoClick?.Invoke(Glogo.value);
     }
 
     private void ActiveProgramBoxClick(ClickEvent evt)

@@ -10,6 +10,7 @@ namespace CyberpunkServer.Models.DTO
     {
         public int? OwnerID{ get; set; }
         public VisualElement UIElement { get; set; }
+        
         public int DeviceID
         {
             get
@@ -22,5 +23,6 @@ namespace CyberpunkServer.Models.DTO
             }
         }
         public string DeviceType { get; set; } = "Fortress";
-    }
+		public bool Packed { get => false; set { } }
+	}
 }

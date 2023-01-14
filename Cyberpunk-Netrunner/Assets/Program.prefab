@@ -146,7 +146,7 @@ MonoBehaviour:
   canMove: 0
   targetMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   PlayerMask:
     serializedVersion: 2
     m_Bits: 8
@@ -158,6 +158,9 @@ MonoBehaviour:
     m_Bits: 64
   ActiveProgramAsset: {fileID: 9197481963319205126, guid: d1ff996386d5b22428b79a70454b54a8, type: 3}
   canSeeTarget: 0
+  NonSelectedMaterial: {fileID: 0}
+  HighlightMaterial: {fileID: 2100000, guid: 982f22aba684c954a8146bb76daf8dc1, type: 2}
+  MR: {fileID: 8669948733035698535}
 --- !u!65 &4809081277955118715
 BoxCollider:
   m_ObjectHideFlags: 0

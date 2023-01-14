@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5391188661660834519, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
       propertyPath: m_Name
-      value: Program
+      value: Hellhound
       objectReference: {fileID: 0}
     - target: {fileID: 8506452619818530834, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8506452619818530834, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -65,6 +65,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1630142593284463708}
   m_SourcePrefab: {fileID: 100100000, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
+--- !u!23 &993916205712185863 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8669948733035698535, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
+  m_PrefabInstance: {fileID: 8474298860096340832}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4560906638271322551 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5391188661660834519, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
@@ -108,8 +113,11 @@ MonoBehaviour:
   obstructionMask:
     serializedVersion: 2
     m_Bits: 64
-  ActiveProgramAsset: {fileID: 0}
+  ActiveProgramAsset: {fileID: 9197481963319205126, guid: d1ff996386d5b22428b79a70454b54a8, type: 3}
   canSeeTarget: 0
+  NonSelectedMaterial: {fileID: 0}
+  HighlightMaterial: {fileID: 2100000, guid: 982f22aba684c954a8146bb76daf8dc1, type: 2}
+  MR: {fileID: 993916205712185863}
 --- !u!114 &6099646002399867171 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2394941190138409539, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}

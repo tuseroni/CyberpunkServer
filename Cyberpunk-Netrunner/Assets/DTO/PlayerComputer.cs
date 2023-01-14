@@ -13,8 +13,8 @@ namespace CyberpunkServer.Models.DTO
     using System.Collections.Generic;
     using System.Linq;
 
-    public partial class PlayerComputerData
-    {
+    public partial class PlayerComputerData: iAddPrograms
+	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PlayerComputerData()
         {
@@ -54,6 +54,10 @@ namespace CyberpunkServer.Models.DTO
                     totalSpeed += Improvements["Speed"];
                 }
                 return totalSpeed;
+            }
+            set
+            {
+
             }
         }
         public int TotalChipslots
@@ -96,11 +100,39 @@ namespace CyberpunkServer.Models.DTO
         {
             get
             {
-                return Convert.ToInt32(PlayerComputerPrograms.Sum(x => x.MU));
+                return Convert.ToInt32(PlayerComputerPrograms.Sum(x => x.MU)) + PlayerComputerOptions.Sum(x=>x.ComputerPeripherals.MU)??0;
             }
         }
-
-        public virtual List<PlayerComputerImprovementsData> PlayerComputerImprovements { get; set; }
+		public bool addProgram(ProgramData program)
+		{
+			var newprog = new PlayerComputerProgramsData
+			{
+				Program = program,
+				ProgramID = program.id,
+				Strength = program.Strength,
+				Rezzed = false,
+				PlayerComputerID = id
+			};
+			PlayerComputerPrograms.Add(newprog);
+			return true;
+		}
+		public bool addProgram(List<ProgramData> programs)
+		{
+			foreach (var program in programs)
+			{
+				addProgram(program);
+			}
+			return true;
+		}
+		Guid _uuid = Guid.NewGuid();
+		public string UUID
+		{
+			get
+			{
+				return _uuid.ToString();
+			}
+		}
+		public virtual List<PlayerComputerImprovementsData> PlayerComputerImprovements { get; set; }
         public virtual List<PlayerComputerOptionsData> PlayerComputerOptions { get; set; }
         public virtual List<PlayerComputerProgramsData> PlayerComputerPrograms { get; set; }
         

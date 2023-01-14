@@ -13,7 +13,7 @@ Label {
     width: 95%;
 }
 
-Label:hover {
+.MenuBox Label:hover {
     background-color: rgba(30, 223, 220, 0.7);
     border-left-color: rgb(3, 0, 255);
     border-right-color: rgb(3, 0, 255);
@@ -151,4 +151,46 @@ Label:hover {
 
 .Overlay.Stunned {
     -unity-background-image-tint-color: rgb(255, 242, 119);
+}
+
+.HealthGroup {
+    border-left-color: rgb(76, 209, 225);
+    border-right-color: rgb(76, 209, 225);
+    border-top-color: rgb(76, 209, 225);
+    border-bottom-color: rgb(76, 209, 225);
+}
+
+.HealthGroup Toggle {
+    border-left-color: rgb(76, 209, 225);
+    border-right-color: rgb(76, 209, 225);
+    border-top-color: rgb(76, 209, 225);
+    border-bottom-color: rgb(76, 209, 225);
+}
+
+#MenuButton:Hover Label {
+    display: flex;
+}
+
+#ActiveProgramTemplate Label {
+    -unity-text-align: upper-right;
+}
+
+Toggle Label {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    -unity-text-align: upper-right;
+}
+
+#btnGlogo.Glogo_Active {
+    background-image: url('project://database/Assets/glogoIcon.png?fileID=2800000&guid=dd5a142f7c9281542b7253ec04506f8c&type=3#glogoIcon');
+}
+
+#btnGlogo {
+    background-image: url('project://database/Assets/glogoIcon_off.png?fileID=2800000&guid=01176da303ad2eb408c284f1d13f8d2c&type=3#glogoIcon_off');
 }

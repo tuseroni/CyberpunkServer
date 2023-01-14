@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNet.SignalR.Client;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CyberpunkServer.Models.DTO;
 using System.IO;
 using System.Text;
 using System.Linq;
+using Microsoft.AspNetCore.SignalR.Client;
+using System.Threading.Tasks;
 
 public static class AppData
 {
@@ -43,8 +44,7 @@ public class MessageWriter : TextWriter
 public static class SignalrHandler
 {
 
-    static HubConnection connection;
-    static IHubProxy myHub;
+    static HubConnection hubConnection;
     public delegate void JackInRequestAccepted(int playerID,int x, int y, SubgridData subgrid);
     public delegate void JackInRequestRejected(int playerID);
     public static event JackInRequestAccepted onJackInRequestAccepted;
@@ -53,30 +53,30 @@ public static class SignalrHandler
     public delegate void LoginFailurel(string Message);
     public static event LoginSuccessful onLoginSuccessful;
     public static event LoginFailurel onLoginFailure;
-    public static void CreateConnection(string address,string hub)
+    public static async Task CreateConnectionAsync(string address,string hub)
     {
-        connection = new HubConnection(address);
+        hubConnection = new HubConnectionBuilder()
+                .WithUrl(address)
+                .Build();
+        await hubConnection.StartAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.Log(string.Format("Failed to connect: {0}", task.Exception.GetBaseException()));
+            }
+            else
+            {
+                Debug.Log("Connected.");
+            }
+        });
+        //connection = new HubConnection(address);
         //var strWriter = new MessageWriter();
         //var fileWriter = new StreamWriter(new FileStream("signalrLog.log", FileMode.OpenOrCreate));
         //connection.TraceLevel = TraceLevels.Messages;
 
         //connection.TraceWriter = fileWriter;
 
-        myHub = connection.CreateHubProxy(hub);
-        
-
-        connection.Start().ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-            {
-                Debug.Log(string.Format("There was an error opening the connection:{0}", task.Exception.GetBaseException()));
-            }
-            else
-            {
-                Debug.Log("Connected");
-            }
-        }).Wait();
-        myHub.On<int,int,int, SubgridData>("JackInRequestAccepted", (playerID,x,y,subgrid) =>
+        hubConnection.On<int,int,int, SubgridData>("JackInRequestAccepted", (playerID,x,y,subgrid) =>
         {
             Debug.Log($"Player has Jacked IN!");
             UnityThread.executeInUpdate(() =>
@@ -84,7 +84,7 @@ public static class SignalrHandler
                 onJackInRequestAccepted.Invoke(playerID,x,y, subgrid);
             });
         });
-        myHub.On<int>("JackInRequestRejected", (PlayerID) =>
+        hubConnection.On<int>("JackInRequestRejected", (PlayerID) =>
         {
 
             UnityThread.executeInUpdate(() =>
@@ -93,14 +93,14 @@ public static class SignalrHandler
             });
 
         });
-        myHub.On<List<PlayerData>>("onLoginSuccessful", (player) =>
+        hubConnection.On<List<PlayerData>>("onLoginSuccessful", (player) =>
         {
             UnityThread.executeInUpdate(() =>
             {
                 onLoginSuccessful.Invoke(player);
             });
         });
-        myHub.On<string>("onLoginRejected", (message) =>
+        hubConnection.On<string>("onLoginRejected", (message) =>
         {
             UnityThread.executeInUpdate(() =>
             {
@@ -110,11 +110,11 @@ public static class SignalrHandler
     }
     public static void InvokePlayerMove(int playerID, int x, int y)
     {
-        if(myHub==null)
+        if(hubConnection == null)
         {
             return;
         }
-        myHub.Invoke("PlayerMove", playerID, x, y).ContinueWith(task =>
+        hubConnection.SendAsync("PlayerMove", playerID, x, y).ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
@@ -128,11 +128,11 @@ public static class SignalrHandler
     }
     public static void InvokeProgramMove(int FortressProgramID,int FortressID, int x, int y)
     {
-        if (myHub == null)
+        if (hubConnection == null)
         {
             return;
         }
-        myHub.Invoke("ProgramMove", FortressProgramID, FortressID, x, y).ContinueWith(task =>
+        hubConnection.SendAsync("ProgramMove", FortressProgramID, FortressID, x, y).ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
@@ -146,11 +146,11 @@ public static class SignalrHandler
     }
     public static void InvokeLogin(string email, string password)
     {
-        if (myHub == null)
+        if (hubConnection == null)
         {
             return;
         }
-        myHub.Invoke("Login", email, password).ContinueWith(task =>
+        hubConnection.SendAsync("Login", email, password).ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
@@ -166,11 +166,11 @@ public static class SignalrHandler
     
     public static void InvokeSend()
     {
-        if (myHub == null)
+        if (hubConnection == null)
         {
             return;
         }
-        myHub.Invoke("Send", "tuseroni", "HELLO World ").ContinueWith(task => {
+        hubConnection.SendAsync("Send", "tuseroni", "HELLO World ").ContinueWith(task => {
             if (task.IsFaulted)
             {
                 Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
@@ -196,11 +196,11 @@ public static class SignalrHandler
     //}
     public static void InvokeJackInRequest(int PlayerID)
     {
-        if (myHub == null)
+        if (hubConnection == null)
         {
             return;
         }
-        myHub.Invoke("JackInRequest", PlayerID).ContinueWith(task => {
+        hubConnection.SendAsync("JackInRequest", PlayerID).ContinueWith(task => {
             if (task.IsFaulted)
             {
                 Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
@@ -219,7 +219,7 @@ public class signalrController : MonoBehaviour
     public GridController grid;
     public UnityThread UnityThread;
     public bool isDebug = true;
-    string debugConnection = "https://localhost:44349/com";
+    string debugConnection = "https://localhost:7094/com";
     string ProductionConnection = "https://www.cloudwranglersinc.com/com";
     string connection = "";
     // Start is called before the first frame update
@@ -233,7 +233,7 @@ public class signalrController : MonoBehaviour
     {
         UnityThread.initUnityThread();
 
-#if (UNITY_ANDROID)
+#if (!UNITY_EDITOR)
 
         connection = ProductionConnection;
 #else

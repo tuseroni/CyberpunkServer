@@ -22,18 +22,14 @@ public interface RunningProgram
     int Strength { get; set; }
     bool Rezzed { get; set; }
     int? OwnerID { get; set; }
+    bool Packed { get; set; }
     int xPos { get; set; }
     int yPos { get; set; }
     int id { get; set; }
     int DeviceID { get; set; }
     string DeviceType { get; set; }
 }
-public interface ProgramSummoner
-{
-    Bounds bounds { get; set; }
-    int Int { get; set; }
-    int Interface { get; set; }
-}
+
 namespace CyberpunkServer.Models.DTO
 {
     public partial class PlayerCyberdeckProgramsData : HasUiElement, RunningProgram

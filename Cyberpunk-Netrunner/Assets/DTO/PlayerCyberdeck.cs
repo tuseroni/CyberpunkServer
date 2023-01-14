@@ -12,9 +12,15 @@ namespace CyberpunkServer.Models.DTO
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    public partial class PlayerCyberdeckData
+    public interface iAddPrograms
     {
+        string UUID { get;}
+        string name { get; set; }
+        bool addProgram(ProgramData program);
+        bool addProgram(List<ProgramData> programs);
+	}
+    public partial class PlayerCyberdeckData: iAddPrograms
+	{
         public PlayerCyberdeckData()
         {
             this.PlayerCyberdeckImprovements = new List<PlayerCyberdeckImprovementsData>();
@@ -52,6 +58,10 @@ namespace CyberpunkServer.Models.DTO
                 }
                 return totalSpeed;
             }
+            set
+            {
+
+            }
         }
         public int TotalMemoryCost
         {
@@ -60,10 +70,38 @@ namespace CyberpunkServer.Models.DTO
                 return Convert.ToInt32(PlayerCyberdeckPrograms.Sum(x => x.MU ));
             }
         }
+        public bool addProgram(ProgramData program )
+        {
+			var newprog = new PlayerCyberdeckProgramsData
+			{
+				Program = program,
+				ProgramID = program.id,
+				Strength = program.Strength,
+				Rezzed = false,
+				PlayerCyberdeckID = id
+			};
+			PlayerCyberdeckPrograms.Add(newprog);
+			return true;
+        }
+        public bool addProgram(List<ProgramData> programs)
+        {
+            foreach(var program in programs)
+            {
+				addProgram(program);
+            }
+            return true;
+        }
         public virtual CyberdeckData Cyberdeck { get; set; }
         public virtual List<PlayerCyberdeckOptionsData> PlayerCyberdeckOptions { get; set; }
         public virtual List<PlayerCyberdeckImprovementsData> PlayerCyberdeckImprovements { get; set; }
         public virtual List<PlayerCyberdeckProgramsData> PlayerCyberdeckPrograms { get; set; }
-
-    }
+        Guid _uuid = Guid.NewGuid();
+        public string UUID 
+        {
+            get
+            {
+                return _uuid.ToString();
+            }
+        }
+	}
 }

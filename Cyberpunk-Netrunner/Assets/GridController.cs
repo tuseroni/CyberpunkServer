@@ -5,41 +5,6 @@ using CyberpunkServer.Models.DTO;
 using System.IO;
 using System.Threading.Tasks;
 
-public interface NetItem
-{
-    GameObject Object
-    {
-        get;
-        set;
-    }
-    ProgramSummoner Owner { get; set; }
-    GameController Ref { get; set; }
-    bool Solid { get; set; }
-    NetObjType Type { get; set; }
-    int xPos { get; set; }
-    int yPos { get; set; }
-    int RollToBeHit();
-    int RollToHit();
-    
-}
-public interface NetActor:NetItem
-{
-    int RollInitiative();
-    int doEvasionCheck();
-    int doDetectionCheck();
-    int TakeDamage(Damage damage);
-    Task BeginTurn();
-    string Name { get; }
-    int NumActions { get; set; }
-    int ActionsDone { get; set; }
-    int Initiative { get; set; }
-    bool WaitForSignal { get; set; }
-    bool Continue { get; set;}
-    bool Invisible { get; set; }
-    bool DetectInvisibility { get; set; }
-    List<Vector2Int> path { get; set; }
-
-}
 
 public class GridController : MonoBehaviour
 {

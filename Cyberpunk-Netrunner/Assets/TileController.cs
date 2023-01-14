@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.EventSystems;
-public class TileController : MonoBehaviour
+
+public class TileController : MonoBehaviour, Selectable
 {
     public Material NonSelectedMaterial = null;
     public Material HighlightMaterial = null;
@@ -24,7 +25,10 @@ public class TileController : MonoBehaviour
             //GameObject newWall = Instantiate(value.Object, pos, Quaternion.identity, transform.parent);
         }
     }
-    public TileController()
+
+	public bool Selected { get; set; }
+
+	public TileController()
     {
         _containedItem.CollectionChanged += _containedItem_CollectionChanged;
     }
@@ -35,10 +39,19 @@ public class TileController : MonoBehaviour
     {
         MR = GetComponent<MeshRenderer>();
         MR.material = NonSelectedMaterial;
+		grid.GameController.onProgramDestroyed += GameController_onProgramDestroyed;
         
     }
 
-    private void OnMouseUp()
+	private void GameController_onProgramDestroyed(ProgramController program)
+	{
+		if(ContainedItem.Contains(program))
+		{
+            ContainedItem.Remove(program);
+		}
+	}
+
+	private void OnMouseUp()
     {
         if (grid.GameController.PlayerState == PlayerInteractionState.Selecting)
         {

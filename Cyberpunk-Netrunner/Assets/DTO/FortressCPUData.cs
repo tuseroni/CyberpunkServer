@@ -15,12 +15,24 @@ namespace CyberpunkServer.Models.DTO
     public partial class FortressCPUData
     {
         public int id { get; set; }
-        public Nullable<int> xPos { get; set; }
-        public Nullable<int> yPos { get; set; }
+        public int xPos { get; set; }
+        public int yPos { get; set; }
         public Nullable<int> FortressID { get; set; }
-        public int Type { get; set; }
-    
-        public virtual NetObjTypeData NetObjType { get; set; }
+		public int Type { get; set; } = 2;
+		public virtual NetObjTypeData TypeNavigation
+		{
+			get
+			{
+				return NetObjType;
+
+			}
+			set
+			{
+				NetObjType = value;
+
+			}
+		}
+		public virtual NetObjTypeData NetObjType { get; set; }
     }
     
 }

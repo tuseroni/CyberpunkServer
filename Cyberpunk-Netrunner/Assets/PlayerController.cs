@@ -21,10 +21,17 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         set
         {
             GameController = value;
+			value.onItemSelect += Value_onItemSelect;
         }
 
     }
-    public int Int 
+
+	private void Value_onItemSelect(Selectable item)
+	{
+        
+	}
+
+	public int Int 
     { 
         get
         {
@@ -78,7 +85,8 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
     public GameObject ProgramPrefab;
     MenuController MenuController;
     public int ProgramSP { get; set; } = 0;
-
+    public bool Selected { get; set; }
+    
     List<ProgramController> ActivePrograms = new List<ProgramController>();
     List<ProgramController> SpottedPrograms = new List<ProgramController>();
     public bool WaitForSignal { get; set; } = false;
@@ -136,7 +144,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
             ProgramHolder.Add(Header1);
             foreach (var prog in value.EquippedCyberdeck.PlayerCyberdeckPrograms)
             {
-                if (!prog.Program.ProgramFunctions.Where(x => x.name == "Utility").Any())
+                if (!prog.Program.ProgramFunction.Where(x => x.name == "Utility").Any())
                 {
                     Label ProgramLabel = new Label();
                     ProgramLabel.AddToClassList("Program");
@@ -144,7 +152,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
                     ProgramLabel.tooltip = prog.Program.Description;
                     ProgramLabel.RegisterCallback<ClickEvent>((ev) => CyberdeckProgramClicked(ev, prog));
                     ProgramHolder.Add(ProgramLabel);
-                    prog.UIElement = ProgramLabel;
+                    
                 }
                 else
                 {
@@ -157,7 +165,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
             ProgramHolder.Add(Header2);
             foreach (var prog in value.EquippedComputer.PlayerComputerPrograms)
             {
-                if (!prog.Program.ProgramFunctions.Where(x => x.name == "Utility").Any())
+                if (!prog.Program.ProgramFunction.Where(x => x.name == "Utility").Any())
                 {
                     Label ProgramLabel = new Label();
                     ProgramLabel.AddToClassList("Program");
@@ -165,7 +173,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
                     ProgramLabel.tooltip = prog.Program.Description;
                     ProgramLabel.RegisterCallback<ClickEvent>((ev) => ComputerProgramClicked(ev, prog));
                     ProgramHolder.Add(ProgramLabel);
-                    prog.UIElement = ProgramLabel;
+                    
                 }
                 else
                 {
@@ -287,22 +295,56 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
     {
         return RollToBeHit();
     }
-    void addActiveProgram(VisualElement elem, RunningProgram program)
-    {
+    async Task ShowInfo(string text)
+	{
+        await MenuController.Prompt.Show(text, ButtonType.OK);
+    }
+    async Task<bool> checkCanAct()
+	{
         if (WaitForSignal && !Continue)
         {
-            return;
+            return false;
         }
-        if(Stunned)
+        if (Stunned)
         {
-            return;
+            await ShowInfo("You are Stunned");
+            return false;
         }
         if (ActionsDone >= NumActions)
         {
+            await ShowInfo("No More Actions Available");
+            return false;
+        }
+        return true;
+    }
+
+    async Task addActiveProgram(VisualElement elem, RunningProgram program)
+    {
+        if(!await checkCanAct())
+		{
             return;
         }
-        
-        elem.RemoveFromHierarchy();
+        if (program.Packed)
+		{
+            if (GameController.Utilities.ContainsKey("File Packer"))
+			{
+                DialogResult result = await MenuController.Prompt.Show("Program is Packed, Unpack?", ButtonType.YesNoCancel);
+                if (result == DialogResult.No || result == DialogResult.Cancel)
+                {
+                    return;
+                }
+                else
+				{
+
+				}
+            }
+            else
+			{
+                await ShowInfo("File is Packed, File Packer is Required, but not Found");
+                return;
+			}
+		}
+        elem.AddToClassList("Hidden");
         MenuController.toggleClass(MenuBox, "Hidden");
 
         var tile = getForwardTile();
@@ -314,10 +356,22 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         var prefab = Resources.Load<GameObject>($"Programs/{program.Program.name}");
         if(prefab==null)
         {
-            prefab = ProgramPrefab;
+            if (program.Program.ProgramFunction.Count == 1)
+            {
+                prefab = Resources.Load<GameObject>($"Programs/{program.Program.ProgramFunction[0].name}");
+                if(prefab==null)
+				{
+                    prefab = ProgramPrefab;
+                }
+            }
+            else
+            {
+                prefab = ProgramPrefab;
+            }
         }
         var wallObj = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
         var controller = wallObj.GetComponent<ProgramController>();
+        controller.UIElement = elem;
         GameController.addProgram(controller, this, program);
         ActivePrograms.Add(controller);
         
@@ -332,17 +386,41 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         ActionsDone++;
     }
 
-    private void Progcontroller_onActionCalled(string action,ProgramController controller)
+    private async void Progcontroller_onActionCalled(string action,ProgramController controller)
     {
         switch(action)
         {
             case "Move":
                 GameController.OrderProgramMove(controller);
                 break;
+            case "Attack":
+                GameController.OrderProgramAttack(controller);
+                break;
+            case "Patrol":
+                GameController.OrderProgramPatrol(controller);
+                break;
+            case "Deactivate":
+                await DeactivateProgram(controller);
+                break;
         }
+        await Task.Yield();
         
     }
-
+    async Task DeactivateProgram(ProgramController program)
+	{
+        if (!await checkCanAct())
+        {
+            return;
+        }
+        await GameController.DestroyProgram(program);
+        program.ActiveProgramController.RemoveFromHierarchy();
+        program.UIElement.RemoveFromClassList("Hidden");
+        if(ActiveStealthPrograms.Contains(program))
+        {
+            ActiveStealthPrograms.Remove(program);
+        }
+        ActionsDone++;
+    }
     public void AddSpottedProgram(ProgramController Program)
     {
         if (!SpottedPrograms.Contains(Program))
@@ -350,13 +428,13 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
             SpottedPrograms.Add(Program);
         }
     }
-    void CyberdeckProgramClicked(ClickEvent e,PlayerCyberdeckProgramsData program)
+    async void CyberdeckProgramClicked(ClickEvent e,PlayerCyberdeckProgramsData program)
     {
-        addActiveProgram((VisualElement)e.target, program);
+        await addActiveProgram((VisualElement)e.target, program);
     }
-    void ComputerProgramClicked(ClickEvent e, PlayerComputerProgramsData program)
+    async void ComputerProgramClicked(ClickEvent e, PlayerComputerProgramsData program)
     {
-        addActiveProgram((VisualElement)e.target, program);
+        await addActiveProgram((VisualElement)e.target, program);
     }
     TileController getForwardTile()
     {
@@ -406,12 +484,35 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         btnEndTurn= Document.rootVisualElement.Query<Button>("btnEndTurn");
         ActiveProgramHolder = Document.rootVisualElement.Query<VisualElement>("ActiveProgramHolder");
         MenuController= Document.rootVisualElement.Query<MenuController>("MenuController");
+        MenuController.onGlogoClick += MenuController_onGlogoClick;
         ((Button)Document.rootVisualElement.Query<Button>("btnForward")).RegisterCallback<ClickEvent>(btnForwardClick);
         ((Button)Document.rootVisualElement.Query<Button>("btnRight")).RegisterCallback<ClickEvent>(btnRightClick);
         ((Button)Document.rootVisualElement.Query<Button>("btnLeft")).RegisterCallback<ClickEvent>(btnLeftClick);
         ((Button)Document.rootVisualElement.Query<Button>("btnBack")).RegisterCallback<ClickEvent>(btnBackClick);
 
         btnEndTurn.RegisterCallback<ClickEvent>(btnEndTurnClick);
+    }
+
+    private async void MenuController_onGlogoClick(bool Checked)
+    {
+        if(ActionsDone>=NumActions)
+		{
+            await ShowInfo("No More Actions Available");
+            return;
+        }
+        if(WaitForSignal && !Continue)
+		{
+            await ShowInfo("Wait til it's your turn Choomba");
+            return;
+        }
+        if(Stunned)
+		{
+            await ShowInfo("You are Stunned");
+            return;
+        }
+        ActionsDone++;
+        MenuController.GlogoActive = Checked;
+        this.UsingInterfacePlug = !Checked;
     }
 
     private void btnForwardClick(ClickEvent evt)
@@ -433,6 +534,14 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
 
     public async Task BeginTurn()
     {
+        foreach(var prog in ActivePrograms)
+		{
+            if(prog.canBePlaced)
+			{
+                continue;
+			}
+            await prog.BeginTurn();
+		}
         ActionsDone = 0;
         await MenuController.PlayerBeginsTurn();
     }
@@ -639,5 +748,8 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         }
     }
 
-    
+    public void Alert(ProgramController Sender, NetActor Target)
+    {
+        //MenuController.ShowMessage($"{Sender.name} ")
+    }
 }

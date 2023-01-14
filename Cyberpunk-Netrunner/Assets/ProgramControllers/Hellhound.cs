@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 class Hellhound : ProgramController
 {
-    public override async Task<int> DoAction(NetActor target = null)
+    public override async Task<int> DoAction(NetItem target = null)
     {
         if (ActionsDone >= NumActions)
         {

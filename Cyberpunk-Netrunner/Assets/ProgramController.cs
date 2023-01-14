@@ -37,9 +37,17 @@ public class ProgramController : MonoBehaviour, NetActor
             return Program.name;
         }
     }
-    public async Task BeginTurn()
+    public virtual async Task BeginTurn()
     {
-        await Task.Run(()=> CheckedFor.Clear());
+        if(ActionTurnsRemaining>0)
+		{
+            ActionTurnsRemaining--;
+            if (ActionTurnsRemaining == 0)
+            {
+                await FinishAction();
+            }
+        }
+        await Task.Run(()=> VisibilityLookup.Clear());
     }
     public GameObject Object { get => gameObject; set { } }
     ProgramData _Program;
@@ -49,8 +57,10 @@ public class ProgramController : MonoBehaviour, NetActor
     public FortressController Fortress;
     public TextMeshProUGUI ProgramName;
     public BoundingSphere Detector;
-    
+    public bool Selected { get; set; }
     public bool DetectInvisibility { get; set; } = false;
+    public virtual int ActionTurns { get; set; } = 1;
+    public virtual int ActionTurnsRemaining { get; set; } = 0;
     public RunningProgram FortressProgram
     {
         get
@@ -78,12 +88,13 @@ public class ProgramController : MonoBehaviour, NetActor
             Texture2D img = Resources.Load<Texture2D>($"Icons/{value.name}");
             if (img != null && ICON !=null)
             {
-                var mr = ICON.GetComponent<MeshRenderer>();
-                mr.material.mainTexture = img;
+                MR = ICON.GetComponent<MeshRenderer>();
+                MR.material.mainTexture = img;
+                NonSelectedMaterial = MR.material;
             }
             if (value != null)
             {
-                foreach (var function in value.ProgramFunctions)
+                foreach (var function in value.ProgramFunction)
                 {
                     Functions.Add(function.name, function);
                 }
@@ -95,11 +106,11 @@ public class ProgramController : MonoBehaviour, NetActor
         }
     }
     public ProgramSummoner Owner { get; set; }
-    public bool Solid { get => false; set { } }
+    public virtual bool Solid { get => true; set { } }
     public NetObjType Type { get => NetObjType.Program; set { } }
 
-    public int xPos { get; set; }
-    public int yPos { get; set; }
+    public virtual int xPos { get; set; }
+    public virtual int yPos { get; set; }
     public int NumActions { get; set; } = 1;
 
     public Dictionary<string, ProgramFunctionsData> Functions = new Dictionary<string, ProgramFunctionsData>();
@@ -144,7 +155,29 @@ public class ProgramController : MonoBehaviour, NetActor
     public int ActionsDone { get; set; } = 0;
     public virtual bool canBePlaced { get; set; } = true;
     public bool Invisible { get; set; } = false;
-    
+    private void OnMouseUp()
+    {
+        if (grid.GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            //MR.material = SelectedMaterial;
+            grid.GameController.TargetSelect(this);
+            MR.material = NonSelectedMaterial;
+        }
+    }
+    private void OnMouseEnter()
+    {
+        if (grid.GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            MR.material = HighlightMaterial;
+        }
+    }
+    private void OnMouseExit()
+    {
+        if (grid.GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            MR.material = NonSelectedMaterial;
+        }
+    }
     public int RollInitiative()
     {
         Initiative = 0;
@@ -162,7 +195,7 @@ public class ProgramController : MonoBehaviour, NetActor
         }
         return Initiative;
     }
-    public virtual async Task<int> DoAction(NetActor target=null)
+    public virtual async Task<int> DoAction(NetItem target=null)
     {
         if(ActionsDone>=NumActions)
         {
@@ -190,9 +223,27 @@ public class ProgramController : MonoBehaviour, NetActor
                 await GameController.DoDamage(target, newDamage);
             }
         }
+        else if(target.Type==NetObjType.CodeGate && Functions.ContainsKey("Decryption"))
+		{
+            var newDamage = new Damage { Type = DamageType.Strength, Value = damage = GameController.RollD6() };
+            await GameController.DoDamage(target, newDamage);
+        }
+        else if (target.Type == NetObjType.Wall && Functions.ContainsKey("Intrusion"))
+        {
+            var newDamage = new Damage { Type = DamageType.Strength, Value = damage = GameController.RollD6() };
+            await GameController.DoDamage(target, newDamage);
+        }
         GameController.EndTurn(this);
         return damage;
     }
+    public void Possess(ProgramSummoner Owner)
+    {
+        this.Owner = Owner;
+    }
+    public virtual async Task FinishAction()
+	{
+        await Task.Yield();
+	}
     public int TakeDamage(Damage damage)
     {
         if (damage.Type != DamageType.Strength)
@@ -236,6 +287,7 @@ public class ProgramController : MonoBehaviour, NetActor
         {
             canMove = true;
             State = ProgramState.patrolling;
+            MaxMove = 5;
         }
         canLeaveFort = true;
         if (program.Program != null && ProgramName != null)
@@ -256,19 +308,19 @@ public class ProgramController : MonoBehaviour, NetActor
         {
             if (wall.xPos > MaxX)
             {
-                MaxX = wall.xPos.Value;
+                MaxX = wall.xPos;
             }
             if (wall.yPos > MaxY)
             {
-                MaxY = wall.yPos.Value;
+                MaxY = wall.yPos;
             }
             if (wall.xPos < MinX)
             {
-                MinX = wall.xPos.Value;
+                MinX = wall.xPos;
             }
             if (wall.yPos < MinY)
             {
-                MinY = wall.yPos.Value;
+                MinY = wall.yPos;
             }
         }
         this.Owner = Summoner;
@@ -283,6 +335,7 @@ public class ProgramController : MonoBehaviour, NetActor
         {
             canMove = true;
             State = ProgramState.patrolling;
+            MaxMove = 5;
         }
         if (Options.ContainsKey("Trace"))
         {
@@ -308,13 +361,14 @@ public class ProgramController : MonoBehaviour, NetActor
     float radius = 20.0f * 60.0f;
     float angle = 360;
     public VisualTreeAsset ActiveProgramAsset;
+    public VisualElement UIElement { get; set; }
     public ActiveProgramController ActiveProgramController;
 
     public bool canSeeTarget;
-    public NetActor Target;
+    public NetItem Target;
     TileController lastSeenTile;
-    List<NetActor> CheckedFor = new List<NetActor>();
-    private async Task<NetActor> FieldOfViewCheck()
+    Dictionary<NetActor,bool> VisibilityLookup = new Dictionary<NetActor,bool>();
+    private async Task<NetItem> FieldOfViewCheck(NetItem _target = null)
     {
         if (Functions.ContainsKey("Anti Program"))
         {
@@ -338,6 +392,11 @@ public class ProgramController : MonoBehaviour, NetActor
                 {
                     continue;
                 }
+                if (_target != null && _target.Object.transform != target)
+                {
+                    continue;
+                }
+
                 Vector3 directionToTarget = (target.position - transform.position).normalized;
 
                 if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
@@ -348,6 +407,7 @@ public class ProgramController : MonoBehaviour, NetActor
                     {
 
                         NetActor foundItem = target.gameObject.GetComponent<NetActor>();
+
                         if (foundItem != null)
                         {
 
@@ -355,11 +415,12 @@ public class ProgramController : MonoBehaviour, NetActor
                             {
                                 if (this.Owner != foundItem.Owner)
                                 {
-                                    if (!CheckedFor.Contains(foundItem))
+                                    if (!VisibilityLookup.ContainsKey(foundItem))
                                     {
-                                        CheckedFor.Add(foundItem);
+                                        
                                         if (await GameController.DoISeeTarget(foundItem, this))
                                         {
+                                            VisibilityLookup.Add(foundItem,true);
                                             canSeeTarget = true;
                                             Target = foundItem;
                                             lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos];
@@ -369,20 +430,52 @@ public class ProgramController : MonoBehaviour, NetActor
                                             }
                                             break;
                                         }
+                                        else
+                                        {
+                                            VisibilityLookup.Add(foundItem, false);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if(VisibilityLookup[foundItem])
+                                        {
+                                            canSeeTarget = true;
+                                            Target = foundItem;
+                                            lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos];
+                                            break;
+                                        }
                                     }
                                 }
                             }
                             else
                             {
-                                if (!CheckedFor.Contains(foundItem))
+                                if (foundItem != Owner)
                                 {
-                                    CheckedFor.Add(foundItem);
-                                    if (await GameController.DoISeeTarget(foundItem, this))
+                                    if (!VisibilityLookup.ContainsKey(foundItem))
                                     {
-                                        canSeeTarget = true;
-                                        Target = foundItem;
-                                        lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos];
-                                        break;
+
+                                        if (await GameController.DoISeeTarget(foundItem, this))
+                                        {
+                                            VisibilityLookup.Add(foundItem, true);
+                                            canSeeTarget = true;
+                                            Target = foundItem;
+                                            lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos];
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            VisibilityLookup.Add(foundItem, false);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (VisibilityLookup[foundItem])
+                                        {
+                                            canSeeTarget = true;
+                                            Target = foundItem;
+                                            lastSeenTile = grid.gridTiles[foundItem.yPos][foundItem.xPos];
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -394,14 +487,29 @@ public class ProgramController : MonoBehaviour, NetActor
         }
         return Target;
     }
-    public virtual async Task<NetActor> Search()
+    public virtual async Task<NetItem> Search(NetItem _target=null)
     {
-        return await FieldOfViewCheck();
+        return await FieldOfViewCheck(_target);
     }
-    public virtual void Attack()
+    public virtual async void Attack(NetItem Target)
     {
-
+        State = ProgramState.chasing;
+        this.Target = Target;
+        await Task.Yield();
+        
     }
+    public virtual int Range
+    {
+        get; set;
+    } = 1;
+    public virtual bool TargetInRange
+    {
+        get
+        {
+            return (new Vector2(Target.xPos, Target.yPos) - new Vector2(xPos, yPos)).sqrMagnitude <= (Range * Range);
+        }
+    }
+   
     public virtual async Task<float> Patrol(int maxMove)
     {
         float WaitSeconds = 0.2f;
@@ -416,7 +524,7 @@ public class ProgramController : MonoBehaviour, NetActor
                     //path.Clear();
                     //amble();
                     //Continue = false;
-                    if (Target != null)
+                    if (Target != null && TargetInRange)
                     {
                         await DoAction(Target);
                     }
@@ -442,9 +550,13 @@ public class ProgramController : MonoBehaviour, NetActor
             {
                 amble();
             }
-            else
+            else if (TargetInRange)
             {
                 await DoAction(Target);
+            }
+            else
+            {
+                amble();
             }
 
         }
@@ -454,7 +566,7 @@ public class ProgramController : MonoBehaviour, NetActor
 
 
     }
-    public virtual async Task<float> MoveToTile(int maxMove)
+    public virtual async Task<float> MoveToTile(int maxMove, NetItem _target=null)
     {
         
         float WaitSeconds = 0.2f;
@@ -469,7 +581,7 @@ public class ProgramController : MonoBehaviour, NetActor
                     //path.Clear();
                     //amble();
                     //Continue = false;
-                    if (Target != null)
+                    if (Target != null && TargetInRange)
                     {
                         await DoAction(Target);
                     }
@@ -490,31 +602,35 @@ public class ProgramController : MonoBehaviour, NetActor
         }
         else
         {
-            Target = await Search();
-
-            if (Target == null)
+            Target = await Search(_target);
+            
+            if (Target == null || !TargetInRange)
             {
-                MoveToTargetTile();
+                if(!MoveToTargetTile())
+                {
+                    GameController.EndTurn(this);
+                }
             }
-            else
+            else 
             {
                 await DoAction(Target);
             }
         }
         return WaitSeconds;
-
-
-
     }
-    void MoveToTargetTile()
+    bool MoveToTargetTile()
     {
         if (canMove == false)
         {
-            return;
+            return false;
         }
         if(TargetTile==null)
         {
-            return;
+            return false;
+        }
+        if(currentTile==TargetTile)
+        {
+            return false;
         }
         var neighbors = new List<TileController>
             {
@@ -557,17 +673,26 @@ public class ProgramController : MonoBehaviour, NetActor
         {
             MoveProgram(bestTile, new Vector2Int(bestTile.xPos, bestTile.yPos));
         }
+        else
+        {
+            return false;
+        }
+        return true;
     }
 
     public virtual async Task Guard()
     {
         await Search();
+        if(Target != null && TargetInRange)
+        {
+            await DoAction(Target);
+        }
     }
     public virtual void Follow(PlayerController player)
     {
 
     }
-    
+    public virtual int MaxMove { get; set; } = 0;
     public async Task<float> DoStateAction()
     {
         float WaitSeconds = 0.2f;
@@ -578,7 +703,12 @@ public class ProgramController : MonoBehaviour, NetActor
         switch (State)
         {
             case ProgramState.patrolling:
-                WaitSeconds = await Patrol(5);
+                WaitSeconds = await Patrol(MaxMove);
+                if(Target != null)
+                {
+                    State = ProgramState.chasing;
+                    TargetTile = lastSeenTile;
+                }
                 break;
             case ProgramState.idle:
                 await Search();
@@ -587,14 +717,20 @@ public class ProgramController : MonoBehaviour, NetActor
                 await Guard();
                 break;
             case ProgramState.chasing:
+                TargetTile = lastSeenTile;
+                await MoveToTile(MaxMove, Target);
                 break;
             case ProgramState.Moving:
-                await MoveToTile(5);
+                await MoveToTile(MaxMove);
                 break;
         }
         return WaitSeconds;
     }
     TileController TargetTile;
+    public Material NonSelectedMaterial;
+    public Material HighlightMaterial;
+    public MeshRenderer MR;
+
     public void OrderMove(TileController tile)
     {
         State = ProgramState.Moving;
@@ -613,10 +749,6 @@ public class ProgramController : MonoBehaviour, NetActor
         do
         {
             validMove = true;
-            if (State == ProgramState.idle || State == ProgramState.guarding)
-            {
-                break;
-            }
             var dir = (int)Mathf.Floor(Random.value * 4);
             newPos = new Vector2Int(xPos, yPos);
             switch (dir)
@@ -690,7 +822,7 @@ public class ProgramController : MonoBehaviour, NetActor
     // Start is called before the first frame update
     void Start()
     {
-
+        //MR = GetComponent<MeshRenderer>();
         HandleState();
 
     }
@@ -713,8 +845,15 @@ public class ProgramController : MonoBehaviour, NetActor
     public int Initiative { get; set; }
     public int doEvasionCheck()
     {
-        var D10 = GameController.RollD10();
-        return D10 + Strength;
+        if (Options.ContainsKey("Invisibility"))
+        {
+            var D10 = GameController.RollD10();
+            return D10 + Strength;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public int doDetectionCheck()

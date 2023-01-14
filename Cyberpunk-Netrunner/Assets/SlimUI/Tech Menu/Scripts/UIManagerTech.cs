@@ -8,6 +8,7 @@ using TMPro;
 using System;
 using UnityEngine.SceneManagement;
 using CyberpunkServer.Models.DTO;
+using System.Threading.Tasks;
 
 public class UIManagerTech : MonoBehaviour
 {
@@ -146,7 +147,7 @@ public class UIManagerTech : MonoBehaviour
 	public bool reloadSceneButton = true;
 	Transform tempParent;
 
-	string debugConnection = "https://localhost:44349/com";
+	string debugConnection = "https://localhost:7094/com";
 	string ProductionConnection = "https://www.cloudwranglersinc.com/com";
 	GameObject JackInButton = null;
 
@@ -156,7 +157,7 @@ public class UIManagerTech : MonoBehaviour
 		tempParent.SetAsLastSibling();
 	}
 
-	void Start(){
+	async void Start(){
 		// By default, starts on the home screen, disables others
 		homeScreen.SetActive(true);
 		if(newAccountScreen != null)
@@ -242,10 +243,10 @@ public class UIManagerTech : MonoBehaviour
         SignalrHandler.onLoginFailure += SignalrHandler_onLoginFailure;
 		JackInButton = GameObject.Find("Btn_NewGame");
 		JackInButton.SetActive(false);
-#if (DEBUG)
+#if (UNITY_EDITOR)
 		try
 		{
-			SignalrHandler.CreateConnection(ProductionConnection, "ComHub");
+			await SignalrHandler.CreateConnectionAsync(debugConnection, "ComHub");
 		}
 		catch(Exception ex)
         {
@@ -256,7 +257,8 @@ public class UIManagerTech : MonoBehaviour
 #else
 		try
 		{
-			SignalrHandler.CreateConnection(ProductionConnection, "ComHub");
+			await SignalrHandler.CreateConnectionAsync(ProductionConnection, "ComHub");
+			//SignalrHandler.CreateConnection(ProductionConnection, "ComHub");
 		}
 		catch(Exception ex)
         {

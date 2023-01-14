@@ -11,8 +11,8 @@ using System;
 
 namespace CyberpunkServer.Models.DTO
 {
-    public partial class PlayerComputerProgramsData
-    {
+    public partial class PlayerComputerProgramsData: iDevicePrograms
+	{
         public int id { get; set; }
         public Nullable<int> ProgramID { get; set; }
         public Nullable<int> PlayerComputerID { get; set; }

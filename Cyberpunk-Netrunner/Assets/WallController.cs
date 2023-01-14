@@ -17,10 +17,46 @@ public class WallController : MonoBehaviour, NetItem
             _WallStrength = value;
             for(var i=0;i<10; i++)
             {
-                wallCubes[i].SetActive(i<=(value-1));
+                wallCubes[i].SetActive(i<=(6-1));
             }
         }
     }
+    public Material NonSelectedMaterial;
+    public Material HighlightMaterial;
+    public MeshRenderer MR;
+    private void OnMouseUp()
+    {
+        if (GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            //MR.material = SelectedMaterial;
+            GameController.TargetSelect(this);
+            //if (MR != null && NonSelectedMaterial != null)
+            //{
+            //    MR.material = NonSelectedMaterial;
+            //}
+        }
+    }
+    private void OnMouseEnter()
+    {
+        if (GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            //if (MR != null && HighlightMaterial != null)
+            //{
+            //    MR.material = HighlightMaterial;
+            //}
+        }
+    }
+    private void OnMouseExit()
+    {
+        if (GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            //if (MR != null && NonSelectedMaterial != null)
+            //{
+            //    MR.material = NonSelectedMaterial;
+            //}
+        }
+    }
+    public bool Selected { get; set; }
     public GameController GameController;
     public GameController Ref
     {
@@ -50,6 +86,10 @@ public class WallController : MonoBehaviour, NetItem
             var walls = GetComponentsInChildren<BoxCollider>();
             foreach(var wall in walls)
             {
+    //            if(wall.gameObject.GetComponent<NetItem>() !=null)
+				//{
+    //                continue;
+				//}
                 wall.enabled = value;
             }
         }
@@ -61,8 +101,10 @@ public class WallController : MonoBehaviour, NetItem
 
     public ProgramSummoner Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    // Start is called before the first frame update
-    void Start()
+	public string Name => throw new System.NotImplementedException();
+
+	// Start is called before the first frame update
+	void Start()
     {
         
     }
@@ -75,11 +117,28 @@ public class WallController : MonoBehaviour, NetItem
 
     public int RollToBeHit()
     {
-        throw new System.NotImplementedException();
+        var d10 = GameController.RollD10();
+        return d10 + WallStrength;
     }
 
     public int RollToHit()
     {
         throw new System.NotImplementedException();
+    }
+
+    public int TakeDamage(Damage damage)
+    {
+        if (damage.Type == DamageType.Strength)
+        {
+            WallStrength -= damage.Value;
+        }
+        if (WallStrength <= 0)
+        {
+            Solid = false;
+            wallCubes[0].SetActive(false);
+
+        }
+        return damage.Value;
+
     }
 }

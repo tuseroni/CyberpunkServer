@@ -92,7 +92,12 @@ public class CodeGate : FortObj
 {
     public int WallStrength;
 }
-
+public enum AlertState
+{
+    unalerted,
+    weary,
+    alerted
+}
 public class FortressController : MonoBehaviour, ProgramSummoner
 {
     public int NumCPU = 1;
@@ -115,6 +120,8 @@ public class FortressController : MonoBehaviour, ProgramSummoner
     public BoxCollider boundingBox;
     public GridController Grid = null;
     public GameController GameController;
+    TileController LastSeenTile;
+
     
     public GameController Ref
     {
@@ -157,26 +164,27 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         
         foreach (var wall in fort.FortressWalls)
         {
-            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value];
+            var Tile = Grid.gridTiles[wall.yPos][wall.xPos];
             var wallObj = GameObject.Instantiate(WallPrefab,Vector3.zero, Quaternion.identity);
             var wallController= wallObj.GetComponent<WallController>();
             wallController.WallStrength = WallStrength;
+            wallController.GameController = GameController;
             Tile.ContainedItem.Add(wallController);
             if (wall.xPos > MaxX)
             {
-                MaxX = wall.xPos.Value;
+                MaxX = wall.xPos;
             }
             if (wall.yPos > MaxY)
             {
-                MaxY = wall.yPos.Value;
+                MaxY = wall.yPos;
             }
             if (wall.xPos < MinX)
             {
-                MinX = wall.xPos.Value;
+                MinX = wall.xPos;
             }
             if (wall.yPos < MinY)
             {
-                MinY = wall.yPos.Value;
+                MinY = wall.yPos;
             }
 
         }
@@ -186,7 +194,7 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         bounds = newBounds;
         foreach (var wall in fort.FortressCPU)
         {
-            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value];
+            var Tile = Grid.gridTiles[wall.yPos][wall.xPos];
             var wallObj = GameObject.Instantiate(CPUPrefab, Vector3.zero, Quaternion.identity);
             var controller = wallObj.GetComponent<CPUController>();
             CPUs.Add(controller);
@@ -198,17 +206,19 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         }
         foreach (var wall in fort.FortressMemory)
         {
-            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value];
+            var Tile = Grid.gridTiles[wall.yPos][wall.xPos];
             var wallObj = GameObject.Instantiate(MemoryPrefab, Vector3.zero, Quaternion.identity);
             Tile.ContainedItem.Add(wallObj.GetComponent<MemoryController>());
         }
         foreach (var wall in fort.FortressCodeGates)
         {
-            var Tile = Grid.gridTiles[wall.yPos.Value][wall.xPos.Value];
+            var Tile = Grid.gridTiles[wall.yPos][wall.xPos];
             var wallObj = GameObject.Instantiate(CodeGatePrefab, Vector3.zero, Quaternion.identity);
             var codeGateController= wallObj.GetComponent<CodeGateController>();
+            codeGateController.GameController = GameController;
             codeGateController.WallStrength = wall.WallStrength.Value;
             Tile.ContainedItem.Add(codeGateController);
+            
         }
         foreach(var program in fort.FortressPrograms)
         {
@@ -239,5 +249,10 @@ public class FortressController : MonoBehaviour, ProgramSummoner
     void Update()
     {
         
+    }
+
+    public void Alert(ProgramController Sender, NetActor Target)
+    {
+        throw new System.NotImplementedException();
     }
 }

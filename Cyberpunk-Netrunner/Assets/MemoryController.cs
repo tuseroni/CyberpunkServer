@@ -36,7 +36,11 @@ public class MemoryController : MonoBehaviour,NetItem
     public int yPos { get; set; }
     public ProgramSummoner Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    public int RollToBeHit()
+	public string Name => throw new System.NotImplementedException();
+
+	public bool Selected { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+	public int RollToBeHit()
     {
         throw new System.NotImplementedException();
     }
@@ -57,4 +61,9 @@ public class MemoryController : MonoBehaviour,NetItem
     {
         
     }
+
+	public int TakeDamage(Damage damage)
+	{
+		throw new System.NotImplementedException();
+	}
 }
