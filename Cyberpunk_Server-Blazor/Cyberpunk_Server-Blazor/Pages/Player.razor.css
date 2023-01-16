@@ -1,0 +1,330 @@
+﻿.pagesTab {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 0px 2px;
+}
+
+.tab {
+	background-color: var(--secondary);
+	text-align: center;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 5px 5px 0px 0px;
+	border-bottom-style: none;
+	cursor: pointer;
+	color: white;
+}
+
+.page label {
+	/* text-shadow: var(--primary) 1px 0px 7px; */
+	/* color: var(--secondary); */
+}
+
+.tab.active {
+	background-color: var(--primary);
+}
+
+.page {
+	background-color: var(--secondary);
+	min-height: 39vh;
+	display: none;
+	overflow: auto;
+	border: solid 1px white;
+	border-top-style: none;
+}
+
+	.page.active {
+		display: block;
+	}
+
+@@media screen and (max-width: 1200px) {
+	.pagesTab {
+		grid-template-columns: repeat(1, 1fr);
+	}
+}
+.PlayerStats, .PlayerSkill, .playerInfo, .SkillType, .ElectronicsType {
+	display: grid;
+	grid-gap: 5px 25px;
+}
+
+.PlayerStats {
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.PlayerSkill {
+	/* grid-template-columns: 1fr 1fr 1fr; */
+}
+
+.playerInfo {
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.stat-block {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 10% 10%;
+}
+
+.playerInfo .stat-block {
+	grid-template-columns: 20% 1fr;
+}
+
+.PlayerStats .stat-block {
+	grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr);
+}
+
+.PlayerSkill .stat-block {
+	background: linear-gradient(90deg, Green,transparent calc( (((  ( var(--currentIP) /((var(--ranks)+1)*(10 * var(--multiplier))))) * 100) * 1% )), transparent);
+}
+
+.SkillType {
+	grid-template-columns: minmax(0px,1fr) minmax(0px,1fr) minmax(0px,1fr);
+}
+
+.SkillHeader {
+	grid-column: span 3;
+	text-align: center;
+	background: var(--primary);
+	cursor: pointer;
+}
+
+.SkillType.collapsed .chevron::before {
+	content: "\f054";
+}
+
+.SkillType.expanded .chevron::before {
+	content: "\f078";
+}
+
+.SkillType.collapsed .stat-block {
+	display: none;
+}
+
+/* player electronics*/
+
+.PlayerElectronics .stat-block {
+	background: linear-gradient(90deg, Green,transparent calc( (((  ( var(--currentIP) /((var(--ranks)+1)*(10 * var(--multiplier))))) * 100) * 1% )), transparent);
+}
+
+.ElectronicsType {
+	grid-template-columns: 1fr 1fr minmax(0px,1fr);
+}
+
+.ElectronicsHeader {
+	grid-column: span 3;
+	text-align: center;
+	background: var(--primary);
+	cursor: pointer;
+}
+
+.ElectronicsType.collapsed .chevron::before {
+	content: "\f054";
+}
+
+.ElectronicsType.expanded .chevron::before {
+	content: "\f078";
+}
+
+.ElectronicsType.collapsed .stat-block {
+	display: none;
+}
+
+
+.CyberdeckBlock {
+	min-height: 150px;
+	border: solid 1px white;
+	width: 100%;
+	border-radius: 15px;
+	margin-bottom: 10px;
+}
+
+	.CyberdeckBlock input[type="text"] {
+		width: calc(100% - 24px);
+		background-color: var(--secondary);
+		color: var(--primary);
+		text-align: center;
+		margin: 12px;
+		border-style: none;
+	}
+
+.ProgramDiv {
+	border: solid 1px var(--dark);
+}
+
+.ComputerBlock {
+	min-height: 150px;
+	border: solid 1px white;
+	border-radius: 10px;
+}
+
+.ProgramBlock button {
+	/* margin-left: 5px; */
+	border-radius: 10px;
+	background-color: var(--primary);
+	width: 100%;
+}
+
+.ProgramBlock {
+	display: grid;
+	grid-template-columns: 1fr minmax(0px,1fr) minmax(0px,1fr) 1fr;
+}
+
+.ProgramSection {
+	min-height: 150px;
+	border: solid 1px white;
+	/* margin: 8px; */
+	padding: 5px;
+	height: 100%;
+	overflow: auto;
+}
+
+.ProgramBlock input[type="number"] {
+	width: 100%;
+	background-color: var(--secondary);
+	color: var(--light);
+	border-style: none;
+}
+
+.newProgram {
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+}
+
+	.newProgram select {
+		border-radius: 5px;
+		background-color: var(--secondary);
+		color: var(--light);
+	}
+
+	.newProgram button {
+		background-color: var(--primary);
+		border-radius: 10px;
+	}
+
+.CyberdeckSection {
+	padding: 9px;
+	border: solid 1px white;
+}
+
+.computerSection {
+	padding: 9px;
+	border: solid 1px white;
+}
+
+	.computerSection .ProgramSection, .CyberdeckSection .ProgramSection {
+		border-style: none;
+		border-top: solid 1px;
+		height: 250px;
+	}
+
+
+.ComputerBlock .nameHeader {
+	width: calc(100% - 24px);
+	background-color: var(--secondary);
+	color: var(--primary);
+	text-align: center;
+	margin: 12px;
+	border-style: none;
+}
+
+.CyberdeckSection .btn, .computerSection .btn {
+	width: 100%;
+}
+
+.OptionsDiv {
+	display: flex;
+	margin-top: 5px;
+	border-top: solid 1px;
+	flex-wrap: wrap;
+}
+
+.ElectronicsStatDiv {
+	display: grid;
+	grid-template-columns: 1fr 50px 5px minmax(0,1fr);
+	border-top: solid 1px;
+}
+
+	.ElectronicsStatDiv input {
+		background-color: var(--secondary);
+		color: var(--light);
+		border-style: none;
+	}
+
+.OptionBlock {
+	padding-right: 10px;
+}
+
+
+	.OptionBlock label::after {
+		content: ';';
+	}
+
+.ProgramBlock select {
+	width: 100%;
+}
+
+
+div#infoModal {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: white;
+	display: none;
+}
+
+	div#infoModal.shown {
+		display: block;
+	}
+
+@@media screen and (max-width: 1200px) {
+	.SkillHeader {
+		grid-column: unset;
+	}
+
+	.PlayerStats {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.playerInfo {
+		grid-template-columns: 1fr;
+	}
+
+	.stat-block {
+		grid-template-columns: minmax(0px,1fr) 10% 10%;
+	}
+
+	.playerInfo .stat-block {
+		grid-template-columns: 20% 1fr;
+	}
+
+	.PlayerStats .stat-block {
+		grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr);
+	}
+
+	.SkillType {
+		grid-template-columns: minmax(0px,1fr);
+	}
+	/* player electronics*/
+
+	.ElectronicsType {
+		grid-template-columns: minmax(0px,1fr);
+	}
+
+	.ElectronicsHeader {
+		grid-column: unset;
+		text-align: center;
+		background: var(--primary);
+		cursor: pointer;
+	}
+
+	.ElectronicsType.collapsed .chevron::before {
+		content: "\f054";
+	}
+
+	.ElectronicsType.expanded .chevron::before {
+		content: "\f078";
+	}
+
+	.ElectronicsType.collapsed .stat-block {
+		display: none;
+	}
+}

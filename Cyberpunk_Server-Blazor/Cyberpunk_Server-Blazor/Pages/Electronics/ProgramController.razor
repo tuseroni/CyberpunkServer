@@ -1,0 +1,16 @@
+﻿@typeparam T
+@using CyberpunkServer.Models.DTO
+<div class="ProgramBlock" style="--rezzed:@prog.Rezzed; --packed:@prog.Packed">
+	<div class="ProgName"><label>@prog.Program.name</label></div><div><button @onclick="ChangeInstall">@InstallUninstall</button>
+		@if (ShowInstall)
+		{
+			<select @bind=InstallDestination>
+				<option value="">--Select Device --</option>
+				@foreach ((string key, iAddPrograms device) in lstDevices)
+				{
+					<option value="@key">@device.name</option>
+				}
+			</select>
+		}
+	</div><div><button type="button" @onclick="Delete"><i class="fa fa-trash"></i></button></div>
+</div>

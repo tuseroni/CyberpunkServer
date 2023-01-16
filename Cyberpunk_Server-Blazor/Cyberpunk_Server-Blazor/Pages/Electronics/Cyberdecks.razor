@@ -1,0 +1,41 @@
+﻿@using Microsoft.EntityFrameworkCore;
+@inject IDbContextFactory<CyberpunkServer.Models.CyberpunkEntities> db
+<div class="CyberdeckBlock">
+	<input type="text" @bind=elem.name>
+	<div class="ElectronicsStatDiv">
+		<label>MU</label><input type="number" class="AvailableMemory" @bind=AvailableMU><span>/</span><div class="TotalMemory">@TotalMU</div>
+		<label>Speed</label><input type="number" class="AvailableSpeed" @bind=elem.TotalSpeed><span>/</span><div>@elem.TotalSpeed</div>
+		<label>Wall Strength</label><div>@elem.Cyberdeck.WallStrength</div>
+	</div>
+	
+	<div class="OptionsDiv">
+		@foreach (var prog in elem.PlayerCyberdeckImprovements)
+		{
+			<div class="OptionBlock">
+				<div><label>@prog.CyberdeckImprovements.name X @prog.Quantity</label></div>
+			</div>
+		}
+		@foreach (var prog in elem.PlayerCyberdeckOptions)
+		{
+			<div class="OptionBlock">
+				<div><label>@prog.CyberdeckOptions.name</label></div>
+			</div>
+		}
+
+	</div>
+	<div class="ProgramSection">
+		@foreach (CyberpunkServer.Models.DTO.PlayerCyberdeckProgramsData prog in elem.PlayerCyberdeckPrograms)
+		{
+			<ProgramController prog=prog ProgList=elem.PlayerCyberdeckPrograms ElemRemoved=ListChange PlayerProgramList=PlayerProgramList></ProgramController>
+		}
+		<div class="newProgram">
+			<select class="programListSelect" @bind=SelectedProgramID>
+				@for (var i = 0; i < ProgramDatas.Count; i++)
+				{
+					<option value="@i">@ProgramDatas[i].name</option>
+				}
+			</select><button type="button" @onclick="addProgram"><i class="fa fa-plus"></i></button>
+		</div>
+	</div>
+</div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProgram" onclick="setModalTarget(this.parentElement)"><i class="fa fa-plus"></i></button>

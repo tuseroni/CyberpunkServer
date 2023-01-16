@@ -1,0 +1,39 @@
+﻿@using Cyberpunk_Server_Blazor.Pages.Electronics
+@using Microsoft.EntityFrameworkCore;
+@inject IDbContextFactory<CyberpunkServer.Models.CyberpunkEntities> db
+<div class="GearPage page" id="GearTab" data-tabname="Gear">
+			<div class="PlayerElectronics">
+				<div class="ElectronicsType expanded">
+					<h2 class="ElectronicsHeader" onclick="toggleCollapse(this.parentElement.parentElement)">Electronics<span class="fa chevron"></span></h2>
+					
+					<div class="CyberdeckSection">
+						@foreach (var elem in Model.PlayerCyberdeck)
+						{
+							<Cyberdecks elem="elem" PlayerProgramList=Model.PlayerPrograms ElemRemoved="ListChange" ProgramDatas=ProgramDatas></Cyberdecks>
+						}
+					</div>
+					<div class="ProgramSection" data-playercomputerid="-1">
+						@foreach (var elem in Model.PlayerPrograms)
+						{
+							<ProgramController prog="elem" ProgList="Model.PlayerPrograms" ElemRemoved="ListChange" lstDevices=lstDevices></ProgramController>
+						}
+						<div class="newProgram">
+							<select class="programListSelect" @bind=SelectedProgramID>
+								@for (var i = 0; i < ProgramDatas.Count; i++)
+								{
+									<option value="@i">@ProgramDatas[i].name</option>
+								}
+							</select><button type="button" @onclick="addProgram"><i class="fa fa-plus"></i></button>
+						</div>
+					</div>
+					<div class="computerSection">
+						@foreach (var elem in Model.PlayerComputer)
+						{
+							<Computers elem="elem" PlayerProgramList=Model.PlayerPrograms ElemRemoved="ListChange" ProgramDatas=ProgramDatas></Computers>
+						}
+					</div>
+
+				</div>
+			</div>
+
+		</div>

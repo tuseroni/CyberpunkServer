@@ -1,0 +1,18 @@
+﻿<div class="skillsPage page active" id="SkillsTab">
+	@foreach (var stat in Model.PlayerSkill.GroupBy(x => x.Skill.SkillType))
+	{
+		<div class="PlayerSkill">
+			<div class="SkillType expanded">
+				<h2 class="SkillHeader" onclick="toggleCollapse(this.parentElement.parentElement)">@stat.First().Skill.SkillTypes.Name<span class="fa chevron"></span></h2>
+				@foreach (var elem in stat)
+				{
+					<div class="stat-block" style="--ranks:@elem.Ranks; --currentIP:@elem.CurrentIP; --multiplier:@elem.Skill.Multiplier">
+						<label>@elem.Skill.Name</label>
+						<input type="Number" @bind=@elem.CurrentIP title="Current IP" />
+						<input type="number" @bind=@elem.Ranks title="Ranks" />
+					</div>
+				}
+			</div>
+		</div>
+	}
+</div>

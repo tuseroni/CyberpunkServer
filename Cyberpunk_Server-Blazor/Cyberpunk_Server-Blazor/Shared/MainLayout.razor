@@ -1,0 +1,98 @@
+﻿@inherits LayoutComponentBase
+
+<div class="container-fluid position-relative d-flex p-0">
+		<!-- Spinner Start -->
+		<div id="spinner" class="bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+			<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+		<!-- Spinner End -->
+		<!-- Sidebar Start -->
+		<div class="sidebar pe-4 pb-3 @(ShowSideBar?"open":"")">
+			<nav class="navbar bg-secondary navbar-dark">
+				<a href="index.html" class="navbar-brand mx-4 mb-3">
+					<h3 class="text-primary">Cyberpunk</h3>
+				</a>
+
+				<div class="navbar-nav w-100">
+					<a class="nav-item nav-link" href="/"><i class="fa fa-laptop me-2"></i>Home</a>
+					<a class="nav-item nav-link" href="/Player/3"><i class="fa fa-solid fa-user"></i>Players</a>
+					<a class="nav-item nav-link" href="/Subgrids"><i class="fa fa-solid fa-table"></i>Subgrids</a>
+				</div>
+			</nav>
+		</div>
+		<!-- Sidebar End -->
+		<!-- Content Start -->
+	<div class="content @(!ShowSideBar?"open":"")">
+			<!-- Navbar Start -->
+			<nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+				<span class="sidebar-toggler flex-shrink-0" @onclick=@(() =>ShowSideBar=!ShowSideBar)>
+					<i class="fa fa-bars"></i>
+				</span>
+				<div class="navbar-nav align-items-center ms-auto">
+				<LoginDisplay />
+					<!--<div class="nav-item dropdown">
+						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+							<img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+							<span class="d-none d-lg-inline-flex">John Doe</span>
+						</a>
+						<div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+							<a href="#" class="dropdown-item">My Profile</a>
+							<a href="#" class="dropdown-item">Settings</a>
+							<a href="#" class="dropdown-item">Log Out</a>
+						</div>
+					</div>-->
+				</div>
+			</nav>
+			<!-- Navbar End -->
+			<!-- Blank Start -->
+			<div class="container-fluid pt-4 px-4">
+			@Body
+			</div>
+			<!-- Blank End -->
+			<!-- Footer Start -->
+			<div class="container-fluid pt-4 px-4">
+				<div class="bg-secondary rounded-top p-4">
+					<div class="row">
+						<div class="col-12 col-sm-6 text-center text-sm-start">
+							© <a href="#">Your Site Name</a>, All Right Reserved.
+						</div>
+						<div class="col-12 col-sm-6 text-center text-sm-end">
+							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+							Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+							<br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Footer End -->
+		</div>
+		<!-- Content End -->
+		<!-- Back to Top -->
+		<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+	</div>
+	@code
+	{
+		public bool ShowSideBar = true;
+	}
+
+@*<PageTitle>Cyberpunk_Server-Blazor</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4 auth">
+            <LoginDisplay />
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+*@

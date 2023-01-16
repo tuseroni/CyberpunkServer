@@ -1,0 +1,12 @@
+﻿@using CyberpunkServer.Models.DTO;
+<g transform="translate(@(x*gridSize),0)">
+    @foreach (var item in ContainedItems)
+    {
+        @((MarkupString)item.NetObjType.SVG)
+        @if(item is FortressProgramsData)
+        {
+            <svg><text fill="black" x="9" y="20" style="font-size: 8.2px;" text-anchor="middle"> @item.id </text></svg>
+        }
+    }
+    <rect class="gridTile" width="@gridSize" height="@gridSize" xPos="@x" yPos="@y" @onclick=handleTileClick />
+</g>

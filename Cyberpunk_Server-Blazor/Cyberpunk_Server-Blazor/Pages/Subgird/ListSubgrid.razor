@@ -1,0 +1,24 @@
+﻿@page "/Subgrids";
+<select @onchange=changeParameter>
+    <option>1</option>
+    <option>2</option>
+</select>
+
+@if (currentKey == 1)
+{
+    <Subgrid SubgridID=1 />
+}
+@if (currentKey == 2)
+{
+    <Subgrid SubgridID=2 />
+}
+
+@code {
+    private int currentKey = 1;
+    void changeParameter(ChangeEventArgs e)
+    {
+        string value = e.Value?.ToString() ?? "0";
+        currentKey = Int32.Parse(value);
+        StateHasChanged();
+    }
+}
