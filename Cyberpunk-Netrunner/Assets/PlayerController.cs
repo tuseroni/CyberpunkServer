@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 //using UnityEngine.UI;
 using UnityEngine.UIElements;
 
@@ -30,8 +31,8 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
 	{
         
 	}
-
-	public int Int 
+    public TileController currentTile { get; set; }
+    public int Int 
     { 
         get
         {
@@ -124,6 +125,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
     public int ActionsDone { get; set; }
     public bool Invisible { get; set; } = false;
     public bool DetectInvisibility { get; set; } = false;
+    DefensePromptController DefensePrompt;
     public PlayerData playerData
     {
         get
@@ -144,7 +146,16 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
             ProgramHolder.Add(Header1);
             foreach (var prog in value.EquippedCyberdeck.PlayerCyberdeckPrograms)
             {
-                if (!prog.Program.ProgramFunction.Where(x => x.name == "Utility").Any())
+                if (prog.Program.ProgramFunction.Where(x => x.name == "Utility").Any())
+                {
+
+                    GameController.addUtility(prog);
+                }
+                else if (prog.Program.ProgramFunction.Where(x => x.name == "Protection").Any())
+                {
+                    DefensePrompt.ProgramList.Add(prog.Program);
+                }
+                else
                 {
                     Label ProgramLabel = new Label();
                     ProgramLabel.AddToClassList("Program");
@@ -152,11 +163,6 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
                     ProgramLabel.tooltip = prog.Program.Description;
                     ProgramLabel.RegisterCallback<ClickEvent>((ev) => CyberdeckProgramClicked(ev, prog));
                     ProgramHolder.Add(ProgramLabel);
-                    
-                }
-                else
-                {
-                    GameController.addUtility(prog);
                 }
             }
             Label Header2 = new Label();
@@ -199,22 +205,42 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
                     MenuController.SetDamage(playerData.Dammage);
                     Stunned = CheckStun();
                     GameController.SetPlayerStunned(this,Stunned);
+                    ProgramSP = 0;
                     return dmg;
                 }
                 break;
             case DamageType.Stat:
                 var stat = playerData.StatLookup[damage.key];
-                stat.Bonus -= damage.Value;
+                stat.Bonus -= (damage.Value - ProgramSP);
+                ProgramSP = 0;
                 return damage.Value;
             case DamageType.Skill:
                 var skill = playerData.SkillLookup[damage.key];
-                skill.Bonus -= damage.Value;
+                skill.Bonus -= (damage.Value - ProgramSP);
+                ProgramSP = 0;
                 return damage.Value;
             case DamageType.Strength:
                 break;
         }
         return 0;
     }
+    public string MainMenu = "Menu Test Scene";
+    public async Task HangUp()
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(MainMenu);
+        if(!GameController.offline)
+        {
+            SignalrHandler.InvokePlayerCut(playerData.id);
+        }
+        await Task.Run(() =>
+        {
+            while (!operation.isDone)
+            {
+                Task.Yield();
+            }
+        });
+    }
+
     bool CheckStun()
     {
         int stunBonus = 0 + (int)Math.Floor((playerData.Dammage - 1) / 4f);
@@ -280,20 +306,33 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         throw new NotImplementedException();
     }
 
-    public int RollToBeHit()
+    public async Task<int> RollToBeHit()
     {
+        
+        var result = await DefensePrompt.Show();
+        var ProgramDefense = 0;
+        if(result==DialogResult.Yes && DefensePrompt.SelectedProgram != null)
+        {
+            ProgramDefense= DefensePrompt.SelectedProgram.Strength;
+            if(DefensePrompt.SelectedProgram.name=="Armor")
+            {
+                ProgramSP = 3; //TODO: make it so armor and other defensive programs can reduce the damage only on attacks from specific programs
+            }
+
+        }
+
         playerData.SkillLookup = playerData.PlayerSkill.ToDictionary(x => x.Skill.Name, x => x);
         var Int = playerData.StatLookup["INT"].Total;
         var Interface = playerData.SkillLookup["Interface (Netrunner)"];
         var InterfaceTotal = Interface.Total + playerData.EquippedCyberdeck.PlayerCyberdeckOptions.SelectMany(x => x.CyberdeckOptions.CyberdeckOptionsSkillModifiers.Where(x => x.SkillID == Interface.id)).Sum(x => x.Modifier);
-        var ProgramDefense = ActiveDefensivePrograms.Select(x => x.Program.Strength).Sum();
         var d10 = GameController.RollD10();
         return ProgramDefense + d10 + InterfaceTotal + Int;
     }
 
-    public int RollToHit()
+    public async Task<int> RollToHit()
     {
-        return RollToBeHit();
+        await Task.Yield();
+        return 0;
     }
     async Task ShowInfo(string text)
 	{
@@ -412,7 +451,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         {
             return;
         }
-        await GameController.DestroyProgram(program);
+        await GameController.DeactivateProgram(program);
         program.ActiveProgramController.RemoveFromHierarchy();
         program.UIElement.RemoveFromClassList("Hidden");
         if(ActiveStealthPrograms.Contains(program))
@@ -483,7 +522,8 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         ProgramHolder = Document.rootVisualElement.Query<VisualElement>("ProgramHolder");
         btnEndTurn= Document.rootVisualElement.Query<Button>("btnEndTurn");
         ActiveProgramHolder = Document.rootVisualElement.Query<VisualElement>("ActiveProgramHolder");
-        MenuController= Document.rootVisualElement.Query<MenuController>("MenuController");
+        MenuController = Document.rootVisualElement.Query<MenuController>("MenuController");
+        DefensePrompt = MenuController.Query<DefensePromptController>("DefensePromptController");
         MenuController.onGlogoClick += MenuController_onGlogoClick;
         ((Button)Document.rootVisualElement.Query<Button>("btnForward")).RegisterCallback<ClickEvent>(btnForwardClick);
         ((Button)Document.rootVisualElement.Query<Button>("btnRight")).RegisterCallback<ClickEvent>(btnRightClick);
@@ -698,6 +738,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         playerData.yPos = y;
         var newPos = new Vector2Int(x, y);
         path.Add(newPos);
+        //tile.ContainedItem.Add(this);
         transform.position = tile.transform.position + new Vector3(0, 3, 0);
         SignalrHandler.InvokePlayerMove(playerData.id, playerData.xPos, playerData.yPos);
     }

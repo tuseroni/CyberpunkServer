@@ -57,6 +57,7 @@ public class PromptController : VisualElement
 	public async Task<DialogResult> Show(string header,ButtonType type= ButtonType.OKCancel)
 	{
 		RemoveFromClassList("Hidden");
+		Result = DialogResult.None;
 		HeaderText = header;
 		ButtonType = type;
 		

@@ -62,7 +62,7 @@ class Intrusion : ProgramController
         }
         
     }
-	public override async void Attack(NetItem Target)
+	public override async void Attack(NetItem Target,TileController _lastSeenTile=null)
 	{
         this.Target = Target;
         if(Target.Type==NetObjType.Wall && TargetInRange)

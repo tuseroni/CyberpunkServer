@@ -58,6 +58,7 @@ public class GameController : MonoBehaviour
     public event ProgramDestroyed onProgramDestroyed;
     public delegate void ItemSelected(Selectable item);
     public event ItemSelected onItemSelect;
+    public bool offline = false;
     Selectable SelectedItem { get; set; }
     // Start is called before the first frame update
     void Start()
@@ -137,8 +138,8 @@ public class GameController : MonoBehaviour
         List<Task> Messages = new List<Task>();
         bool ret = false;
         Messages.Add(SendUIMessage($"{Attacker.Name} is Attacking {target.Name}"));
-        int attack = Attacker.RollToHit();
-        int defense = target.RollToBeHit();
+        int attack = await Attacker.RollToHit();
+        int defense =await  target.RollToBeHit();
         if(attack>=defense)
         {
             Messages.Add(SendUIMessage("HIT!!"));
@@ -209,6 +210,35 @@ public class GameController : MonoBehaviour
             Initiative.Remove(Program);
         }
         Program.gameObject.SetActive(false);
+        SignalrHandler.InvokeProgramDerezzed(Program.FortressProgram);
+        //
+    }
+    public async Task DeactivateProgram(ProgramController Program)
+	{
+        onProgramDestroyed.Invoke(Program);
+        Program.Rezzed = false;
+        int index = Initiative.IndexOf(Program);
+        if (index >= 0)
+        {
+            if (CurrentActorInInitiative == Initiative[index])
+            {
+                if (index + 1 > Initiative.Count - 1)
+                {
+                    index = 0;
+                }
+                else
+                {
+                    index++;
+                }
+                CurrentActorInInitiative = Initiative[index];
+                CurrentActorInInitiative.Continue = true;
+            }
+            Initiative.Remove(Program);
+        }
+        Program.gameObject.SetActive(false);
+        SignalrHandler.InvokeProgramDeactivated(Program.FortressProgram);
+        await Task.Yield();
+
     }
     public void ReRezz(ProgramController target)
     {
@@ -364,7 +394,16 @@ public class GameController : MonoBehaviour
             {
                 program.Continue = true;
             }
+            if (ProgramData is PlayerCyberdeckProgramsData)
+            {
+                SignalrHandler.InvokeProgramAdded((PlayerCyberdeckProgramsData)ProgramData);
+            }
+            else
+            {
+                SignalrHandler.InvokeProgramAdded((PlayerComputerProgramsData)ProgramData);
+            }
 
+            
         }
         Programs.Add(program);
     }

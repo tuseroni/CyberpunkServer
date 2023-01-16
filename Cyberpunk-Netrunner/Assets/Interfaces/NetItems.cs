@@ -15,7 +15,7 @@ public interface Selectable
 {
     bool Selected { get; set; }
 }
-public interface NetItem : Selectable
+public partial interface NetItem : Selectable
     {
         GameObject Object
         {
@@ -28,8 +28,8 @@ public interface NetItem : Selectable
         NetObjType Type { get; set; }
         int xPos { get; set; }
         int yPos { get; set; }
-        int RollToBeHit();
-        int RollToHit();
+        Task<int> RollToBeHit();
+        Task<int> RollToHit();
         string Name { get; }
         int TakeDamage(Damage damage);
     }
@@ -47,6 +47,7 @@ public interface NetItem : Selectable
         bool Invisible { get; set; }
         bool DetectInvisibility { get; set; }
         List<Vector2Int> path { get; set; }
+        TileController currentTile { get; set; }
 
     }
 

@@ -15,7 +15,25 @@ public class GridController : MonoBehaviour
     public int Width = 100;
     public GameObject FortressPrefab;
     public PlayerController PlayerController;
-    bool offline = false;
+    bool _offline = false;
+    bool offline
+    {
+        get
+        {
+            return GameController?.offline ?? _offline;
+        }
+        set
+        {
+            if(GameController != null)
+            {
+                GameController.offline = value;
+            }
+            else
+            {
+                _offline = value;
+            }
+        }
+    }
     public GameController GameController;
     // Start is called before the first frame update
     void Start()

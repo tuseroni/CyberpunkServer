@@ -85,6 +85,10 @@ public class TileController : MonoBehaviour, Selectable
                 value.Object.transform.localPosition = new Vector3(0, 30, 0);
                 value.xPos = xPos;
                 value.yPos = yPos;
+                if(value is NetActor)
+                {
+                    ((NetActor)value).currentTile = this;
+                }
             }
         }    
     }

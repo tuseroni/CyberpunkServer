@@ -45,7 +45,7 @@ class Portal : Intrusion
     BoxCollider bc;
 	public override int ActionTurns { get; set; } = 3;
 	public override bool Solid { get => false; set { } }
-	public override async void Attack(NetItem Target)
+	public override async void Attack(NetItem Target, TileController _lastSeenTile = null)
 	{
         this.Target = Target;
         if(Target.Type==NetObjType.Wall && TargetInRange)

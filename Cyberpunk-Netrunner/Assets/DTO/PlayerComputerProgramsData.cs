@@ -11,7 +11,7 @@ using System;
 
 namespace CyberpunkServer.Models.DTO
 {
-    public partial class PlayerComputerProgramsData: iDevicePrograms
+    public partial class PlayerComputerProgramsData: RunningProgram
 	{
         public int id { get; set; }
         public Nullable<int> ProgramID { get; set; }
@@ -27,6 +27,46 @@ namespace CyberpunkServer.Models.DTO
             }
         }
         public virtual ProgramData Program { get; set; }
-        
+        public int? OwnerID { get; set; }
+        public int xPos { get; set; }
+        public int yPos { get; set; }
+        public int DeviceID
+        {
+            get
+            {
+                return PlayerComputerID.Value;
+            }
+            set
+            {
+
+            }
+        }
+        public string DeviceType { get; set; } = "Computer";
+		string _uuid = Guid.NewGuid().ToString();
+		public string UUID
+		{
+			get
+			{
+				return _uuid;
+			}
+			set
+			{
+				_uuid = value;
+			}
+		}
+
+		public int Type { get; set; }
+        public NetObjTypeData NetObjType { get; set; }
+        public NetObjTypeData TypeNavigation
+        {
+            get
+            {
+                return NetObjType;
+            }
+            set
+            {
+                NetObjType = value;
+            }
+        }
     }
 }

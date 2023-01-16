@@ -7,10 +7,12 @@ using System.Text;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
+using System;
 
 public static class AppData
 {
     public static Dictionary<int, PlayerData> PlayerLookup = new Dictionary<int, PlayerData>();
+    public static string RefConnectionID = "";
     public static List<PlayerData> Characters
     {
         get
@@ -57,6 +59,7 @@ public static class SignalrHandler
     {
         hubConnection = new HubConnectionBuilder()
                 .WithUrl(address)
+                .WithAutomaticReconnect()
                 .Build();
         await hubConnection.StartAsync().ContinueWith(task =>
         {
@@ -76,9 +79,10 @@ public static class SignalrHandler
 
         //connection.TraceWriter = fileWriter;
 
-        hubConnection.On<int,int,int, SubgridData>("JackInRequestAccepted", (playerID,x,y,subgrid) =>
+        hubConnection.On<int,int,int, SubgridData,string>("JackInRequestAccepted", (playerID,x,y,subgrid,RefID) =>
         {
             Debug.Log($"Player has Jacked IN!");
+            AppData.RefConnectionID = RefID;
             UnityThread.executeInUpdate(() =>
             {
                 onJackInRequestAccepted.Invoke(playerID,x,y, subgrid);
@@ -126,13 +130,13 @@ public static class SignalrHandler
             }
         });
     }
-    public static void InvokeProgramMove(int FortressProgramID,int FortressID, int x, int y)
+    public static void InvokeProgramMove(RunningProgram program, int x, int y)
     {
         if (hubConnection == null)
         {
             return;
         }
-        hubConnection.SendAsync("ProgramMove", FortressProgramID, FortressID, x, y).ContinueWith(task =>
+        hubConnection.SendAsync("ProgramMove", program.UUID, x, y).ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
@@ -200,7 +204,79 @@ public static class SignalrHandler
         {
             return;
         }
-        hubConnection.SendAsync("JackInRequest", PlayerID).ContinueWith(task => {
+        hubConnection.SendAsync("JackInRequest", PlayerID,hubConnection.ConnectionId).ContinueWith(task => {
+            if (task.IsFaulted)
+            {
+                Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
+            }
+            else
+            {
+                Debug.Log("Send Complete.");
+            }
+        });
+    }
+    public static void InvokeProgramAdded(PlayerCyberdeckProgramsData program)
+    {
+        if (hubConnection == null)
+        {
+            return;
+        }
+        
+        hubConnection.SendAsync("ProgramAddedFromCyberdeck", program).ContinueWith(task => {
+            if (task.IsFaulted)
+            {
+                Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
+            }
+            else
+            {
+                Debug.Log("Send Complete.");
+            }
+        });
+    }
+    public static void InvokeProgramAdded(PlayerComputerProgramsData program)
+    {
+        if (hubConnection == null)
+        {
+            return;
+        }
+
+        hubConnection.SendAsync("ProgramAddedFromComputer", program).ContinueWith(task => {
+            if (task.IsFaulted)
+            {
+                Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
+            }
+            else
+            {
+                Debug.Log("Send Complete.");
+            }
+        });
+    }
+    public static void InvokeProgramDeactivated(RunningProgram program)
+    {
+        if (hubConnection == null)
+        {
+            return;
+        }
+
+        hubConnection.SendAsync("ProgramDeactivated", program.UUID).ContinueWith(task => {
+            if (task.IsFaulted)
+            {
+                Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
+            }
+            else
+            {
+                Debug.Log("Send Complete.");
+            }
+        });
+    }
+    public static void InvokeProgramDerezzed(RunningProgram program)
+    {
+        if (hubConnection == null)
+        {
+            return;
+        }
+
+        hubConnection.SendAsync("ProgramDerezzed", program.UUID).ContinueWith(task => {
             if (task.IsFaulted)
             {
                 Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
@@ -212,6 +288,23 @@ public static class SignalrHandler
         });
     }
 
+    public static void InvokePlayerCut(int PlayerID)
+    {
+        if (hubConnection == null)
+        {
+            return;
+        }
+        hubConnection.SendAsync("PlayerCut", PlayerID).ContinueWith(task => {
+            if (task.IsFaulted)
+            {
+                Debug.Log(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
+            }
+            else
+            {
+                Debug.Log("Send Complete.");
+            }
+        });
+    }
 }
 
 public class signalrController : MonoBehaviour

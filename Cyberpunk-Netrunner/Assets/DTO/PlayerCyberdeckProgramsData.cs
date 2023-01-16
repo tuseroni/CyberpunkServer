@@ -7,26 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using CyberpunkServer.Models.DTO;
 using System;
-public interface iDevicePrograms
-{
-	bool Rezzed { get; set; }
-	bool Packed { get; set; }
-	int Strength { get; set; }
-	ProgramData Program { get; set; }
-	int MU { get; }
-}
+
 
 namespace CyberpunkServer.Models.DTO
 {
-    public partial class PlayerCyberdeckProgramsData: iDevicePrograms
+    public partial class PlayerCyberdeckProgramsData: RunningProgram
 	{
         public int id { get; set; }
         public Nullable<int> ProgramID { get; set; }
         public Nullable<int> PlayerCyberdeckID { get; set; }
         public bool Rezzed { get; set; }
         public bool Packed { get; set; }
+
         public int Strength { get; set; }
         public virtual ProgramData Program { get; set; }
         public int MU
@@ -37,5 +30,48 @@ namespace CyberpunkServer.Models.DTO
             }
         }
 
+        public int? OwnerID { get; set; }
+        public int xPos { get; set; }
+        public int yPos { get; set; }
+        public int DeviceID
+        {
+            get
+            {
+                return PlayerCyberdeckID.Value;
+            }
+            set
+            {
+
+            }
+        }
+        public string DeviceType { get; set; } = "Cyberdeck";
+		string _uuid = Guid.NewGuid().ToString();
+		public string UUID
+		{
+			get
+			{
+                return _uuid;
+
+			}
+			set
+			{
+				_uuid = value;
+			}
+		}
+		public int Type { get; set; }
+        public NetObjTypeData NetObjType { get; set; }
+        public NetObjTypeData TypeNavigation 
+        { 
+            get
+            {
+                return NetObjType;
+            }
+            set
+            {
+                NetObjType = value;
+            }
+        }
+
+        
     }
 }

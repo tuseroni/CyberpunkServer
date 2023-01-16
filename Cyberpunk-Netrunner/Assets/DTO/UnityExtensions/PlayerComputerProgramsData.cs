@@ -15,20 +15,6 @@ namespace CyberpunkServer.Models.DTO
     public partial class PlayerComputerProgramsData : HasUiElement, RunningProgram
     {
         public VisualElement UIElement { get; set; }
-        public int? OwnerID { get; set; }
-        public int xPos { get; set; }
-        public int yPos { get; set; }
-        public int DeviceID
-        {
-            get
-            {
-                return PlayerComputerID.Value;
-            }
-            set
-            {
-
-            }
-        }
-        public string DeviceType { get; set; } = "Computer";
+       
     }
 }

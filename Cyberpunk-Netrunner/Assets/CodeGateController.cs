@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class CodeGateController : MonoBehaviour,NetItem
@@ -75,14 +76,16 @@ public class CodeGateController : MonoBehaviour,NetItem
 
     }
 
-    public int RollToBeHit()
+    public async Task<int> RollToBeHit()
     {
+        await Task.Yield();
         var d10 = GameController.RollD10();
         return d10 + WallStrength;
     }
 
-    public int RollToHit()
+    public async Task<int> RollToHit()
     {
+        await Task.Yield();
         throw new System.NotImplementedException();
     }
 

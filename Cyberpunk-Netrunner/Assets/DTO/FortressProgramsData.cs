@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CyberpunkServer.Models.DTO
 {
-    public partial class FortressProgramsData
+    public partial class FortressProgramsData:RunningProgram
     {
         public int id { get; set; }
         public Nullable<int> ProgramID { get; set; }
@@ -30,6 +30,42 @@ namespace CyberpunkServer.Models.DTO
 			}
 		}
 		public virtual NetObjTypeData NetObjType { get; set; }
+        public int? OwnerID { get; set; }
 
-    }
+        public int DeviceID
+        {
+            get
+            {
+                return FortressID.Value;
+            }
+            set
+            {
+
+            }
+        }
+        public string DeviceType { get; set; } = "Fortress";
+        public bool Packed { get => false; set { } }
+
+        public int MU
+        {
+            get
+            {
+                return Convert.ToInt32(Program.MU * (Packed ? 0.5 : 1));
+            }
+        }
+
+		string _uuid = Guid.NewGuid().ToString();
+		public string UUID
+		{
+			get
+			{
+				return _uuid;
+			}
+			set
+			{
+				_uuid = value;
+			}
+		}
+
+	}
 }

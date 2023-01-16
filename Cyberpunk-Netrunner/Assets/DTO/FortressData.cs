@@ -29,7 +29,17 @@ namespace CyberpunkServer.Models.DTO
         public int id { get; set; }
         public Nullable<int> subgridID { get; set; }
         public Nullable<int> WallStrength { get; set; }
-        public Nullable<int> Int { get; set; }
+        public Nullable<int> Int 
+        { 
+            get
+            {
+                return FortressCPU.Count * 3;
+            }
+            set
+            {
+
+            }
+        }
         public string Name { get; set; }
         public virtual List<FortressCPUData> FortressCPU { get; set; }
         public virtual List<FortressCodeGatesData> FortressCodeGates { get; set; }

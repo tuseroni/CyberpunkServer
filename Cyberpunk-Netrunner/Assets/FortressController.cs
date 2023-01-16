@@ -121,7 +121,7 @@ public class FortressController : MonoBehaviour, ProgramSummoner
     public GridController Grid = null;
     public GameController GameController;
     TileController LastSeenTile;
-
+    AlertState State;
     
     public GameController Ref
     {
@@ -230,12 +230,25 @@ public class FortressController : MonoBehaviour, ProgramSummoner
                     prefab = ProgramPrefab;
                 }
                 var wallObj = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
-                GameController.addProgram(wallObj.GetComponent<ProgramController>(), this, program);
+                var controller = wallObj.GetComponent<ProgramController>();
+                GameController.addProgram(controller, this, program);
+                ActivePrograms.Add(controller);
+                if(controller.Functions.ContainsKey("Anti-Personnel"))
+                {
+                    AntiPersonnel.Add(controller);
+                }
+                if(controller.Functions.ContainsKey("Anti-Program"))
+                {
+                    AntiProgram.Add(controller);
+                }
                 //wallObj.GetComponent<ProgramController>().addProgram(Grid, fort, program,this);
             }
         }
         Int = CPUs.Count * 3;
     }
+    List<ProgramController> ActivePrograms = new List<ProgramController>();
+    List<ProgramController> AntiPersonnel = new List<ProgramController>();
+    List<ProgramController> AntiProgram = new List<ProgramController>();
     // Start is called before the first frame update
     void Start()
     {
@@ -253,6 +266,21 @@ public class FortressController : MonoBehaviour, ProgramSummoner
 
     public void Alert(ProgramController Sender, NetActor Target)
     {
-        throw new System.NotImplementedException();
+        if (Target is PlayerController)
+        {
+            foreach (var prog in AntiPersonnel)
+            {
+
+                prog.Attack(Target, LastSeenTile = Target.currentTile);//the only strategy the fortress knows: SWARM.
+            }
+        }
+        else if(Target is ProgramController)
+        {
+            foreach (var prog in AntiProgram)
+            {
+
+                prog.Attack(Target, LastSeenTile = Target.currentTile);//the only strategy the fortress knows: SWARM.
+            }
+        }
     }
 }

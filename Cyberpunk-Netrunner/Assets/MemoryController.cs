@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class MemoryController : MonoBehaviour,NetItem
@@ -40,13 +41,15 @@ public class MemoryController : MonoBehaviour,NetItem
 
 	public bool Selected { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-	public int RollToBeHit()
+    public async Task<int> RollToBeHit()
     {
+        await Task.Yield();
         throw new System.NotImplementedException();
     }
 
-    public int RollToHit()
+    public async Task<int> RollToHit()
     {
+        await Task.Yield();
         throw new System.NotImplementedException();
     }
 

@@ -148,7 +148,7 @@ public class ProgramController : MonoBehaviour, NetActor
     public int MaxY = 0;
     public int MinX = 999;
     public int MinY = 999;
-    public TileController currentTile;
+    public TileController currentTile { get; set; }
     public GridController grid;
     public bool canLeaveFort = false;
     public bool canMove = false;
@@ -207,6 +207,11 @@ public class ProgramController : MonoBehaviour, NetActor
             GameController.EndTurn(this);
             return 0;
         }
+        if(Functions.ContainsKey("Alert") && target is NetActor)
+        {
+            Owner.Alert(this, (NetActor)target);
+        }
+
         if (target.Type==NetObjType.Program)
         {
             if(Functions.ContainsKey("Anti Program"))
@@ -221,6 +226,10 @@ public class ProgramController : MonoBehaviour, NetActor
             {
                 var newDamage = new Damage { Type = DamageType.HP, Value = damage = GameController.RollD6() };
                 await GameController.DoDamage(target, newDamage);
+            }
+            if(Options.ContainsKey("Hang Up"))
+            {
+                await ((PlayerController)target).HangUp();
             }
         }
         else if(target.Type==NetObjType.CodeGate && Functions.ContainsKey("Decryption"))
@@ -370,14 +379,15 @@ public class ProgramController : MonoBehaviour, NetActor
     Dictionary<NetActor,bool> VisibilityLookup = new Dictionary<NetActor,bool>();
     private async Task<NetItem> FieldOfViewCheck(NetItem _target = null)
     {
-        if (Functions.ContainsKey("Anti Program"))
+        if (Functions.ContainsKey("Anti Program") || Functions.ContainsKey("Detection"))
         {
             targetMask = ProgramMask;
         }
-        if (Functions.ContainsKey("Anti-Personnel"))
+        if (Functions.ContainsKey("Anti-Personnel") || Functions.ContainsKey("Detection"))
         {
             targetMask |= PlayerMask;
         }
+        
         Target = null;
         canSeeTarget = false;
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
@@ -491,9 +501,13 @@ public class ProgramController : MonoBehaviour, NetActor
     {
         return await FieldOfViewCheck(_target);
     }
-    public virtual async void Attack(NetItem Target)
+    public virtual async void Attack(NetItem Target,TileController _lastSeenTile=null)
     {
         State = ProgramState.chasing;
+        if(_lastSeenTile!=null)
+        {
+            lastSeenTile = _lastSeenTile;
+        }
         this.Target = Target;
         await Task.Yield();
         
@@ -546,9 +560,10 @@ public class ProgramController : MonoBehaviour, NetActor
         else
         {
             Target = await Search();
+            var canMove = true;
             if (Target == null)
             {
-                amble();
+                canMove = amble();
             }
             else if (TargetInRange)
             {
@@ -556,9 +571,12 @@ public class ProgramController : MonoBehaviour, NetActor
             }
             else
             {
-                amble();
+                canMove= amble();
             }
-
+            if(!canMove)
+            {
+                GameController.EndTurn(this);
+            }
         }
         
         return WaitSeconds;
@@ -603,9 +621,12 @@ public class ProgramController : MonoBehaviour, NetActor
         else
         {
             Target = await Search(_target);
-            
             if (Target == null || !TargetInRange)
             {
+                if (Target != null)
+                {
+                    TargetTile = lastSeenTile;
+                }
                 if(!MoveToTargetTile())
                 {
                     GameController.EndTurn(this);
@@ -687,6 +708,10 @@ public class ProgramController : MonoBehaviour, NetActor
         {
             await DoAction(Target);
         }
+        else
+        {
+            GameController.EndTurn(this);
+        }
     }
     public virtual void Follow(PlayerController player)
     {
@@ -712,6 +737,15 @@ public class ProgramController : MonoBehaviour, NetActor
                 break;
             case ProgramState.idle:
                 await Search();
+                if(Target!=null)
+                {
+                    State = ProgramState.chasing;
+                    TargetTile = lastSeenTile;
+                }
+                else
+                {
+                    GameController.EndTurn(this);
+                }
                 break;
             case ProgramState.guarding:
                 await Guard();
@@ -736,14 +770,14 @@ public class ProgramController : MonoBehaviour, NetActor
         State = ProgramState.Moving;
         TargetTile = tile;
     }
-    public virtual void amble()
+    public virtual bool amble()
     {
         TileController tile = null;
         bool validMove = true;
         var newPos = new Vector2Int();
         if (canMove == false)
         {
-            return;
+            return false;
         }
         var tries = 20;
         do
@@ -804,9 +838,10 @@ public class ProgramController : MonoBehaviour, NetActor
         if (!validMove)
         {
             path.Clear();
-            return;
+            return false;
         }
         MoveProgram(tile, newPos);
+        return true;
     }
     void MoveProgram(TileController tile, Vector2Int newPos)
     {
@@ -814,7 +849,10 @@ public class ProgramController : MonoBehaviour, NetActor
         tile.ContainedItem.Add(this);
         currentTile = tile;
         path.Add(newPos);
-        //SignalrHandler.InvokeProgramMove(FortressProgram.id, FortressProgram.DeviceID, newPos.x, newPos.y);
+        if (!GameController.offline)
+        {
+            SignalrHandler.InvokeProgramMove(this.FortressProgram, newPos.x, newPos.y);
+        }
     }
 
 
@@ -848,7 +886,7 @@ public class ProgramController : MonoBehaviour, NetActor
         if (Options.ContainsKey("Invisibility"))
         {
             var D10 = GameController.RollD10();
-            return D10 + Strength;
+            return D10 + Strength+2;
         }
         else
         {
@@ -862,13 +900,15 @@ public class ProgramController : MonoBehaviour, NetActor
         return D10 + Strength;
     }
 
-    public int RollToBeHit()
+    public async Task<int> RollToBeHit()
     {
+        await Task.Yield();//todo: add diceware here.
         return Strength + Owner.Int + Owner.Interface + GameController.RollD10();
     }
 
-    public int RollToHit()
+    public async Task<int> RollToHit()
     {
+        await Task.Yield();//todo: add diceware here.
         return FortressProgram.Strength + Owner.Int + Owner.Interface + GameController.RollD10();
     }
 }

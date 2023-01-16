@@ -5,7 +5,7 @@
             <ui:Label tabindex="-1" text="Ninja" display-tooltip-when-elided="true" enable-rich-text="false" name="MenuButton" class="Program" style="height: auto;" />
             <ui:GroupBox name="MenuBox" class="ActiveProgramActionBlock Hidden">
                 <ui:Label tabindex="-1" text="Move" display-tooltip-when-elided="true" name="MoveAction" />
-                <ui:Label tabindex="-1" text="Patrol" display-tooltip-when-elided="true" name="PatrolActionLabel" class="Hidden" />
+                <ui:Label tabindex="-1" text="Patrol" display-tooltip-when-elided="true" name="PatrolActionLabel" />
                 <ui:Label tabindex="-1" text="Deactivate" display-tooltip-when-elided="true" name="DeactivateActionLabel" />
                 <ui:Label tabindex="-1" text="Attack" display-tooltip-when-elided="true" name="AttackAction" />
                 <ui:Label tabindex="-1" text="Re-Rezz" display-tooltip-when-elided="true" name="RerezActionLabel" class="Hidden" />
