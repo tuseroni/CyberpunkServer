@@ -6,4 +6,5 @@ The app allows for net running as its own kind of minigame (as it kinda IS with 
 
 As the player moves about the net their location and actions are relayed to the ref who can see them on the grid. This is accomplished using signalr.  
 video showing off progress so far (1/17/2023)
-[![Watch the video](https://img.youtube.com/vi/Z2g8xccuEQ4/default.jpg)](https://youtu.be/Z2g8xccuEQ4)
+
+[![Watch the video](https://img.youtube.com/vi/Z2g8xccuEQ4/maxresdefault.jpg)](https://youtu.be/Z2g8xccuEQ4)
