@@ -173,14 +173,17 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 			{
 				await hubConnection.DisposeAsync();
 			}
-            for (var y = 0; y < grid.height; y++)
-            {
-                for (var x = 0; x < grid.width; x++)
-                {
-                    netItemLookup[y][x].CollectionChanged -= collectionChange;
-                }
-            }
-			netItemLookup.Clear();
+			if (grid != null)
+			{
+				for (var y = 0; y < grid.height; y++)
+				{
+					for (var x = 0; x < grid.width; x++)
+					{
+						netItemLookup[y][x].CollectionChanged -= collectionChange;
+					}
+				}
+			}
+			netItemLookup?.Clear();
         }
 
 		private void PlayerMove(int PlayerID, int x, int y)
