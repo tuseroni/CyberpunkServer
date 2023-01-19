@@ -17,7 +17,13 @@
         <option value="@grid.id">@grid.Name</option>
     }
 </select>
-@childContent
+
+@if (currentKey != -1)
+{
+    <Subgrid SubgridID=currentKey @key=currentKey />
+}
+
+
 
 @code {
     private int currentKey = -1;
@@ -30,40 +36,11 @@
     UserManager<IdentityUser> userManager { get; set; }
 
     private string textContent = "";
-    private RenderFragment childContent { get; set; }
-    private Dictionary<int, RenderFragment> SubgridLookup = new Dictionary<int, RenderFragment>();
-
-    private RenderFragment AddContent() => builder =>
-    {
-
-        builder.AddContent(1, textContent);
-    };
-
+    
     void changeParameter(ChangeEventArgs e)
     {
         string value = e.Value?.ToString() ?? "0";
         currentKey = Int32.Parse(value);
-        if (SubgridLookup.ContainsKey(currentKey))
-        {
-            childContent = null;//unloads the current component.
-            
-           
-            Task.Run(() =>
-            {
-                Task.Delay(10);//wait for the component to realize this and not try to "help" me by just changing the fecking parameter.
-                InvokeAsync(() =>
-                {
-                    childContent = SubgridLookup[currentKey];//change the child content on the main thread
-                    StateHasChanged();//and notify that this has happened.
-                });
-                
-            });
-        }
-        else
-        {
-            childContent = null;
-        }
-
         StateHasChanged();
     }
     protected override async Task OnInitializedAsync()
@@ -78,13 +55,11 @@
         {
             isLoading = true;
             var user = (await authenticationStateTask).User;
-            childContent = null;
             using (var ctx = db.CreateDbContext())
             {
                 subgrids = ctx.Subgrid.Where(x => x.UserID == user.FindFirst(ClaimTypes.NameIdentifier).Value).Select(x => (SubgridData)x).ToList();
                 
             }
-            subgrids.ForEach(x => SubgridLookup.Add(x.id,@<Subgrid SubgridID=x.id />));
         }
         catch(Exception ex)
         {
