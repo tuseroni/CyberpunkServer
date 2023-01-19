@@ -136,8 +136,13 @@ public partial class CyberpunkEntities : DbContext
 
     public virtual DbSet<__MigrationHistory> __MigrationHistory { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		=> optionsBuilder.UseSqlServer(Secrets.Secret["ConnectionStrings:Cyberpunk-Connection"]);
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		optionsBuilder.UseSqlServer(Secrets.Secret["ConnectionStrings:Cyberpunk-Connection"]);
+		optionsBuilder.EnableSensitiveDataLogging();
+
+
+	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -469,11 +474,8 @@ public partial class CyberpunkEntities : DbContext
 
         modelBuilder.Entity<FortressRemotes>(entity =>
         {
-            entity.Property(e => e.id).ValueGeneratedNever();
-
             entity.HasOne(d => d.Fortress).WithMany(p => p.FortressRemotes)
                 .HasForeignKey(d => d.FortressID)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_FortressRemotes_Fortress");
 
             entity.HasOne(d => d.TypeNavigation).WithMany(p => p.FortressRemotes)

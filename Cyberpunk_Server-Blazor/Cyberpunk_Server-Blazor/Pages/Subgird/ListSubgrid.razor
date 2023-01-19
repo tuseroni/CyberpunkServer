@@ -1,24 +1,64 @@
 ﻿@page "/Subgrids";
-<select @onchange=changeParameter>
-    <option>1</option>
-    <option>2</option>
-</select>
+@using CyberpunkServer.Models.DTO;
+@using Cyberpunk_Server_Blazor.Data;
+@using Microsoft.EntityFrameworkCore;
+@using Cyberpunk_Server_Blazor.Pages.Electronics
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
+@inject IDbContextFactory<CyberpunkServer.Models.CyberpunkEntities> db
+@inject NavigationManager MyNavigationManager
 
-@if (currentKey == 1)
-{
-    <Subgrid SubgridID=1 />
-}
-@if (currentKey == 2)
-{
-    <Subgrid SubgridID=2 />
-}
+
+
+<select @onchange=changeParameter>
+    <option value="-1">--- Select Subgrid ---</option>
+    @foreach(var grid in subgrids)
+    {    
+        <option value="@grid.id">@grid.Name</option>
+    }
+</select>
+@foreach(var grid in subgrids)
+    {    
+        @if (currentKey == grid.id)
+        {
+            <Subgrid SubgridID=@grid.id />
+        }
+    }
 
 @code {
-    private int currentKey = 1;
+    private int currentKey = -1;
+    private List<SubgridData> subgrids = new List<SubgridData>();
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    [Inject]
+    UserManager<IdentityUser> userManager { get; set; }
     void changeParameter(ChangeEventArgs e)
     {
         string value = e.Value?.ToString() ?? "0";
         currentKey = Int32.Parse(value);
         StateHasChanged();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        bool isLoading = false;
+        if (isLoading)
+        {
+            return;
+        }
+        try
+        {
+            isLoading = true;
+            var user = (await authenticationStateTask).User;
+
+            using (var ctx = db.CreateDbContext())
+            {
+                subgrids = ctx.Subgrid.Where(x => x.UserID == user.FindFirst(ClaimTypes.NameIdentifier).Value).Select(x => (SubgridData)x).ToList();
+            }
+        }
+        catch(Exception ex)
+        {
+        }
     }
 }

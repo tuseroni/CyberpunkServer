@@ -18,7 +18,7 @@ namespace CyberpunkServer.Models.DTO
         public int id { get; set; }
         public int xPos { get; set; }
         public int yPos { get; set; }
-        public int FortressID { get; set; }
+        public int? FortressID { get; set; }
         public int Type { get; set; }
 		public virtual NetObjTypeData TypeNavigation
 		{
@@ -35,5 +35,5 @@ namespace CyberpunkServer.Models.DTO
 		}
 		[Newtonsoft.Json.JsonIgnore]
         public virtual NetObjTypeData NetObjType { get; set; }
-    }
+	}
 }

@@ -120,6 +120,11 @@ public class WallController : MonoBehaviour, NetItem
     {
         await Task.Yield();
         var d10 = GameController.RollD10();
+        //if (d10 == 1)
+        //{
+        //    GameController.HandleFumble(this);
+        //    return 0;
+        //}
         return d10 + WallStrength;
     }
 

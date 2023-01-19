@@ -304,13 +304,21 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 							SetSelectedItem(((NetItem)Element).NetObjType);
 							break;
 						case 5:
-							if ((Element is FortressProgramsData && Fortress.FortressPrograms.Contains((FortressProgramsData)Element)) || (Element is RunningProgram))
+							if ((Element is FortressProgramsData && Fortress.FortressPrograms.Contains((FortressProgramsData)Element)))
+							{
+								return;
+							}
+							else if (!(Element is FortressProgramsData))
 							{
 								return;
 							}
 							if (Element is FortressProgramsData)
 							{
-								Fortress.FortressPrograms.Add((FortressProgramsData)Element);
+								var elem = (FortressProgramsData)Element;
+								elem.FortressID = Fortress.id;
+								elem.Strength = elem.Program.Strength;
+								elem.Rezzed = true;
+								Fortress.FortressPrograms.Add(elem);
 							}
 							SetSelectedItem(((NetItem)Element).NetObjType);
 							break;

@@ -886,6 +886,11 @@ public class ProgramController : MonoBehaviour, NetActor
         if (Options.ContainsKey("Invisibility"))
         {
             var D10 = GameController.RollD10();
+            //if (D10 == 1)
+            //{
+            //    GameController.HandleFumble(this);
+            //    return 0;
+            //}
             return D10 + Strength+2;
         }
         else
@@ -897,18 +902,35 @@ public class ProgramController : MonoBehaviour, NetActor
     public int doDetectionCheck()
     {
         var D10 = GameController.RollD10();
+        //if (D10 == 1)
+        //{
+        //    GameController.HandleFumble(this);
+        //    return 0;
+        //}
         return D10 + Strength;
     }
 
     public async Task<int> RollToBeHit()
     {
         await Task.Yield();//todo: add diceware here.
-        return Strength + Owner.Int + Owner.Interface + GameController.RollD10();
+        var d10 = GameController.RollD10();
+        //if (d10 == 1)
+        //{
+        //    GameController.HandleFumble(this);
+        //    return 0;
+        //}
+        return Strength + Owner.Int + Owner.Interface + d10;
     }
 
     public async Task<int> RollToHit()
     {
         await Task.Yield();//todo: add diceware here.
+        var d10 = GameController.RollD10();
+        //if (d10 == 1)
+        //{
+        //    GameController.HandleFumble(this);
+        //    return 0;
+        //}
         return FortressProgram.Strength + Owner.Int + Owner.Interface + GameController.RollD10();
     }
 }

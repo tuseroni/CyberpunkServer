@@ -66,8 +66,13 @@ public class GameController : MonoBehaviour
         MenuController= Document.rootVisualElement.Query<MenuController>("MenuController");
     }
 
-    // Update is called once per frame
-    void Update()
+	public void HandleFumble(NetItem codeGateController)
+	{
+		//do fumble things
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         
     }
@@ -309,7 +314,7 @@ public class GameController : MonoBehaviour
     /// integers until a number other than 10 is rolled. If set to false, the function will 
     /// only roll once</param>
     /// <returns>The final result of the "exploding dice" roll.</returns>
-    public static int RollD10(bool canCrit = true)
+    public static int RollD10(bool canCrit = false)
     {
         int ret = 0;
         int rand;
