@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualStudio.Web.CodeGeneration.Design;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -83,7 +84,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 					SelectedItem = new FortressWallsData
 					{
 						NetObjType = type,
-						Type=type.id
+						Type = type.id
 					};
 					break;
 				case 2:
@@ -116,7 +117,8 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 					{
 						NetObjType = type,
 						Type = type.id,
-						Program = ProgramList[0]
+						Program = ProgramList[SelectedProgramIndex],
+						ProgramID = ProgramList[SelectedProgramIndex].id
 					};
 					break;
 				case 6:
@@ -239,6 +241,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 
 		}
 		Dictionary<int, PlayerData> JackedInPlayers = new Dictionary<int, PlayerData>();
+		CancellationToken token = new CancellationToken();
 		private void addPlayerToGrid(PlayerData playerData, int x, int y)
 		{
 			InvokeAsync(() =>
@@ -247,15 +250,16 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 				{
 					JackedInPlayers.Add(playerData.id, playerData);
 					SelectedItem = null;
-					hubConnection.SendAsync("AcceptJackInRequest", playerData.id, playerData.xPos, playerData.yPos, grid).ContinueWith(task =>
+					
+					hubConnection.InvokeAsync("AcceptJackInRequest", playerData.id, playerData.xPos, playerData.yPos, grid, token).ContinueWith(task =>
 					{
 						if (task.IsFaulted)
 						{
-							Console.WriteLine(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
+							Debug.Print(string.Format("There was an error calling send: {0}", task.Exception.GetBaseException()));
 						}
 						else
 						{
-							Console.WriteLine("Send Complete.");
+							Debug.Print("Send Complete.");
 						}
 					});
 				}
@@ -359,6 +363,8 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 			}
 			InvokeAsync(()=> StateHasChanged());
 		}
+		List<AI_PersonalityData> AI_Personalities = new List<AI_PersonalityData>();
+		List<AI_ICONData> AI_ICONs = new List<AI_ICONData>();
 		protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
@@ -400,6 +406,10 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 						Fortress = grid.Fortress[0];
 					}
 					ProgramList = await ctx.Program.Include(x => x.ProgramFunction).Where(x=>new List<int> { 3, 4, 7, 8, 9 }.Contains(x.ProgramTypeID??0)).Select(x=>(ProgramData)x).AsSplitQuery().ToListAsync();
+
+					AI_Personalities = await ctx.AI_Personality.Select(x=>(AI_PersonalityData)x).ToListAsync();
+					AI_ICONs = await ctx.AI_ICON.Select(x => (AI_ICONData)x).ToListAsync();
+					
 
 				}
                 for(var y=0;y<grid.height;y++)
@@ -464,7 +474,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 			}
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Debug.Print(ex.Message);
             }
             finally
             {
@@ -496,7 +506,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 			GridLookup[program.yPos][program.xPos].ContainedItems.Add(program);
 			program.CurrentTile = GridLookup[program.yPos][program.xPos];
 
-            Console.WriteLine("hello");
+            Debug.Print("hello");
         }
 		private void ProgramDerezzed(string UUID)
 		{

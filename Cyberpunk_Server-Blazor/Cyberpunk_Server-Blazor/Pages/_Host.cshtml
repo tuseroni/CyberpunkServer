@@ -71,11 +71,11 @@
 			var newTab = elem.dataset["tabname"];
 			pagesArea.querySelectorAll(".active").forEach(x => {
 				x.classList.remove("active");
-				document.getElementById(x.dataset["tabname"] + "Tab").classList.remove("active");
+                pagesArea.parentElement.querySelector("#" + x.dataset["tabname"] + "Tab").classList.remove("active");
 			});
 			elem.classList.add("active");
 
-			document.getElementById(newTab + "Tab").classList.add("active");
+            pagesArea.parentElement.querySelector("#" + newTab + "Tab").classList.add("active");
 
 
 		}

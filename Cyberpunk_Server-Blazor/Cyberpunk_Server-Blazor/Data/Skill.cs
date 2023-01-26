@@ -28,4 +28,6 @@ public partial class Skill
     public virtual SkillTypes? SkillTypeNavigation { get; set; }
 
     public virtual Stat? Stat { get; set; }
+
+    public virtual ICollection<PlayerRoles> PlayerRole { get; } = new List<PlayerRoles>();
 }

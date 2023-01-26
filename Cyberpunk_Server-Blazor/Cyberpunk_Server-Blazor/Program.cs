@@ -13,7 +13,11 @@ using Cyberpunk_Server_Blazor;
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
-
+services.AddSignalR(o =>
+{
+    o.EnableDetailedErrors = true;
+    o.MaximumReceiveMessageSize = null;
+});
 // Add services to the container.
 var connectionString = Secrets.Secret["ConnectionStrings:Cyberpunk-Connection"] ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

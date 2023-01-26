@@ -28,7 +28,10 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 			GridLookup[y][x] = this;
 			if(ContainedItems.Count>0)
 			{
-				ContainedItems[0].CurrentTile = this;
+				foreach (var item in ContainedItems)
+				{
+					item.CurrentTile = this;
+				}
 			}
         }
 		private void handleTileClick(MouseEventArgs e)

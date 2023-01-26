@@ -1,5 +1,5 @@
 ﻿<div class="skillsPage page active" id="SkillsTab">
-	@foreach (var stat in Model.PlayerSkill.GroupBy(x => x.Skill.SkillType))
+	@foreach (var stat in Skills.GroupBy(x => x.Skill.SkillType))
 	{
 		<div class="PlayerSkill">
 			<div class="SkillType expanded">

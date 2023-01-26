@@ -13,7 +13,8 @@ public enum DamageType
     HP,
     Stat,
     Skill,
-    Strength
+    Strength,
+    WallStrength
 }
 public class Damage
 {
@@ -96,14 +97,21 @@ public class GameController : MonoBehaviour
         PlayerState = PlayerInteractionState.Idle;
         WaitingProgram.OrderMove(tile);
     }
+    public bool DebugMode = true;
     public async Task<bool> DoISeeTarget(NetActor Target, NetActor Seeker)
     {
 
-        var targetHide = Target.doEvasionCheck();
+        var targetHide = Target.doEvasionCheck(Target.DetectInvisibility);
         var SeekerSeek = Seeker.doDetectionCheck();
         if(SeekerSeek>targetHide)
         {
-            await SendUIMessage($"{Seeker.Name} Spotted {Target.Name}!");
+            if (Seeker.Owner is not PlayerController || DebugMode)
+            {
+                await SendUIMessage($"{Seeker.Name} Spotted {Target.Name}!");
+            }
+            else
+            {
+            }
             return true;
         }
         else
@@ -123,6 +131,8 @@ public class GameController : MonoBehaviour
                 return damage.key;
             case DamageType.Strength:
                 return "Strength";
+            case DamageType.WallStrength:
+                return "Wall Strength";
             default:
                 return "";
         }
@@ -292,7 +302,7 @@ public class GameController : MonoBehaviour
     /// <param name="low">The minimum value for the random integer.(Inclusive)</param>
     /// <param name="high">The maximum value for the random integer.(Exclusive)</param>
     /// <returns>A random integer within the specified range.</returns>
-    static int GetRandomRange(int low, int high)
+    public static int GetRandomRange(int low, int high)
     {
         int rand;
         using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
@@ -314,7 +324,7 @@ public class GameController : MonoBehaviour
     /// integers until a number other than 10 is rolled. If set to false, the function will 
     /// only roll once</param>
     /// <returns>The final result of the "exploding dice" roll.</returns>
-    public static int RollD10(bool canCrit = false)
+    public static int RollD10(bool canCrit = false) 
     {
         int ret = 0;
         int rand;

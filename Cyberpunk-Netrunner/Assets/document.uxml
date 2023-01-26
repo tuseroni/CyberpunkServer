@@ -46,10 +46,13 @@
                 <ui:Label tabindex="-1" text="CONTROL REMOTE" display-tooltip-when-elided="true" name="ControlRemote" />
                 <ui:Label tabindex="-1" text="LOG OFF" display-tooltip-when-elided="true" name="LogOff" />
                 <ui:Label tabindex="-1" text="RUN PROGRAM" display-tooltip-when-elided="true" name="RunProgram" />
-                <ui:GroupBox name="ProgramList" class="Hidden" style="overflow: visible; visibility: visible; height: 237px; transition-duration: 0.3s;">
+                <ui:GroupBox name="ProgramList" class="Hidden" style="overflow: visible; visibility: visible; height: 195px; transition-duration: 0.3s;">
                     <ui:ScrollView horizontal-scroller-visibility="Hidden" touch-scroll-type="Elastic" style="height: auto;">
                         <ui:VisualElement name="ProgramHolder" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
                             <ui:Label tabindex="-1" text="CYBERDECK PROGRAMS" display-tooltip-when-elided="true" class="Program Header" style="height: auto;" />
+                            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />
+                            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />
+                            <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />
                             <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />
                             <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />
                             <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" class="Program" style="height: auto;" />

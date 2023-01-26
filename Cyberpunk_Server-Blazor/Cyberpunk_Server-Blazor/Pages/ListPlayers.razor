@@ -1,0 +1,131 @@
+﻿@page "/Players";
+@using CyberpunkServer.Models.DTO;
+@using CyberpunkServer.Models;
+@using Cyberpunk_Server_Blazor.Data;
+@using Microsoft.EntityFrameworkCore;
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
+@inject IDbContextFactory<CyberpunkServer.Models.CyberpunkEntities> db
+
+
+<style>
+    .modal-title {
+        color: black;
+    }
+</style>
+<select @onchange=changeParameter value="@currentKey">
+    <option value="-1">--- Select Player ---</option>
+    <option value="0">--- Add New Player ---</option>
+    @foreach (var Player in players)
+    {
+        <option value="@Player.id">@Player.Handle</option>
+    }
+</select>
+
+@if (currentKey > 0)
+{
+    <Player playerID=currentKey @key=currentKey />
+}
+@if (currentKey == 0)
+{
+
+        <div class="modal fade show d-block" id="exampleModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="titleLabel">Add Player</h5>
+                        <button type="button" class="close" @onclick="@(()=>{currentKey=-1;})" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">  
+                            <label for="lastName">Name</label>
+                            <input type="text" id="lastName" class="form-control" @bind=data.Handle placeholder ="Enter name">
+                        </div>  
+                        <button type="button" class="close" @onclick="Save" data-dismiss="modal" aria-label="Save">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+}
+
+
+
+@code {
+    private int currentKey = -1;
+    private int lastKey = -1;
+    private CyberpunkServer.Models.Player data;
+    private List<PlayerData> players = new List<PlayerData>();
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    [Inject]
+    UserManager<IdentityUser> userManager { get; set; }
+
+    private string textContent = "";
+    async void Save()
+    {
+        if (data != null)
+        {
+            using (var ctx = db.CreateDbContext())
+            {
+
+                ctx.Attach(data);
+                await ctx.SaveChangesAsync();
+                ctx.Entry(data).Reload();
+                players.Add((PlayerData)data);
+                currentKey = data.id;
+                StateHasChanged();
+            }
+        }
+    }
+    void changeParameter(ChangeEventArgs e)
+    {
+        string value = e.Value?.ToString() ?? "0";
+        currentKey = Int32.Parse(value);
+        if (currentKey == 0)
+        {
+            data = new CyberpunkServer.Models.Player
+            {
+                aspUserID=UserID
+            };
+            stats.ForEach(x => data.PlayerStat.Add(new PlayerStat
+                {
+                    Stat = x
+                }));
+            Skills.ForEach(x => data.PlayerSkill.Add(new CyberpunkServer.Models.PlayerSkill
+                {
+                    Skill = x
+                }));
+        }
+        StateHasChanged();
+    }
+    string UserID = "";
+    List<Stat> stats = new List<Stat>();
+    List<Skill> Skills = new List<Skill>();
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        bool isLoading = false;
+        if (isLoading)
+        {
+            return;
+        }
+        try
+        {
+            isLoading = true;
+            var user = (await authenticationStateTask).User;
+            UserID = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+            using (var ctx = db.CreateDbContext())
+            {
+                players = ctx.Player.Where(x => x.aspUserID == UserID).Select(x => (PlayerData)x).ToList();
+                stats = ctx.Stat.ToList();
+                Skills = ctx.Skill.ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+}

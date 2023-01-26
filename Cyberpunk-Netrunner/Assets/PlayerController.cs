@@ -13,6 +13,9 @@ using UnityEngine.UIElements;
 public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
 {
     public GameController GameController;
+    public Device ForwardFacingDevice;
+    public ComputerController EquippedComputer;
+    public CyberdeckController EquippedCyberdeck;
     public GameController Ref
     {
         get
@@ -135,8 +138,28 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         set
         {
             _playerData = value;
-            value.EquippedComputer = value.PlayerComputer[0];
             value.EquippedCyberdeck = value.PlayerCyberdeck[0];
+            //this section here is to allow anti-system programs to attack the runner's gear.
+            //if they are running through a computer with an equipped cyberdeck then attacks are made against the computer, not the deck
+            //i am assuming here that they have a cyberdeck, since it's possible to net run without one i will need to account for this in the future
+            //including replacing "interface" with "expert(complex programming language}" or w/e it was.
+            //in that case UsingInterfacePlugs is false.
+            if (value.PlayerComputer.Count > 0)
+            {
+                value.EquippedComputer = value.PlayerComputer[0];
+                EquippedComputer.gameObject.SetActive(true);
+                EquippedComputer.ComputerData = value.EquippedComputer;
+                ForwardFacingDevice = EquippedComputer;
+                EquippedCyberdeck.gameObject.SetActive(false);//the cyberdeck isn't disabled, just the controller, the thing that can be attacked.
+            }
+            else
+            {
+                EquippedComputer.gameObject.SetActive(false);
+                ForwardFacingDevice = EquippedCyberdeck;
+            }
+            
+            
+            
             ProgramHolder.Clear();
             ActiveProgramHolder.Clear();
 
@@ -225,6 +248,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         return 0;
     }
     public string MainMenu = "Menu Test Scene";
+    public bool Hidden { get; set; }
     public async Task HangUp()
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(MainMenu);
@@ -294,7 +318,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         Initiative= d10 + speed + reflex;
         return Initiative;
     }
-    public int doEvasionCheck()
+    public int doEvasionCheck(bool SeekerIgnoresInvisibility = false)
     {
         var d10 = GameController.RollD10();
         //if (d10 == 1)
@@ -302,7 +326,12 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         //    GameController.HandleFumble(this);
         //    return 0;
         //}
-        var ProgramEvasions= ActiveStealthPrograms.Select(x => x.Program.Strength).Sum();
+        var stealthProgs = ActiveStealthPrograms.Where(x => true);
+        if(SeekerIgnoresInvisibility)
+        {
+            stealthProgs = stealthProgs.Where(x => x.name != "Invisibility");
+        }
+        var ProgramEvasions= stealthProgs.Select(x => x.Program.Strength).Sum();
         return ProgramEvasions + d10;
     }
 

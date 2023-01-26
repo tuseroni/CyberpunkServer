@@ -1,10 +1,8 @@
-﻿@page "/Player/{playerID:int}"
-@using Cyberpunk_Server_Blazor.Data;
+﻿@using Cyberpunk_Server_Blazor.Data;
 @using Microsoft.EntityFrameworkCore;
-@using Cyberpunk_Server_Blazor.Pages.Electronics
-@inject IDbContextFactory<CyberpunkServer.Models.CyberpunkEntities> db
+@using Cyberpunk_Server_Blazor.Pages.Electronics;
+@inject IDbContextFactory<CyberpunkServer.Models.CyberpunkEntities> db;
 @inject IJSRuntime JS
-
 
 <style>
 	.pagesTab {
@@ -345,9 +343,9 @@
 	}
 </style>
 
-<h3>Edit Player</h3>
+<h3>@GoonHandle</h3>
 
-@if (Model == null)
+@if (isLoading==true)
 {
     <p><em>Loading...</em></p>
 }
@@ -355,12 +353,13 @@ else
 {
 	<div class="Player">
 		<div class="playerInfo">
-			<div class="stat-block"><label>Handle:</label><input type="text" name="Handle" @bind=Model.Handle></div>
-			<div class="stat-block"><label>S.I.N.:</label><input type="text" name="SIN" @bind=Model.SIN></div>
+			<div class="stat-block"><label>Handle:</label><input type="text" name="Handle" @bind=GoonHandle></div>
+			<div class="stat-block"><label>S.I.N.:</label><input type="text" name="SIN" @bind=GoonSIN></div>
+			<div class="stat-block"><label>Role:</label><label>@GoonRole.Name</label></div>
 			
 		</div>
 		<div class="PlayerStats">
-			@foreach(var stat in Model.PlayerStat)
+			@foreach(var stat in GoonStats)
 			{
 				<div class="stat-block">
 					<label>@stat.Stat.ABBR</label>
@@ -369,29 +368,41 @@ else
 			}
 		</div>
 		<div class="PlayerStats">
-			<div class="stat-block"><label>IP:</label><input type="number" name="IP" @bind=Model.IP></div>
-			<div class="stat-block"><label>Damage:</label><input type="number" name="Dammage" @bind=Model.Dammage></div>
-			<div class="stat-block"><label>REP:</label><input type="number" name="REP" @bind=Model.REP></div>
-			<div class="stat-block"><label>HL:</label><input type="number" name="Humanity" @bind=Model.Humanity></div>
-			<div class="stat-block calculated" title="Humanity=(Empathy(base)*10)-floor(HL/10)"><label>Humanity:</label><input disabled="disabled" type="number" @bind=Humanity ></div>
-			<div class="stat-block calculated" title="RUN=(BT)*3"><label>RUN:</label><input disabled="disabled" type="number" value="@(Model.StatLookup["BT"].Base * 3)"></div>
-			<div class="stat-block calculated" title="LEAP=(BT)*3/4"><label>LEAP:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["BT"].Base * 3) / 4)"></div>
-			<div class="stat-block calculated" title="LIFT=(BT)*10"><label>LIFT:</label><input disabled="disabled" type="number" value="@((Model.StatLookup["BT"].Base * 10))"></div>
+			<div class="stat-block"><label>Damage:</label><input type="number" name="Dammage" @bind=GoonDamage></div>
+			<div class="stat-block calculated" title="RUN=(BT)*3"><label>RUN:</label><input disabled="disabled" type="number" value="@(StatLookup["BT"].Base * 3)"></div>
+			<div class="stat-block calculated" title="LEAP=(BT)*3/4"><label>LEAP:</label><input disabled="disabled" type="number" value="@((StatLookup["BT"].Base * 3) / 4)"></div>
+			<div class="stat-block calculated" title="LIFT=(BT)*10"><label>LIFT:</label><input disabled="disabled" type="number" value="@((StatLookup["BT"].Base * 10))"></div>
 		</div>
 		<hr />
 		<div class="pagesTab">
 			<div class="tab active" data-tabname="Skills">Skills</div>
 			<div class="tab" data-tabname="Cybernetics">Cybernetics</div>
 			<div class="tab" data-tabname="Weapons">Weapons</div>
-			<div class="tab" data-tabname="Gear">Gear</div>
+			<div class="tab" data-tabname="Armour">Armour</div>
 		</div>
-			<PlayerSkill Skills=Model.PlayerSkill></PlayerSkill>
+		<PlayerSkill Skills=GoonSkills></PlayerSkill>
 		<div class="CyberneticsPage page" id="CyberneticsTab" data-tabname="Cybernetics">
+			@foreach(var cyber in GoonCybernetics)
+			{
+			<div>
+				<input type="text" value="@cyber" style="width:100%;">
+			</div>
+			}
 		</div>
 		<div class="WeaponsPage page" id="WeaponsTab" data-tabname="Weapons">
+			
+				<div>
+					<input type="text" value="@GoonWeapon" style="width:100%;">
+				</div>
 		</div>
-		<GearPage Model=Model></GearPage>
+		<div class="ArmourPage page" id="ArmourTab" data-tabname="Armour">
+			
+				<div>
+					<input type="text" value="@GoonArmour" style="width:100%;">
+				</div>
+		</div>
 		
 	</div>
-	<button @onclick="SaveAsync">Save</button>
 }
+
+

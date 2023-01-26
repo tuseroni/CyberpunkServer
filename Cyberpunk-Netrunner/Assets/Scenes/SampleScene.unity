@@ -227,6 +227,8 @@ MonoBehaviour:
   Document: {fileID: 1063834463}
   PlayerState: 0
   grid: {fileID: 411193483}
+  offline: 0
+  DebugMode: 1
 --- !u!4 &550931408
 Transform:
   m_ObjectHideFlags: 0

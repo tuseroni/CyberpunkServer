@@ -58,7 +58,7 @@ public class ProgramController : MonoBehaviour, NetActor
     public TextMeshProUGUI ProgramName;
     public BoundingSphere Detector;
     public bool Selected { get; set; }
-    public bool DetectInvisibility { get; set; } = false;
+    public virtual bool DetectInvisibility { get; set; } = false;
     public virtual int ActionTurns { get; set; } = 1;
     public virtual int ActionTurnsRemaining { get; set; } = 0;
     public RunningProgram FortressProgram
@@ -106,7 +106,7 @@ public class ProgramController : MonoBehaviour, NetActor
         }
     }
     public ProgramSummoner Owner { get; set; }
-    public virtual bool Solid { get => true; set { } }
+    public virtual bool Solid { get; set; } = true;
     public NetObjType Type { get => NetObjType.Program; set { } }
 
     public virtual int xPos { get; set; }
@@ -359,6 +359,34 @@ public class ProgramController : MonoBehaviour, NetActor
         {
             ProgramName.text = program.Program.name;
         }
+        if (tile.ContainedItem.Where(x => x is MemoryController).Any())
+        {
+            Solid = false;
+            Invisible = true;
+            Hidden = true;
+            if (MR != null)
+            {
+                MR.enabled = false;
+            }
+            if (ProgramName != null)
+            {
+                ProgramName.enabled = false;
+            }
+        }
+        else
+        {
+            Solid = true;
+            Invisible = false;
+            Hidden = false;
+            if (MR != null)
+            {
+                MR.enabled = true;
+            }
+            if (ProgramName != null)
+            {
+                ProgramName.enabled = true;
+            }
+        }
     }
    
     
@@ -366,8 +394,9 @@ public class ProgramController : MonoBehaviour, NetActor
     public LayerMask targetMask;
     public LayerMask PlayerMask;
     public LayerMask ProgramMask;
+    public LayerMask DeviceMask;
     public LayerMask obstructionMask;
-    float radius = 20.0f * 60.0f;
+    public virtual float radius { get; set; }=20.0f * 60.0f;
     float angle = 360;
     public VisualTreeAsset ActiveProgramAsset;
     public VisualElement UIElement { get; set; }
@@ -387,7 +416,10 @@ public class ProgramController : MonoBehaviour, NetActor
         {
             targetMask |= PlayerMask;
         }
-        
+        if(Functions.ContainsKey("Anti-System"))
+        {
+            targetMask|= DeviceMask;
+        }
         Target = null;
         canSeeTarget = false;
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
@@ -457,9 +489,9 @@ public class ProgramController : MonoBehaviour, NetActor
                                     }
                                 }
                             }
-                            else
+                            else if (foundItem is Device || foundItem is PlayerController)
                             {
-                                if (foundItem != Owner)
+                                if (foundItem != Owner && foundItem.Owner !=Owner)
                                 {
                                     if (!VisibilityLookup.ContainsKey(foundItem))
                                     {
@@ -849,6 +881,31 @@ public class ProgramController : MonoBehaviour, NetActor
         tile.ContainedItem.Add(this);
         currentTile = tile;
         path.Add(newPos);
+        if (Owner is FortressController)
+        {
+            if (tile.ContainedItem.Where(x => x is MemoryController).Any())
+            {
+                Solid = false;
+                Invisible = true;
+                Hidden = true;
+                if (MR != null)
+                {
+                    MR.enabled = false;
+                }
+                ProgramName.enabled = false;
+            }
+            else
+            {
+                Solid = true;
+                Invisible = false;
+                Hidden = false;
+                if (MR != null)
+                {
+                    MR.enabled = true;
+                }
+                ProgramName.enabled = true;
+            }
+        }
         if (!GameController.offline)
         {
             SignalrHandler.InvokeProgramMove(this.FortressProgram, newPos.x, newPos.y);
@@ -880,10 +937,11 @@ public class ProgramController : MonoBehaviour, NetActor
     {
 
     }
+    public bool Hidden { get; set; }
     public int Initiative { get; set; }
-    public int doEvasionCheck()
+    public int doEvasionCheck(bool SeekerIgnoresInvisibility = false)
     {
-        if (Options.ContainsKey("Invisibility"))
+        if ((Options.ContainsKey("Invisibility") || Invisible)&& !SeekerIgnoresInvisibility)
         {
             var D10 = GameController.RollD10();
             //if (D10 == 1)
@@ -891,7 +949,7 @@ public class ProgramController : MonoBehaviour, NetActor
             //    GameController.HandleFumble(this);
             //    return 0;
             //}
-            return D10 + Strength+2;
+            return D10 + Strength + (Options.ContainsKey("Invisibility") ? 2 : 0);
         }
         else
         {
@@ -910,7 +968,7 @@ public class ProgramController : MonoBehaviour, NetActor
         return D10 + Strength;
     }
 
-    public async Task<int> RollToBeHit()
+    public virtual async Task<int> RollToBeHit()
     {
         await Task.Yield();//todo: add diceware here.
         var d10 = GameController.RollD10();
@@ -919,18 +977,21 @@ public class ProgramController : MonoBehaviour, NetActor
         //    GameController.HandleFumble(this);
         //    return 0;
         //}
+        return Strength + d10;
         return Strength + Owner.Int + Owner.Interface + d10;
     }
 
-    public async Task<int> RollToHit()
+    public virtual async Task<int> RollToHit()
     {
         await Task.Yield();//todo: add diceware here.
-        var d10 = GameController.RollD10();
+        return GameController.RollD10() + Strength;
+
+        //var d10 = GameController.RollD10();
         //if (d10 == 1)
         //{
         //    GameController.HandleFumble(this);
         //    return 0;
         //}
-        return FortressProgram.Strength + Owner.Int + Owner.Interface + GameController.RollD10();
+        
     }
 }

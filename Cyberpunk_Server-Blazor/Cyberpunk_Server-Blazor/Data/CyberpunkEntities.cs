@@ -16,6 +16,10 @@ public partial class CyberpunkEntities : DbContext
     {
     }
 
+    public virtual DbSet<AI_ICON> AI_ICON { get; set; }
+
+    public virtual DbSet<AI_Personality> AI_Personality { get; set; }
+
     public virtual DbSet<ArmorLocations> ArmorLocations { get; set; }
 
     public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
@@ -146,6 +150,18 @@ public partial class CyberpunkEntities : DbContext
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AI_ICON>(entity =>
+        {
+            entity.Property(e => e.description).HasColumnType("text");
+            entity.Property(e => e.name).HasColumnType("text");
+        });
+
+        modelBuilder.Entity<AI_Personality>(entity =>
+        {
+            entity.Property(e => e.description).HasColumnType("text");
+            entity.Property(e => e.name).HasColumnType("text");
+        });
+
         modelBuilder.Entity<ArmorLocations>(entity =>
         {
             entity.HasKey(e => e.id).HasName("PK__ArmorLoc__3213E83FB24B493C");
@@ -395,6 +411,14 @@ public partial class CyberpunkEntities : DbContext
             entity.HasKey(e => e.id).HasName("PK__Fortress__3213E83F05C235E2");
 
             entity.Property(e => e.Name).HasMaxLength(255);
+
+            entity.HasOne(d => d.AI_ICON).WithMany(p => p.Fortress)
+                .HasForeignKey(d => d.AI_ICON_ID)
+                .HasConstraintName("FK_Fortress_AI_ICON");
+
+            entity.HasOne(d => d.AI_Personality).WithMany(p => p.Fortress)
+                .HasForeignKey(d => d.AI_Personality_ID)
+                .HasConstraintName("FK_Fortress_Fortress");
 
             entity.HasOne(d => d.subgrid).WithMany(p => p.Fortress)
                 .HasForeignKey(d => d.subgridID)
@@ -742,6 +766,22 @@ public partial class CyberpunkEntities : DbContext
             entity.HasKey(e => e.id).HasName("PK__PlayerRo__3213E83F5C5C8262");
 
             entity.Property(e => e.Name).HasMaxLength(255);
+
+            entity.HasMany(d => d.Skill).WithMany(p => p.PlayerRole)
+                .UsingEntity<Dictionary<string, object>>(
+                    "PlayerRoleSkills",
+                    r => r.HasOne<Skill>().WithMany()
+                        .HasForeignKey("SkillID")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__PlayerRol__Skill__72B0FDB1"),
+                    l => l.HasOne<PlayerRoles>().WithMany()
+                        .HasForeignKey("PlayerRoleID")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK__PlayerRol__Playe__71BCD978"),
+                    j =>
+                    {
+                        j.HasKey("PlayerRoleID", "SkillID");
+                    });
         });
 
         modelBuilder.Entity<PlayerSkill>(entity =>
@@ -945,7 +985,11 @@ public partial class CyberpunkEntities : DbContext
             entity.Property(e => e.Name)
                 .HasDefaultValueSql("('New Subgrid')")
                 .HasColumnType("text");
-            entity.Property(e => e.UserID).HasMaxLength(128);
+            entity.Property(e => e.UserID).HasMaxLength(450);
+
+            entity.HasOne(d => d.User).WithMany(p => p.Subgrid)
+                .HasForeignKey(d => d.UserID)
+                .HasConstraintName("FK_Subgrid_AspNetUsers");
         });
 
         modelBuilder.Entity<SurgicalCode>(entity =>

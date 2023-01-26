@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.JSInterop;
 using System.Numerics;
 using System.Reflection.Metadata;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Cyberpunk_Server_Blazor.Pages
 {
@@ -40,9 +41,12 @@ namespace Cyberpunk_Server_Blazor.Pages
         {
             using (var ctx = db.CreateDbContext())
             {
+                ctx.Attach(PlayerEntity);
                 PlayerData.CopyProperties(Model, PlayerEntity, ctx);
                 //await Task.Yield();
                 await ctx.SaveChangesAsync();
+                ctx.Entry(PlayerEntity).Reload();
+                Model = (PlayerData)PlayerEntity;
             }
 		}
 		protected override async Task OnInitializedAsync()

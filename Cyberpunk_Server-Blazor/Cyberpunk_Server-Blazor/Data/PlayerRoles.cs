@@ -10,4 +10,6 @@ public partial class PlayerRoles
     public string? Name { get; set; }
 
     public virtual ICollection<Player> Player { get; } = new List<Player>();
+
+    public virtual ICollection<Skill> Skill { get; } = new List<Skill>();
 }

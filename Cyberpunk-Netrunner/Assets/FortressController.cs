@@ -18,7 +18,9 @@ public enum NetObjType
     Memory,
     CodeGate,
     Program,
-    NetRunner
+    NetRunner,
+    Cyberdeck,
+    Computer
 }
 public enum ProgramType
 {
@@ -264,8 +266,9 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         
     }
 
-    public void Alert(ProgramController Sender, NetActor Target)
+    public async void Alert(ProgramController Sender, NetActor Target)
     {
+        await GameController.SendUIMessage($"Fortress has been alerted and is targeting {Target.Name}");
         if (Target is PlayerController)
         {
             foreach (var prog in AntiPersonnel)

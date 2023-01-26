@@ -36,7 +36,7 @@ public partial interface NetItem : Selectable
     public interface NetActor : NetItem
     {
         int RollInitiative();
-        int doEvasionCheck();
+        int doEvasionCheck(bool SeekerIgnoresInvisibility=false);
         int doDetectionCheck();
         Task BeginTurn();
         int NumActions { get; set; }
@@ -48,6 +48,7 @@ public partial interface NetItem : Selectable
         bool DetectInvisibility { get; set; }
         List<Vector2Int> path { get; set; }
         TileController currentTile { get; set; }
+        bool Hidden { get; set; }
 
-    }
+}
 

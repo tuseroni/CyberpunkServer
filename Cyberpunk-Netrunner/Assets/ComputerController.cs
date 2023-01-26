@@ -3,50 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using CyberpunkServer.Models.DTO;
 using System.Threading.Tasks;
-
-public class CyberdeckController : MonoBehaviour,NetActor, Device
+public interface Device: iSystem
 {
-    PlayerCyberdeckData _CyberdeckData;
-    public PlayerCyberdeckData CyberdeckData
+    void DeletePrograms(int mu);
+}
+public interface iSystem
+{
+
+}
+
+public class ComputerController : MonoBehaviour,NetActor, Device
+{
+    PlayerComputerData _ComputerData;
+    public PlayerComputerData ComputerData
     {
         get
         {
-            return _CyberdeckData;
+            return _ComputerData;
         }
         set
         {
-            _CyberdeckData = value;
-        }
-    }
-    public bool Hidden
-    {
-        get
-        {
-            return ((NetActor)Owner)?.Hidden ?? false;
-        }
-        set
-        {
+            _ComputerData = value;
         }
     }
     public void DeletePrograms(int mu)
     {
-        if(mu==-1)
+        if (mu == -1)
         {
-            CyberdeckData.PlayerCyberdeckPrograms.Clear();
+            ComputerData.PlayerComputerPrograms.Clear();
         }
         else
         {
-            List<PlayerCyberdeckProgramsData> programs = new List<PlayerCyberdeckProgramsData>();
-            programs.AddRange(CyberdeckData.PlayerCyberdeckPrograms);
-            while (mu>0)
+            List<PlayerComputerProgramsData> programs = new List<PlayerComputerProgramsData>();
+            programs.AddRange(ComputerData.PlayerComputerPrograms);
+            while (mu > 0)
             {
                 var index = GameController.GetRandomRange(0, programs.Count);
                 if (programs[index].MU <= mu)
                 {
-                    CyberdeckData.PlayerCyberdeckPrograms.Remove(programs[index]);
+                    ComputerData.PlayerComputerPrograms.Remove(programs[index]);
                     mu -= programs[index].MU;
                 }
-                if(programs.Count==0)
+                if (programs.Count == 0)
                 {
                     break;
                 }
@@ -54,16 +52,39 @@ public class CyberdeckController : MonoBehaviour,NetActor, Device
             }
         }
     }
+    public bool Hidden 
+    { 
+        get
+        {
+            return ((NetActor)Owner)?.Hidden ?? false;
+        }
+        set
+        { 
+        }
+    }
     public GameObject Object { get => this.gameObject; set { } }
     public ProgramSummoner Owner { get; set; }
     public GameController Ref { get; set; }
     public bool Solid { get => false; set { } }
-    public NetObjType Type { get => NetObjType.Cyberdeck; set { } }
+    public NetObjType Type { get => NetObjType.Computer; set{ } }
     public int xPos { get; set; }
     public int yPos { get; set; }
+
+    public string Name => ComputerData.name;
+
+    public bool Selected { get; set; }
+    public bool Invisible { get 
+        {
+            return ((PlayerController)Owner)?.Invisible ?? false;
+        }
+        set
+        {
+        }
+    }
+
     public int NumActions { get => 0; set { } }
     public int ActionsDone { get => 0; set { } }
-    public int Initiative { get => ((NetActor)Owner)?.Initiative ?? 0; set { } }
+    public int Initiative { get => ((NetActor)Owner)?.Initiative??0; set { } }
     public bool WaitForSignal { get => false; set { } }
     public bool Continue { get => true; set { } }
     public bool DetectInvisibility { get => false; set { } }
@@ -90,14 +111,10 @@ public class CyberdeckController : MonoBehaviour,NetActor, Device
         return 0;
     }
 
-    public string Name => CyberdeckData.name;
-
-    public bool Selected { get; set; }
-
     public async Task<int> RollToBeHit()
     {
         await Task.Yield();
-        return CyberdeckData.Cyberdeck.WallStrength + GameController.RollD10();
+        return ComputerData.Computer.WallStrength + GameController.RollD10();
     }
 
     public async Task<int> RollToHit()
@@ -105,23 +122,12 @@ public class CyberdeckController : MonoBehaviour,NetActor, Device
         await Task.Yield();
         return 0;
     }
-    public bool Invisible
-    {
-        get
-        {
-            return ((PlayerController)Owner)?.Invisible ?? false;
-        }
-        set
-        {
-        }
-    }
-
 
     public int TakeDamage(Damage damage)
     {
-        if (damage.Type == DamageType.WallStrength)
+        if(damage.Type==DamageType.WallStrength)
         {
-            CyberdeckData.Cyberdeck.WallStrength -= damage.Value;
+            ComputerData.Computer.WallStrength -= damage.Value;
             return damage.Value;
         }
         return 0;

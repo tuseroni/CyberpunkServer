@@ -9,6 +9,28 @@ using System.Threading.Tasks;
 class Decryption : ProgramController
 {
     public override bool canBePlaced { get => false; set { } }
+    public override int xPos
+    {
+        get
+        {
+            return ((NetItem)Owner).xPos;
+        }
+        set
+        {
+
+        }
+    }
+    public override int yPos
+    {
+        get
+        {
+            return ((NetItem)Owner).yPos;
+        }
+        set
+        {
+
+        }
+    }
     void Start()
     {
         
@@ -38,18 +60,37 @@ class Decryption : ProgramController
             ProgramName.text = program.Program.name;
         }
     }
-
+    public override async Task<int> RollToHit()
+    {
+        var str = 4;
+        if(Target != null && Target is CodeGateController)
+        {
+            str = 6;
+        }
+        await Task.Yield();
+        return str + GameController.RollD10();
+    }
     public override async void Attack(NetItem Target, TileController _lastSeenTile = null)
     {
         this.Target = Target;
         if (Target.Type==NetObjType.CodeGate && TargetInRange)
         {
+            this.Target = Target;
             await DoAction(Target);
+        }
+        else
+        {
+            this.Target = null;
         }
     }
     public override async Task<int> DoAction(NetItem target = null)
     {
-        return await base.DoAction(target);
+        if(!await GameController.RollToHit(target, this))
+        {
+            return 0;
+        }
+        ((CodeGateController)target).Open();
+        return await Task.Run(()=> { return 0; });
     }
 }
 

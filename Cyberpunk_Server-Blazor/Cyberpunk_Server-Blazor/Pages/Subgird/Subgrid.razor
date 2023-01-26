@@ -2,10 +2,10 @@
 @using CyberpunkServer.Models.DTO;
 @using Cyberpunk_Server_Blazor.Data;
 @using Microsoft.EntityFrameworkCore;
-@using Cyberpunk_Server_Blazor.Pages.Electronics
-@inject IDbContextFactory<CyberpunkServer.Models.CyberpunkEntities> db
-@inject NavigationManager MyNavigationManager
-@inherits ComponentBase
+@using Cyberpunk_Server_Blazor.Pages.Electronics;
+@inject IDbContextFactory<CyberpunkServer.Models.CyberpunkEntities> db;
+@inject NavigationManager MyNavigationManager;
+@inherits ComponentBase;
 
 
 	<style>
@@ -70,11 +70,25 @@
 	}
 
 	.progList .dataPair {
-		grid-template-columns: 19px 1fr;
+		grid-template-columns: 50px 1fr;
 	}
 
 	.progList select {
 		width: 100%;
+	}
+	.FortressHolder
+	{
+		display: grid;
+		grid-template-columns: 30% 1fr;
+		grid-gap: 10px;
+	}
+
+	@@media screen and (max-width: 1200px) {
+		.FortressHolder {
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-gap: 10px;
+		}
 	}
 </style>
 
@@ -119,12 +133,32 @@
 }
 else
 {
-	<div style="display: grid; grid-template-columns: 30% 1fr; grid-gap: 10px;">
+	<div class="FortressHolder" style="">
 		<div style="border: solid 1px;border-radius: 10px;">
 			<div class="fortressInfo">
 				<div class="dataPair"><label>Name</label><input type="text" @bind=Fortress.Name></div>
 				<div class="dataPair"><label>Int</label><label>@Fortress.Int</label></div>
 				<div class="dataPair"><label>Wall Strength</label><input type="number"@bind=@Fortress.WallStrength></div>
+				@if(Fortress.isAI)
+				{
+					<div class="dataPair"><label>AI Personality</label>
+						<select @bind=Fortress.AI_Personality_ID>
+							@foreach(var personality in AI_Personalities)
+							{
+								<option value="@personality.id">@personality.name</option>
+							}
+						</select>
+					</div>
+					<div class="dataPair"><label>AI ICON</label>
+						<select @bind=Fortress.AI_ICON_ID>
+							@foreach (var ICON in AI_ICONs)
+							{
+								<option value="@ICON.id">@ICON.name</option>
+							}
+						</select>
+						</div>
+
+				}
 			</div>
 			<hr />
 			<h4>Code Gates</h4>
@@ -199,107 +233,3 @@ else
 		<button @onclick=Save>Save</button>
 	</div>
 }
-@*for (var i = 0; i < height; i++)
-            {
-                var row = document.createElementNS('http://www.w3.org/2000/svg', "g");
-                row.setAttribute("transform", `translate(0,${(i+1) * gridSize})`);
-                subgridLookup[i] = {};
-                for (var j = 0; j < width; j++)
-                {
-                    var tileGroup = document.createElementNS('http://www.w3.org/2000/svg', "g");
-                    tileGroup.setAttribute("transform", `translate(${j * gridSize},0)`);
-                    var tile = document.createElementNS('http://www.w3.org/2000/svg', "rect");
-                    tile.setAttribute("width", gridSize);
-                    tile.setAttribute("height", gridSize);
-                    tile.setAttribute("xPos", j);
-					tile.setAttribute("yPos", i);
-					tile.classList.add("gridTile");
-					tile.addEventListener("click", function (e) { handleTileClick(this, e) });
-                    tileGroup.appendChild(tile);
-					subgridLookup[i][j] = { "gElem": tileGroup, "ContainedElement": null }
-                    row.appendChild(tileGroup);
-                }
-				layoutSVG.appendChild(row);
-            }*@
-
-@*var height = subgrid.height;
-            var width = subgrid.width;
-
-            var gridHolder = document.getElementById("gridHolder");
-			var layoutSVG = document.createElementNS('http://www.w3.org/2000/svg', "svg");
-			layoutSVG.classList.add("GridSVG");
-			layoutSVG.setAttribute("height", height*gridSize);
-			layoutSVG.setAttribute("width", width * gridSize);
-			layoutSVG.setAttribute("viewBox", `0 0 ${width * gridSize} ${height * gridSize}`);
-			var _row = document.createElementNS('http://www.w3.org/2000/svg', "g");
-			_row.setAttribute("transform", `translate(0, 0)`);
-			for (var i = 0; i < NetOBJTypes.length; i++)
-			{
-				var netOBJ = NetOBJTypes[i];
-				NetOBJTypesLookup[netOBJ.id] = netOBJ;
-				var tileGroup = document.createElementNS('http://www.w3.org/2000/svg', "g");
-				tileGroup.setAttribute("transform", `translate(${i * gridSize},0)`);
-				tileGroup.innerHTML = netOBJ.SVG;
-				var svg = tileGroup.children[0];
-				svg.setAttribute("x", 1);
-				svg.setAttribute("y", 1);
-				svg.setAttribute("height", "17px");
-				svg.setAttribute("width", "17px");
-				var hoverRect = document.createElementNS('http://www.w3.org/2000/svg', "rect");
-				hoverRect.setAttribute("width", "20px");
-				hoverRect.setAttribute("height", "20px");
-				hoverRect.addEventListener("click", function (event) {
-					[...layoutSVG.querySelectorAll(".selected")].forEach(x => x.classList.remove("selected"))
-					this.classList.add("selected");
-					activeNetOBJType = NetOBJTypesLookup[this.getAttribute("NetOBJID")];
-				});
-				hoverRect.setAttribute("NetOBJID", netOBJ.id);
-				tileGroup.appendChild(hoverRect);
-				_row.appendChild(tileGroup);
-			}
-			layoutSVG.appendChild(_row);
-            for (var i = 0; i < height; i++)
-            {
-                var row = document.createElementNS('http://www.w3.org/2000/svg', "g");
-                row.setAttribute("transform", `translate(0,${(i+1) * gridSize})`);
-                subgridLookup[i] = {};
-                for (var j = 0; j < width; j++)
-                {
-                    var tileGroup = document.createElementNS('http://www.w3.org/2000/svg', "g");
-                    tileGroup.setAttribute("transform", `translate(${j * gridSize},0)`);
-                    var tile = document.createElementNS('http://www.w3.org/2000/svg', "rect");
-                    tile.setAttribute("width", gridSize);
-                    tile.setAttribute("height", gridSize);
-                    tile.setAttribute("xPos", j);
-					tile.setAttribute("yPos", i);
-					tile.classList.add("gridTile");
-					tile.addEventListener("click", function (e) { handleTileClick(this, e) });
-                    tileGroup.appendChild(tile);
-					subgridLookup[i][j] = { "gElem": tileGroup, "ContainedElement": null }
-                    row.appendChild(tileGroup);
-                }
-				layoutSVG.appendChild(row);
-            }
-			for (var fort of subgrid.Fortress)
-            {
-
-                for (var wall of fort.FortressWalls)
-                {
-                    addFortElem(wall);
-                }
-				for (var CPU of fort.FortressCPU) {
-                    addFortElem(CPU);
-                }
-				for (var Mem of fort.FortressMemory) {
-                    addFortElem(Mem);
-				}
-                for (var gate of fort.FortressCodeGates)
-                {
-					addFortElem(gate)
-				}
-				for (var prog of fort.FortressPrograms)
-				{
-					addFortElem(prog);
-				}
-            }
-            gridHolder.appendChild(layoutSVG);*@

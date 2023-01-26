@@ -16,4 +16,6 @@ public partial class Subgrid
     public string? UserID { get; set; }
 
     public virtual ICollection<Fortress> Fortress { get; } = new List<Fortress>();
+
+    public virtual AspNetUsers? User { get; set; }
 }

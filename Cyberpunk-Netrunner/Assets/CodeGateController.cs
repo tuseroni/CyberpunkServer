@@ -62,7 +62,7 @@ public class CodeGateController : MonoBehaviour,NetItem
     public int yPos { get; set; }
     public ProgramSummoner Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-	public string Name => throw new System.NotImplementedException();
+	public string Name => "Code Gate";
 
 	// Start is called before the first frame update
 	void Start()
@@ -75,7 +75,44 @@ public class CodeGateController : MonoBehaviour,NetItem
     {
 
     }
-
+    public void Open()
+    {
+        wallCubes[0].SetActive(false);
+        wallCubes[1].SetActive(false);
+        Solid = false;
+    }
+    private void OnMouseUp()
+    {
+        if (GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            //MR.material = SelectedMaterial;
+            GameController.TargetSelect(this);
+            //if (MR != null && NonSelectedMaterial != null)
+            //{
+            //    MR.material = NonSelectedMaterial;
+            //}
+        }
+    }
+    private void OnMouseEnter()
+    {
+        if (GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            //if (MR != null && HighlightMaterial != null)
+            //{
+            //    MR.material = HighlightMaterial;
+            //}
+        }
+    }
+    private void OnMouseExit()
+    {
+        if (GameController.PlayerState == PlayerInteractionState.Selecting)
+        {
+            //if (MR != null && NonSelectedMaterial != null)
+            //{
+            //    MR.material = NonSelectedMaterial;
+            //}
+        }
+    }
     public async Task<int> RollToBeHit()
     {
         await Task.Yield();

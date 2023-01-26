@@ -6,6 +6,6 @@ namespace Cyberpunk_Server_Blazor.Pages
 {
 	public partial class PlayerSkill
 	{
-		[Parameter] public PlayerData Model { get; set; }
+		[Parameter] public List<PlayerSkillData> Skills { get; set; }
 	}
 }

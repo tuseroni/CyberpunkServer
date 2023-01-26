@@ -2,25 +2,59 @@
 @using CyberpunkServer.Models.DTO;
 @using Cyberpunk_Server_Blazor.Data;
 @using Microsoft.EntityFrameworkCore;
-@using Cyberpunk_Server_Blazor.Pages.Electronics
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims;
 @inject IDbContextFactory<CyberpunkServer.Models.CyberpunkEntities> db
-@inject NavigationManager MyNavigationManager
 
 
-
-<select @onchange=changeParameter>
+<style>
+    .modal-title {
+        color: black;
+    }
+</style>
+<select @onchange=changeParameter value="@currentKey">
     <option value="-1">--- Select Subgrid ---</option>
+    <option value="0">--- Add New Subgrid ---</option>
     @foreach(var grid in subgrids)
     {    
         <option value="@grid.id">@grid.Name</option>
     }
 </select>
 
-@if (currentKey != -1)
+@if (currentKey >0)
 {
     <Subgrid SubgridID=currentKey @key=currentKey />
+}
+@if (currentKey==0)
+{
+
+    <div class="modal fade show d-block" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleLabel">Add Subgrid</h5>
+                    <button type="button" class="close" @onclick="@(()=>{currentKey=-1;})" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">  
+                        <label for="lastName">Name</label>
+                        <input type="text" id="lastName" class="form-control" @bind=data.Name placeholder ="Enter name">
+                    </div>  
+                    <div class="form-group">  
+                        <label for="Width">Width</label>  
+                        <input type="number" id="Width" class="form-control" @bind=data.width min="1" max="20" placeholder="Enter Width">  
+                    </div>  
+                     <div class="form-group">  
+                        <label for="Width">Height</label>
+                        <input type="number" id="Height" class="form-control" @bind=data.height min="1" max="20" placeholder="Enter Height">
+                    </div> 
+                    <button type="button" class="close" @onclick="Save" data-dismiss="modal" aria-label="Save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 
@@ -28,6 +62,7 @@
 @code {
     private int currentKey = -1;
     private int lastKey = -1;
+    private CyberpunkServer.Models.Subgrid data;
     private List<SubgridData> subgrids = new List<SubgridData>();
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
@@ -36,13 +71,41 @@
     UserManager<IdentityUser> userManager { get; set; }
 
     private string textContent = "";
-    
+    async void Save()
+    {
+        if (data!=null)
+        {
+            using (var ctx = db.CreateDbContext())
+            {
+                ctx.Attach(data);
+                await ctx.SaveChangesAsync();
+                ctx.Entry(data).Reload();
+                subgrids.Add((SubgridData)data);
+                currentKey = data.id;
+                StateHasChanged();
+            }
+        }
+    }
     void changeParameter(ChangeEventArgs e)
     {
         string value = e.Value?.ToString() ?? "0";
         currentKey = Int32.Parse(value);
+        if(currentKey==0)
+        {
+            data = new CyberpunkServer.Models.Subgrid
+                {
+                    width = 20,
+                    height = 20,
+                    UserID = UserID,
+                };
+            data.Fortress.Add(new CyberpunkServer.Models.Fortress
+            {
+                WallStrength=3
+            });
+        }
         StateHasChanged();
     }
+    string UserID = "";
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -55,9 +118,10 @@
         {
             isLoading = true;
             var user = (await authenticationStateTask).User;
+            UserID = user.FindFirst(ClaimTypes.NameIdentifier).Value;
             using (var ctx = db.CreateDbContext())
             {
-                subgrids = ctx.Subgrid.Where(x => x.UserID == user.FindFirst(ClaimTypes.NameIdentifier).Value).Select(x => (SubgridData)x).ToList();
+                subgrids = ctx.Subgrid.Where(x => x.UserID == UserID).Select(x => (SubgridData)x).ToList();
                 
             }
         }

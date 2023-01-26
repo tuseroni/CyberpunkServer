@@ -6,7 +6,7 @@ using System.Linq;
 using TMPro;
 using System.Threading.Tasks;
 
-class Hellhound : ProgramController
+class DeckKRASH: ProgramController
 {
     public override async Task<int> DoAction(NetItem target = null)
     {
@@ -20,20 +20,12 @@ class Hellhound : ProgramController
             GameController.EndTurn(this);
             return 0;
         }
-        if (target.Type == NetObjType.NetRunner)
+        if (target is Device)
         {
-            var newDamage = new Damage { Type = DamageType.HP, Value = damage = GameController.RollND10(2) };
-            await GameController.DoDamage(target, newDamage);
-            
+            await ((PlayerController)((NetActor)target).Owner).HangUp();
         }
         GameController.EndTurn(this);
         return damage;
     }
-    public async override Task<int> RollToHit()
-    {
-        await Task.Yield();
-        return FortressProgram.Strength + Owner.Int + Owner.Interface + GameController.RollD10();
-    }
-    
 }
 

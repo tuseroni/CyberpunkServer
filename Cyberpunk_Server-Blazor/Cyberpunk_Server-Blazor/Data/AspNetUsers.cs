@@ -43,5 +43,7 @@ public partial class AspNetUsers
 
     public virtual ICollection<Player> Player { get; } = new List<Player>();
 
+    public virtual ICollection<Subgrid> Subgrid { get; } = new List<Subgrid>();
+
     public virtual ICollection<AspNetRoles> Role { get; } = new List<AspNetRoles>();
 }

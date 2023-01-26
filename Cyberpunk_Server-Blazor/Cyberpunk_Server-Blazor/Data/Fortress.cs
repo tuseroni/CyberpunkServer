@@ -15,6 +15,16 @@ public partial class Fortress
 
     public string? Name { get; set; }
 
+    public int? AI_Personality_ID { get; set; }
+
+    public int? AI_ICON_ID { get; set; }
+
+    public bool isAI { get; set; }
+
+    public virtual AI_ICON? AI_ICON { get; set; }
+
+    public virtual AI_Personality? AI_Personality { get; set; }
+
     public virtual ICollection<FortressCPU> FortressCPU { get; } = new List<FortressCPU>();
 
     public virtual ICollection<FortressCodeGates> FortressCodeGates { get; } = new List<FortressCodeGates>();
