@@ -1,0 +1,35 @@
+﻿<div>
+    <h3>Material SP Lookup</h3>
+<label>Material</label>
+<select @bind=@SPVal>
+    @foreach ((string key, int val) in MaterialSPDictionary)
+    {
+            <option value="@val">@key</option>
+    }
+</select>
+<label>@SPVal</label>
+</div>
+@code {
+    int SPVal = 5;
+    Dictionary<string, int> MaterialSPDictionary = new Dictionary<string, int>
+    {
+        {"Sheetrock Wall", 5                },
+        {"Stone Wall", 30                   },
+        {"Large Tree, Phone pole", 30       },
+        {"Brick wall", 25                   },
+        {"Concrete Block Wall", 10          },
+        {"Wood door", 5                     },
+        {"Heavy Wood Door", 15              },
+        {"Steel Door", 20                   },
+        {"Concrete Ultility Pole", 35       },
+        {"DataTerm@trade;", 25              },
+        {"Car body, door", 10               },
+        {"Armored Car Body", 40             },
+        {"AV-4 Body", 40                    },
+        {"Engine block", 35                 },
+        {"Mailbox", 25                      },
+        {"Hydrant", 35                      },
+        {"Curb", 25                         }
+    };
+
+}

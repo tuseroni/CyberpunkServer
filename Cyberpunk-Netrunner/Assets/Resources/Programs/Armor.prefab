@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4809081277955118715, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5391188661660834519, guid: 8bb993b319fd30f49a2814cc32cbaef8, type: 3}
       propertyPath: m_Name
       value: Armor
@@ -104,7 +108,6 @@ MonoBehaviour:
   MaxY: 0
   MinX: 999
   MinY: 999
-  currentTile: {fileID: 0}
   grid: {fileID: 0}
   canLeaveFort: 0
   canMove: 0
@@ -117,8 +120,14 @@ MonoBehaviour:
   ProgramMask:
     serializedVersion: 2
     m_Bits: 128
+  DeviceMask:
+    serializedVersion: 2
+    m_Bits: 0
   obstructionMask:
     serializedVersion: 2
     m_Bits: 64
   ActiveProgramAsset: {fileID: 9197481963319205126, guid: d1ff996386d5b22428b79a70454b54a8, type: 3}
   canSeeTarget: 0
+  NonSelectedMaterial: {fileID: 0}
+  HighlightMaterial: {fileID: 0}
+  MR: {fileID: 0}

@@ -14,10 +14,11 @@ class PoisonFlatline: ProgramController
         {
             return 0;
         }
+        ActionsDone++;
         int damage = 0;
         if (!await GameController.RollToHit(target, this))
         {
-            GameController.EndTurn(this);
+            EndTurn(this);
             return 0;
         }
         if (target is Device)
@@ -25,7 +26,7 @@ class PoisonFlatline: ProgramController
             ((Device)target).DeletePrograms(-1);
             await ((PlayerController)((NetActor)target).Owner).HangUp();
         }
-        GameController.EndTurn(this);
+        EndTurn(this);
         return damage;
     }
 }

@@ -29,12 +29,12 @@ public enum PlayerInteractionState
 }
 public class GameController : MonoBehaviour
 {
-    List<PlayerController> Players = new List<PlayerController>();
+    List<ProgramSummoner> Players = new List<ProgramSummoner>();
     List<ProgramController> Programs = new List<ProgramController>();
-    List<NetActor> Initiative = new List<NetActor>();
-    Stack<NetActor> InitiativeStack = new Stack<NetActor>();
+    List<ProgramSummoner> Initiative = new List<ProgramSummoner>();
+    Stack<ProgramSummoner> InitiativeStack = new Stack<ProgramSummoner>();
     Stack<String> Messages = new Stack<string>();
-    NetActor CurrentActorInInitiative;
+    ProgramSummoner CurrentActorInInitiative;
     MenuController _menuController;
     public MenuController MenuController
 	{
@@ -96,6 +96,8 @@ public class GameController : MonoBehaviour
     {
         PlayerState = PlayerInteractionState.Idle;
         WaitingProgram.OrderMove(tile);
+        WaitingProgram.Continue = true;
+        WaitingProgram.BeginTurn();
     }
     public bool DebugMode = true;
     public async Task<bool> DoISeeTarget(NetActor Target, NetActor Seeker)
@@ -147,6 +149,7 @@ public class GameController : MonoBehaviour
         }
         Initiative[0].Continue = true;
         CurrentActorInInitiative = Initiative[0];
+        CurrentActorInInitiative.BeginTurn();
     }
     public async Task<bool> RollToHit(NetItem target,NetActor Attacker)
     {
@@ -195,6 +198,8 @@ public class GameController : MonoBehaviour
     {
         PlayerState = PlayerInteractionState.Idle;
         WaitingProgram.Attack(_target);
+        WaitingProgram.Continue = true;
+        WaitingProgram.BeginTurn();
     }
 
     public void SetPlayerStunned(PlayerController player, bool stunned)
@@ -206,24 +211,6 @@ public class GameController : MonoBehaviour
         await SendUIMessage($"{Program.Name} Has Been Destroyed");
         onProgramDestroyed.Invoke(Program);
         Program.Rezzed = false;
-        int index = Initiative.IndexOf(Program);
-        if (index >= 0)
-        {
-            if (CurrentActorInInitiative == Initiative[index])
-            {
-                if (index + 1 > Initiative.Count - 1)
-                {
-                    index = 0;
-                }
-                else
-                {
-                    index++;
-                }
-                CurrentActorInInitiative = Initiative[index];
-                CurrentActorInInitiative.Continue = true;
-            }
-            Initiative.Remove(Program);
-        }
         Program.gameObject.SetActive(false);
         SignalrHandler.InvokeProgramDerezzed(Program.FortressProgram);
         //
@@ -232,36 +219,14 @@ public class GameController : MonoBehaviour
 	{
         onProgramDestroyed.Invoke(Program);
         Program.Rezzed = false;
-        int index = Initiative.IndexOf(Program);
-        if (index >= 0)
-        {
-            if (CurrentActorInInitiative == Initiative[index])
-            {
-                if (index + 1 > Initiative.Count - 1)
-                {
-                    index = 0;
-                }
-                else
-                {
-                    index++;
-                }
-                CurrentActorInInitiative = Initiative[index];
-                CurrentActorInInitiative.Continue = true;
-            }
-            Initiative.Remove(Program);
-        }
-        Program.gameObject.SetActive(false);
+        Destroy(Program.gameObject);
         SignalrHandler.InvokeProgramDeactivated(Program.FortressProgram);
         await Task.Yield();
-
     }
     public void ReRezz(ProgramController target)
     {
         target.Strength = target.Program.Strength;
         target.Rezzed = true;
-
-        var summonerIndex = Initiative.IndexOf(((PlayerController)target.Owner));
-        target.Initiative = ((PlayerController)target.Owner).Initiative + 1;
         if (target.canBePlaced)
         {
             if (target.currentTile != null && !target.currentTile.ContainedItem.Contains(target))
@@ -269,7 +234,6 @@ public class GameController : MonoBehaviour
                 target.currentTile.ContainedItem.Add(target);
             }
             target.Continue = false;
-            Initiative.Insert(summonerIndex + 1, (NetActor)target);
         }
         else
         {
@@ -277,7 +241,7 @@ public class GameController : MonoBehaviour
         }
         target.gameObject.SetActive(true);
     }
-    public void EndTurn(NetActor actor)
+    public void EndTurn(ProgramSummoner actor)
     {
         int index = Initiative.IndexOf(CurrentActorInInitiative);
         if(index+1 > Initiative.Count -1)
@@ -290,7 +254,10 @@ public class GameController : MonoBehaviour
         }
         CurrentActorInInitiative = Initiative[index];
         actor.Continue = false;
-        actor.path.Clear();
+        if (actor is NetActor)
+        {
+            ((NetActor)actor).path.Clear();
+        }
         actor.ActionsDone = 0;
         CurrentActorInInitiative.Continue = true;
         CurrentActorInInitiative.BeginTurn();
@@ -356,24 +323,6 @@ public class GameController : MonoBehaviour
         return ret;
     }
 
-    //public static int RollD10(bool canCrit = true)
-    //{
-    //    var ret = 0;
-    //    int rand = ret = UnityEngine.Random.Range(1, 11);
-    //    Debug.Log(rand);
-    //    if (canCrit)
-    //    {
-    //        while (rand == 10)
-    //        {
-    //            Debug.Log("CRIT");
-    //            rand = UnityEngine.Random.Range(1, 11);
-    //            Debug.Log(rand);
-    //            ret += rand;
-    //        }
-    //    }
-    //    Debug.Log(ret);
-    //    return ret;
-    //}
     public static int RollND6(int n)
     {
         var ret = 0;
@@ -388,40 +337,7 @@ public class GameController : MonoBehaviour
     {
         return RollND6(1);
     }
-    public void addProgram(ProgramController program, ProgramSummoner summoner,RunningProgram ProgramData)
-    {
-        program.GameController = this;
-        if (summoner is FortressController)
-        {
-            program.addProgram(grid, ((FortressController)summoner).Fortress, (FortressProgramsData)ProgramData, (FortressController)summoner);
-        }
-        else if (summoner is PlayerController)
-        {
-            program.addProgram(grid, ProgramData, summoner);
-            var summonerIndex = Initiative.IndexOf(((PlayerController)summoner));
-            program.Initiative = ((PlayerController)summoner).Initiative + 1;
-            if(program.canBePlaced)
-            {
-                program.Continue = false;
-                Initiative.Insert(summonerIndex + 1, (NetActor)program);
-            }
-            else
-            {
-                program.Continue = true;
-            }
-            if (ProgramData is PlayerCyberdeckProgramsData)
-            {
-                SignalrHandler.InvokeProgramAdded((PlayerCyberdeckProgramsData)ProgramData);
-            }
-            else
-            {
-                SignalrHandler.InvokeProgramAdded((PlayerComputerProgramsData)ProgramData);
-            }
 
-            
-        }
-        Programs.Add(program);
-    }
     public Dictionary<string, RunningProgram> Utilities = new Dictionary<string, RunningProgram>();
     public void addUtility(RunningProgram program)
     {
@@ -430,23 +346,40 @@ public class GameController : MonoBehaviour
 		{
             MenuController.HasGlogo = true;
 		}
+        if(program.Program.name=="Cartographer")
+		{
+            MenuController.HasCartographer = true;
+			MenuController.onMapClick += MenuController_onMapClick;
+		}
     }
-    public void addPlayer(PlayerController player)
+
+	private void MenuController_onMapClick()
+	{
+        FortressController fort = (FortressController)((CPUController)Initiative.Where(x => x is CPUController).First()).Owner;
+        var fortRoll = (fort.NumCPU * (3 / 2)) + RollD10();
+        var utilityRoll=Utilities["Cartographer"].Strength + RollD10();
+        if(utilityRoll>fortRoll)
+		{
+
+		}
+    }
+
+	public void addPlayer(ProgramSummoner player)
     {
         player.Ref = this;
         Players.Add(player);
     }
     public void rollInitiative()
     {
-        List<Tuple<int, NetActor>> lstNetActors = new List<Tuple<int, NetActor>>();
-        foreach(NetActor actor in Players)
+        List<Tuple<int, ProgramSummoner>> lstNetActors = new List<Tuple<int, ProgramSummoner>>();
+        foreach(var actor in Players)
         {
-            lstNetActors.Add(new Tuple<int, NetActor>(actor.RollInitiative(), actor));
+            lstNetActors.Add(new Tuple<int, ProgramSummoner>(actor.RollInitiative(), actor));
         }
-        foreach (NetActor actor in Programs)
-        {
-            lstNetActors.Add(new Tuple<int, NetActor>(actor.RollInitiative(), actor));
-        }
+        //foreach (NetActor actor in Programs)
+        //{
+        //    lstNetActors.Add(new Tuple<int, NetActor>(actor.RollInitiative(), actor));
+        //}
         lstNetActors.Sort((x, y) => y.Item1 - x.Item1);
         Initiative=lstNetActors.Select(x => x.Item2).ToList();
         for (var i = Initiative.Count - 1; i > 0; i--)

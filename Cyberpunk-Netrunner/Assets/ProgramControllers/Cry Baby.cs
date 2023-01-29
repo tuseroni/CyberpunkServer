@@ -13,6 +13,11 @@ class Crybaby: ProgramController
         await Task.Yield();
         return null;
     }
+    public override async Task BeginTurn()
+    {
+        EndTurn(this);
+        await Task.Yield();
+    }
     public override async Task<int> DoAction(NetItem target = null)
     {
         await Task.Yield();

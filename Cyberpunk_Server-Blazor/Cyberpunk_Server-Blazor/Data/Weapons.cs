@@ -33,7 +33,5 @@ public partial class Weapons
 
     public virtual WeaponConcTypes? ConcNavigation { get; set; }
 
-    public virtual ICollection<PlayerWeapon> PlayerWeapon { get; } = new List<PlayerWeapon>();
-
     public virtual WeaponTypes? TypeNavigation { get; set; }
 }

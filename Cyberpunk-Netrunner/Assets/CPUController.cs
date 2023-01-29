@@ -35,9 +35,18 @@ public class CPUController : MonoBehaviour,NetItem
 
     public int xPos { get; set; }
     public int yPos { get; set; }
-    public ProgramSummoner Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-	public string Name => throw new System.NotImplementedException();
+    public ProgramSummoner Owner { get; set; }
+    public ProgramSummoner ApparentOwner
+    {
+        get
+        {
+            return Owner;
+        }
+        set
+        {
+        }
+    }
+    public string Name => throw new System.NotImplementedException();
 
 	public bool Selected { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 

@@ -242,7 +242,14 @@ public class UIManagerTech : MonoBehaviour
         SignalrHandler.onLoginSuccessful += SignalrHandler_onLoginSuccessful;
         SignalrHandler.onLoginFailure += SignalrHandler_onLoginFailure;
 		JackInButton = GameObject.Find("Btn_NewGame");
-		JackInButton.SetActive(false);
+		if (AppData.player != null)
+		{
+			JackInButton.SetActive(true);
+		}
+		else
+		{
+			JackInButton.SetActive(false);
+		}
 #if (UNITY_EDITOR)
 		try
 		{
@@ -268,6 +275,13 @@ public class UIManagerTech : MonoBehaviour
 #endif
 		//CharactersPanel = GameObject.Find("CharactersPanel");
 
+	}
+	void OnDestroy()
+	{
+		SignalrHandler.onJackInRequestAccepted -= SignalrHandler_onJackInRequestAccepted;
+		SignalrHandler.onJackInRequestRejected -= SignalrHandler_onJackInRequestRejected;
+		SignalrHandler.onLoginSuccessful -= SignalrHandler_onLoginSuccessful;
+		SignalrHandler.onLoginFailure -= SignalrHandler_onLoginFailure;
 	}
 	public void CharacterSet(PlayerData Player)
     {

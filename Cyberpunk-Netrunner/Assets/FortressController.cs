@@ -1,6 +1,7 @@
 ﻿using CyberpunkServer.Models.DTO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 //[System.Serializable]
 //public class programData
@@ -151,9 +152,51 @@ public class FortressController : MonoBehaviour, ProgramSummoner
             boundingBox.size = new Vector3(value.size.x * 60, value.size.y * 60, value.size.z * 60);
         }
     }
+
+	public int Initiative { get; set; }
+    public bool WaitForSignal { get; set; } = true;
+    public bool Continue { get; set; } = false;
+	public int NumActions { get; set; }
+    public int ActionsDone { get; set; } = 0;
+
+	List<ProgramController> ProgramQueue = new List<ProgramController>();
+    public async Task runQueue()
+    {
+        foreach (var program in ProgramQueue)
+        {
+            if (program.ActionsDone >= program.NumActions || !program.Rezzed)
+            {
+                continue;
+            }
+            program.Continue = true;
+            await program.BeginTurn();
+            await Task.Run(() =>
+            {
+                while (program.Continue)
+                {
+                    Task.Delay(100);
+                }
+            });
+        }
+    }
+    private void GameController_onProgramDestroyed(ProgramController program)
+    {
+        if (ActivePrograms.Contains(program))
+        {
+            ActivePrograms.Remove(program);
+        }
+        if (ProgramQueue.Contains(program))
+        {
+            ProgramQueue.Remove(program);
+        }
+
+    }
     public int RollInitiative()
     {
-        return GameController.RollD10() + Int;
+        var initiative= GameController.RollD10() + Int;
+        this.Initiative = initiative;
+        return initiative;
+        //return GameController.RollD10() + Int;
     }
     public FortressData Fortress;
     public void addFort(CyberpunkServer.Models.DTO.FortressData fort)
@@ -163,6 +206,7 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         int MaxY = 0;
         int MinX = 999;
         int MinY = 999;
+        NumActions = 1 + (int)Mathf.Floor(fort.FortressCPU.Count / 2); //"A computer may perform one extra action per turn for every two additional CPU present in the system"~pg 152
         
         foreach (var wall in fort.FortressWalls)
         {
@@ -171,6 +215,7 @@ public class FortressController : MonoBehaviour, ProgramSummoner
             var wallController= wallObj.GetComponent<WallController>();
             wallController.WallStrength = WallStrength;
             wallController.GameController = GameController;
+            wallController.Owner = this;
             Tile.ContainedItem.Add(wallController);
             if (wall.xPos > MaxX)
             {
@@ -201,6 +246,7 @@ public class FortressController : MonoBehaviour, ProgramSummoner
             var controller = wallObj.GetComponent<CPUController>();
             CPUs.Add(controller);
             Tile.ContainedItem.Add(controller);
+            controller.Owner = this;
 
             //var Tile = Grid.gridTiles[wall.yPos][wall.xPos];
             //var pos = Tile.transform.position + new Vector3(0, 30, 0);
@@ -210,7 +256,9 @@ public class FortressController : MonoBehaviour, ProgramSummoner
         {
             var Tile = Grid.gridTiles[wall.yPos][wall.xPos];
             var wallObj = GameObject.Instantiate(MemoryPrefab, Vector3.zero, Quaternion.identity);
-            Tile.ContainedItem.Add(wallObj.GetComponent<MemoryController>());
+            var controller = wallObj.GetComponent<MemoryController>();
+            Tile.ContainedItem.Add(controller);
+            controller.Owner = this;
         }
         foreach (var wall in fort.FortressCodeGates)
         {
@@ -219,6 +267,7 @@ public class FortressController : MonoBehaviour, ProgramSummoner
             var codeGateController= wallObj.GetComponent<CodeGateController>();
             codeGateController.GameController = GameController;
             codeGateController.WallStrength = wall.WallStrength.Value;
+            codeGateController.Owner = this;
             Tile.ContainedItem.Add(codeGateController);
             
         }
@@ -233,8 +282,11 @@ public class FortressController : MonoBehaviour, ProgramSummoner
                 }
                 var wallObj = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
                 var controller = wallObj.GetComponent<ProgramController>();
-                GameController.addProgram(controller, this, program);
+                controller.GameController = GameController;
+                controller.addProgram(GameController.grid, Fortress, program, this);
+                //GameController.addProgram(controller, this, program);
                 ActivePrograms.Add(controller);
+                ProgramQueue.Add(controller);
                 if(controller.Functions.ContainsKey("Anti-Personnel"))
                 {
                     AntiPersonnel.Add(controller);
@@ -247,8 +299,12 @@ public class FortressController : MonoBehaviour, ProgramSummoner
             }
         }
         Int = CPUs.Count * 3;
+		GameController.onProgramDestroyed += GameController_onProgramDestroyed;
     }
-    List<ProgramController> ActivePrograms = new List<ProgramController>();
+
+	
+
+	List<ProgramController> ActivePrograms = new List<ProgramController>();
     List<ProgramController> AntiPersonnel = new List<ProgramController>();
     List<ProgramController> AntiProgram = new List<ProgramController>();
     // Start is called before the first frame update
@@ -286,4 +342,16 @@ public class FortressController : MonoBehaviour, ProgramSummoner
             }
         }
     }
+
+	public async Task BeginTurn()
+	{
+        ProgramQueue.ForEach(x =>
+        {
+            x.ActionsDone = 0;
+            x.path.Clear();
+        });
+        await runQueue();
+        //await Task.Yield();
+        GameController.EndTurn(this);
+	}
 }

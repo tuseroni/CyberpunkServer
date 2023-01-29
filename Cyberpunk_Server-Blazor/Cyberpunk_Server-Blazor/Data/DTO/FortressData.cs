@@ -55,11 +55,25 @@ namespace CyberpunkServer.Models.DTO
             }
         }
         public string Name { get; set; }
+        public int TotalMU
+        {
+            get
+            {
+                return FortressMemory.Count * 10;
 
+			}
+        }
+        public int AvailableMU
+        {
+            get
+            {
+                return TotalMU - (FortressPrograms.Sum(x => x.MU));
+            }
+        }
 
-        public virtual AI_ICON? AI_ICON { get; set; }
+        public virtual AI_ICONData? AI_ICON { get; set; }
 
-        public virtual AI_Personality? AI_Personality { get; set; }
+        public virtual AI_PersonalityData? AI_Personality { get; set; }
 
 
         public virtual List<FortressCPUData> FortressCPU { get; set; }

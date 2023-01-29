@@ -49,7 +49,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 			}
 			else if(ContainedItems.Count>0)
 			{
-				Grid.SetSelectedItem(ContainedItems[0]);
+				Grid.SetSelectedItem(ContainedItems[ContainedItems.Count-1]);
 			}
 		}
 		private void _containedItem_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

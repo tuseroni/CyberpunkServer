@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace CyberpunkServer.Models.DTO
 {
 
-    public partial class AI_PersonalityData
+    public partial class AI_ICONData
     {
         public int id { get; set; }
 
@@ -12,5 +12,4 @@ namespace CyberpunkServer.Models.DTO
 
         public string? description { get; set; }
     }
-
 }

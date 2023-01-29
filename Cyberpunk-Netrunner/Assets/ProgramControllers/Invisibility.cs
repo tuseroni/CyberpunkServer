@@ -23,10 +23,16 @@ class Invisibility : ProgramController
         await Task.Yield();
         return 1.0f;
     }
-    public override void addProgram(GridController grid, RunningProgram program, ProgramSummoner Summoner)
+    public override async Task BeginTurn()
+    {
+        EndTurn(this);
+        await Task.Yield();
+    }
+    public override void addProgram(GridController grid, RunningProgram program, ProgramSummoner Summoner, CPUController CPUSource = null)
     {
         FortressProgram = program;
         Owner = Summoner;
+        this.ApparentOwner = Summoner;
         this.grid = grid;
         if (Owner is PlayerController)
         {

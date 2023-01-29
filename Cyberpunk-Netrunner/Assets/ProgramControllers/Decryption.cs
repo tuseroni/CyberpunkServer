@@ -45,10 +45,16 @@ class Decryption : ProgramController
         await Task.Yield();
         return 1.0f;
     }
-    public override void addProgram(GridController grid, RunningProgram program, ProgramSummoner Summoner)
+    public override async Task BeginTurn()
+    {
+        EndTurn(this);
+        await Task.Yield();
+    }
+    public override void addProgram(GridController grid, RunningProgram program, ProgramSummoner Summoner, CPUController CPUSource = null)
     {
         FortressProgram = program;
         Owner = Summoner;
+        this.ApparentOwner = Summoner;
         if (Owner is PlayerController)
         {
             Player = (PlayerController)Owner;
@@ -85,11 +91,18 @@ class Decryption : ProgramController
     }
     public override async Task<int> DoAction(NetItem target = null)
     {
-        if(!await GameController.RollToHit(target, this))
+        if (ActionsDone >= NumActions)
         {
             return 0;
         }
+        NumActions++;
+        if(!await GameController.RollToHit(target, this))
+        {
+            EndTurn(this);
+            return 0;
+        }
         ((CodeGateController)target).Open();
+        EndTurn(this);
         return await Task.Run(()=> { return 0; });
     }
 }

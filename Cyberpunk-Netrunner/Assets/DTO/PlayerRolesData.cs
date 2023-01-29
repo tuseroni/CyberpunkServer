@@ -23,6 +23,7 @@ namespace CyberpunkServer.Models.DTO
     
         public int id { get; set; }
         public string Name { get; set; }
-        
-    }
+		public virtual ICollection<SkillData> Skill { get; set; } = new List<SkillData>();
+
+	}
 }

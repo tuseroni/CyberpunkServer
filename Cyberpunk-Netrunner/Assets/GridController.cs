@@ -107,6 +107,7 @@ public class GridController : MonoBehaviour
             fortController.Grid = this;
             fortController.GameController = GameController;
             fortController.addFort(fort);
+            GameController.addPlayer(fortController);
         }
     }
 

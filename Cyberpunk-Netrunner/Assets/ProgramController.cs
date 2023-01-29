@@ -106,6 +106,7 @@ public class ProgramController : MonoBehaviour, NetActor
         }
     }
     public ProgramSummoner Owner { get; set; }
+    public ProgramSummoner ApparentOwner { get; set; }
     public virtual bool Solid { get; set; } = true;
     public NetObjType Type { get => NetObjType.Program; set { } }
 
@@ -195,16 +196,22 @@ public class ProgramController : MonoBehaviour, NetActor
         }
         return Initiative;
     }
+    
+    public virtual void EndTurn(NetActor actor)
+	{
+        this.Continue = false;
+	}
     public virtual async Task<int> DoAction(NetItem target=null)
     {
         if(ActionsDone>=NumActions)
         {
             return 0;
         }
+        ActionsDone++;
         int damage = 0;
         if(!await GameController.RollToHit(target, this))
         {
-            GameController.EndTurn(this);
+            EndTurn(this);
             return 0;
         }
         if(Functions.ContainsKey("Alert") && target is NetActor)
@@ -242,7 +249,7 @@ public class ProgramController : MonoBehaviour, NetActor
             var newDamage = new Damage { Type = DamageType.Strength, Value = damage = GameController.RollD6() };
             await GameController.DoDamage(target, newDamage);
         }
-        GameController.EndTurn(this);
+        EndTurn(this);
         return damage;
     }
     public void Possess(ProgramSummoner Owner)
@@ -265,7 +272,7 @@ public class ProgramController : MonoBehaviour, NetActor
             return damage.Value;
         }
     }
-    public virtual void addProgram(GridController grid, RunningProgram program, ProgramSummoner Summoner)
+    public virtual void addProgram(GridController grid, RunningProgram program, ProgramSummoner Summoner,CPUController CPUSource=null)
     {
         MaxX = -1;
         MaxY = -1;
@@ -291,6 +298,14 @@ public class ProgramController : MonoBehaviour, NetActor
         this.xPos = program.xPos;
         this.yPos = program.yPos;
         this.Owner = Summoner;
+        if (CPUSource != null)
+        {
+            this.ApparentOwner = CPUSource.Owner;
+        }
+        else
+        {
+            this.ApparentOwner = Summoner;
+        }
         Player = (PlayerController)Summoner;
         if (Options.ContainsKey("Movement ability"))
         {
@@ -333,6 +348,7 @@ public class ProgramController : MonoBehaviour, NetActor
             }
         }
         this.Owner = Summoner;
+        this.ApparentOwner = Summoner;
         FortressProgram = program;
         var tile = grid.gridTiles[FortressProgram.yPos][FortressProgram.xPos];
         tile.ContainedItem.Add(this);
@@ -455,7 +471,7 @@ public class ProgramController : MonoBehaviour, NetActor
 
                             if (foundItem is ProgramController)
                             {
-                                if (this.Owner != foundItem.Owner)
+                                if (this.Owner != foundItem.ApparentOwner)
                                 {
                                     if (!VisibilityLookup.ContainsKey(foundItem))
                                     {
@@ -491,7 +507,7 @@ public class ProgramController : MonoBehaviour, NetActor
                             }
                             else if (foundItem is Device || foundItem is PlayerController)
                             {
-                                if (foundItem != Owner && foundItem.Owner !=Owner)
+                                if (foundItem != Owner && foundItem.ApparentOwner != Owner)
                                 {
                                     if (!VisibilityLookup.ContainsKey(foundItem))
                                     {
@@ -576,7 +592,7 @@ public class ProgramController : MonoBehaviour, NetActor
                     }
                     else
                     {
-                        GameController.EndTurn(this);
+                        EndTurn(this);
                     }
                     WaitSeconds = 1.0f;
                 }
@@ -607,7 +623,7 @@ public class ProgramController : MonoBehaviour, NetActor
             }
             if(!canMove)
             {
-                GameController.EndTurn(this);
+                EndTurn(this);
             }
         }
         
@@ -637,7 +653,7 @@ public class ProgramController : MonoBehaviour, NetActor
                     }
                     else
                     {
-                        GameController.EndTurn(this);
+                        EndTurn(this);
                     }
                     WaitSeconds = 1.0f;
                 }
@@ -661,7 +677,7 @@ public class ProgramController : MonoBehaviour, NetActor
                 }
                 if(!MoveToTargetTile())
                 {
-                    GameController.EndTurn(this);
+                    EndTurn(this);
                 }
             }
             else 
@@ -742,7 +758,7 @@ public class ProgramController : MonoBehaviour, NetActor
         }
         else
         {
-            GameController.EndTurn(this);
+            EndTurn(this);
         }
     }
     public virtual void Follow(PlayerController player)
@@ -776,7 +792,7 @@ public class ProgramController : MonoBehaviour, NetActor
                 }
                 else
                 {
-                    GameController.EndTurn(this);
+                    EndTurn(this);
                 }
                 break;
             case ProgramState.guarding:
@@ -906,6 +922,7 @@ public class ProgramController : MonoBehaviour, NetActor
                 ProgramName.enabled = true;
             }
         }
+
         if (!GameController.offline)
         {
             SignalrHandler.InvokeProgramMove(this.FortressProgram, newPos.x, newPos.y);
@@ -984,7 +1001,14 @@ public class ProgramController : MonoBehaviour, NetActor
     public virtual async Task<int> RollToHit()
     {
         await Task.Yield();//todo: add diceware here.
-        return GameController.RollD10() + Strength;
+        if (Target is PlayerController)
+        {
+            return FortressProgram.Strength + Owner.Int + Owner.Interface + GameController.RollD10();
+        }
+        else
+        {
+            return GameController.RollD10() + Strength;
+        }
 
         //var d10 = GameController.RollD10();
         //if (d10 == 1)

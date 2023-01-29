@@ -120,6 +120,7 @@
 	{
 		<h3>Click on Tile to Place Item</h3>
 		<button @onclick="cancelPlace">Cancel</button>
+		<button @onclick="deleteSelected">Delete</button>
 	}
 }
 @if(FortressHasBeenAlerted)
@@ -133,12 +134,13 @@
 }
 else
 {
-	<div class="FortressHolder" style="">
+	<div class="FortressHolder" style="" @onkeyup=keypress tabindex="0">
 		<div style="border: solid 1px;border-radius: 10px;">
 			<div class="fortressInfo">
 				<div class="dataPair"><label>Name</label><input type="text" @bind=Fortress.Name></div>
 				<div class="dataPair"><label>Int</label><label>@Fortress.Int</label></div>
 				<div class="dataPair"><label>Wall Strength</label><input type="number"@bind=@Fortress.WallStrength></div>
+				<div class="dataPair"><label>Available MU</label><Label>@Fortress.AvailableMU / @Fortress.TotalMU</Label></div>
 				@if(Fortress.isAI)
 				{
 					<div class="dataPair"><label>AI Personality</label>

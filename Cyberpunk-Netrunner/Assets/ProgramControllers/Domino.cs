@@ -6,29 +6,12 @@ using System.Linq;
 using TMPro;
 using System.Threading.Tasks;
 
-class Armor : ProgramController
+class Domino : ProgramController
 {
     public override bool canBePlaced { get => false; set { } }
     void Start()
     {
         
-    }
-    public override bool Rezzed { get
-        {
-            return base.Rezzed;
-        }
-        set
-        {
-            base.Rezzed = value;
-            if(!value)
-            {
-                Player.ProgramSP -= 3;
-            }
-            else
-            {
-                Player.ProgramSP += 3;
-            }
-        }
     }
     public override async Task<NetItem> Search(NetItem _target = null)
     {
@@ -50,14 +33,23 @@ class Armor : ProgramController
         {
             Player = (PlayerController)Owner;
         }
-        
         transform.parent = ((PlayerController)Summoner).Object.transform;
         transform.localPosition = new Vector3(0f, 34f, -39.8f);
+        if (program.Program != null && ProgramName != null)
+        {
+            ProgramName.text = program.Program.name;
+        }
         DoAction();
     }
-    public override async Task<int> DoAction(NetItem target = null)
+	public override async Task BeginTurn()
+	{
+        EndTurn(this);
+        await Task.Yield();
+	}
+	public override async Task<int> DoAction(NetItem target = null)
     {
-        await Task.Run(() => Player.ProgramSP += 3);
+        await Task.Yield();
+        
         return 0;
     }
 }

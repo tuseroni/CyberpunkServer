@@ -61,6 +61,7 @@ class Portal : Intrusion
         tile.ContainedItem.Add(this);
         ActionTurnsRemaining = ActionTurns;
         ActiveProgramController.Enabled = false;
+        ActionsDone++;
         //oldPosition = transform.localPosition;
         //transform.parent = Target.Object.transform;
         //transform.localPosition = new Vector3(0, 0, 0);
@@ -73,7 +74,7 @@ class Portal : Intrusion
 	{
         
 	}
-	public override void addProgram(GridController grid, RunningProgram program, ProgramSummoner Summoner)
+	public override void addProgram(GridController grid, RunningProgram program, ProgramSummoner Summoner, CPUController CPUSource = null)
 	{
 		base.addProgram(grid, program, Summoner);
     }

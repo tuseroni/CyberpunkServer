@@ -12,5 +12,4 @@ namespace CyberpunkServer.Models.DTO
 
         public string? description { get; set; }
     }
-
 }

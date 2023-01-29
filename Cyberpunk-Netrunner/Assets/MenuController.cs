@@ -20,6 +20,7 @@ public class MenuController : VisualElement
     private Label MessageLabel;
     private VisualElement OverlayElem;
     private Button Glogo;
+    private Button Map;
     List<string> Messages = new List<string>();
     int PlayerDamage = 0;
 
@@ -27,6 +28,8 @@ public class MenuController : VisualElement
     public event MessageAnimationEnd onMessageAnimationEnd;
     public delegate void GlogoClick(bool Checked);
     public event GlogoClick onGlogoClick;
+    public delegate void MapClick();
+    public event MapClick onMapClick;
     bool MessageAnimating = false;
     private Button ActiveProgramButton;
 
@@ -223,8 +226,45 @@ public class MenuController : VisualElement
 			}
 		}
 	}
+    bool _hasCartographer = false;
+    public bool HasCartographer
+    {
+        get
+        {
+            return _hasCartographer;
 
-	public PromptController Prompt { get; set; }
+        }
+        set
+        {
+            _hasCartographer = value;
+            if (Glogo != null)
+            {
+                if (value)
+                {
+                    Map.RemoveFromClassList("Hidden");
+                }
+                else
+                {
+                    Map.AddToClassList("Hidden");
+                }
+            }
+        }
+    }
+    int _MapLevel=0;
+    public int MapLevel
+	{
+        get
+        {
+            return _MapLevel;
+        }
+        set
+		{
+            _MapLevel = value;
+
+        }
+	}
+
+    public PromptController Prompt { get; set; }
 
 	private void onGeometryChange(GeometryChangedEvent evt)
     {
@@ -240,6 +280,7 @@ public class MenuController : VisualElement
         MessageLabel = document.Query<Label>("MessageLabel");
         OverlayElem = document.Query<VisualElement>("overlay");
         Glogo = document.Query<Button>("btnGlogo");
+        Map = document.Query<Button>("btnMap");
         MenuButton.RegisterCallback<ClickEvent>(MenuButton_clicked);
         Prompt = document.Query<PromptController>("Prompt");
         Prompt.AddToClassList("Hidden");
@@ -253,7 +294,12 @@ public class MenuController : VisualElement
 		{
             Glogo.AddToClassList("Hidden");
 		}
+  //      if(!HasCartographer)
+		//{
+  //          Map.AddToClassList("Hidden");
+  //      }
         Glogo.clicked += Glogo_clicked;
+		//Map.clicked += Map_clicked;
         
         document.Query<Scroller>().ForEach(x => x.RegisterCallback<ClickEvent>(ev => ev.StopPropagation()));
         
@@ -263,7 +309,17 @@ public class MenuController : VisualElement
 
         this.UnregisterCallback<GeometryChangedEvent>(onGeometryChange);
     }
-    private void Glogo_clicked()
+
+	private void Map_clicked()
+	{
+		if(Map.ClassListContains("Disabled"))
+		{
+            return;
+		}
+        onMapClick?.Invoke();
+    }
+
+	private void Glogo_clicked()
     {
         //Glogo.ToggleInClassList("Glogo_Active");
         onGlogoClick?.Invoke(!GlogoActive);

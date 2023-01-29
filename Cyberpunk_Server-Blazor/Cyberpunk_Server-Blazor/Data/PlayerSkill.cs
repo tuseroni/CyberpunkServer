@@ -7,15 +7,17 @@ public partial class PlayerSkill
 {
     public int id { get; set; }
 
-    public int? Ranks { get; set; }
+    public int Ranks { get; set; }
 
-    public int? Bonus { get; set; }
+    public int Bonus { get; set; }
 
-    public int? CurrentIP { get; set; }
+    public int CurrentIP { get; set; }
 
     public int? PlayerID { get; set; }
 
     public int? SkillID { get; set; }
+
+    public string? Name { get; set; }
 
     public virtual Player? Player { get; set; }
 

@@ -11,5 +11,7 @@ public partial class WeaponConcTypes
 
     public string? Description { get; set; }
 
+    public virtual ICollection<PlayerWeapon> PlayerWeapon { get; } = new List<PlayerWeapon>();
+
     public virtual ICollection<Weapons> Weapons { get; } = new List<Weapons>();
 }

@@ -14,10 +14,11 @@ class Hellhound : ProgramController
         {
             return 0;
         }
+        ActionsDone++;
         int damage = 0;
         if (!await GameController.RollToHit(target, this))
         {
-            GameController.EndTurn(this);
+            EndTurn(this);
             return 0;
         }
         if (target.Type == NetObjType.NetRunner)
@@ -26,7 +27,7 @@ class Hellhound : ProgramController
             await GameController.DoDamage(target, newDamage);
             
         }
-        GameController.EndTurn(this);
+        EndTurn(this);
         return damage;
     }
     public async override Task<int> RollToHit()

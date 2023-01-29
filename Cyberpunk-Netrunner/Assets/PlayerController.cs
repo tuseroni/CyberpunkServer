@@ -109,6 +109,16 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         {
         }
     }
+    public ProgramSummoner ApparentOwner
+    {
+        get
+        {
+            return Owner;
+        }
+        set
+        {
+        }
+    }
     public Bounds bounds { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public int NumActions 
     { 
@@ -173,6 +183,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
                 {
 
                     GameController.addUtility(prog);
+
                 }
                 else if (prog.Program.ProgramFunction.Where(x => x.name == "Protection").Any())
                 {
@@ -210,11 +221,26 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
                 }
             }
             MenuController.SetDamage(value.Dammage);
+			GameController.onProgramDestroyed += GameController_onProgramDestroyed;
 
 
         }
     }
-    public bool Stunned { get; set; }
+
+    private void GameController_onProgramDestroyed(ProgramController program)
+    {
+        if (ActivePrograms.Contains(program))
+        {
+            ActivePrograms.Remove(program);
+        }
+        if (ProgramQueue.Contains(program))
+        {
+            ProgramQueue.Remove(program);
+        }
+
+    }
+
+	public bool Stunned { get; set; }
     public bool UsingInterfacePlug { get; set; } = true;
     public int TakeDamage(Damage damage)
     {
@@ -318,6 +344,28 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         Initiative= d10 + speed + reflex;
         return Initiative;
     }
+    List<ProgramController> ProgramQueue = new List<ProgramController>();
+    ProgramController CurrentProgramInQueue;
+    public async Task runQueue()
+	{
+        foreach(var program in ProgramQueue)
+		{
+            if (program.ActionsDone >= program.NumActions || !program.Rezzed)
+			{
+                continue;
+			}
+            program.Continue = true;
+            await program.BeginTurn();
+            await Task.Run(() =>
+            {
+                while (program.Continue)
+                {
+                    Task.Delay(100);
+                }
+            });
+        }
+	}
+    
     public int doEvasionCheck(bool SeekerIgnoresInvisibility = false)
     {
         var d10 = GameController.RollD10();
@@ -397,6 +445,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
 		{
             return;
         }
+        CPUController CPU = null;
         if (program.Packed)
 		{
             if (GameController.Utilities.ContainsKey("File Packer"))
@@ -417,6 +466,14 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
                 return;
 			}
 		}
+        if(currentTile.ContainedItem.Where(x=>x is CPUController).Any())
+		{
+            DialogResult result = await MenuController.Prompt.Show("Run Program on CPU?", ButtonType.YesNoCancel);
+            if(result==DialogResult.Yes)
+			{
+                CPU = currentTile.ContainedItem.Where(x => x is CPUController).Select(x=>(CPUController)x).First();
+            }
+        }
         elem.AddToClassList("Hidden");
         MenuController.toggleClass(MenuBox, "Hidden");
 
@@ -445,9 +502,28 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         var wallObj = GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
         var controller = wallObj.GetComponent<ProgramController>();
         controller.UIElement = elem;
-        GameController.addProgram(controller, this, program);
-        ActivePrograms.Add(controller);
+        controller.GameController = GameController;
+        controller.addProgram(grid, program, this, CPU);
         
+        if (controller.canBePlaced)
+        {
+            controller.Continue = false;
+        }
+        else
+        {
+            controller.Continue = true;
+        }
+        if (program is PlayerCyberdeckProgramsData)
+        {
+            SignalrHandler.InvokeProgramAdded((PlayerCyberdeckProgramsData)program);
+        }
+        else
+        {
+            SignalrHandler.InvokeProgramAdded((PlayerComputerProgramsData)program);
+        }
+        //GameController.addProgram(controller, this, program, CPU);
+        ActivePrograms.Add(controller);
+        ProgramQueue.Add(controller);
         var programElem = controller.ActiveProgramAsset.CloneTree();
         ActiveProgramController Progcontroller = programElem.Query<ActiveProgramController>();
         Progcontroller.controller = controller;
@@ -610,7 +686,9 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
     {
         foreach(var prog in ActivePrograms)
 		{
-            if(prog.canBePlaced)
+            prog.ActionsDone = 0;
+            prog.path.Clear();
+            if (prog.canBePlaced)
 			{
                 continue;
 			}
@@ -619,13 +697,14 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         ActionsDone = 0;
         await MenuController.PlayerBeginsTurn();
     }
-    private void btnEndTurnClick(ClickEvent evt)
+    private async void btnEndTurnClick(ClickEvent evt)
     {
         if (Stunned)
         {
             Stunned = CheckStun();
             GameController.SetPlayerStunned(this, Stunned);
         }
+        await runQueue();
         MenuController.PlayerEndsTurn();
         GameController.EndTurn(this);
     }
@@ -772,6 +851,7 @@ public class PlayerController : MonoBehaviour,NetActor,ProgramSummoner
         playerData.yPos = y;
         var newPos = new Vector2Int(x, y);
         path.Add(newPos);
+        currentTile = tile;
         //tile.ContainedItem.Add(this);
         transform.position = tile.transform.position + new Vector3(0, 3, 0);
         SignalrHandler.InvokePlayerMove(playerData.id, playerData.xPos, playerData.yPos);

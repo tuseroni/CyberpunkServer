@@ -1,6 +1,7 @@
 ﻿using CyberpunkServer.Models;
 using CyberpunkServer.Models.DTO;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Cyberpunk_Server_Blazor.Pages.Subgird
@@ -152,6 +154,79 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 		{
 			hubConnection.SendAsync("RejectJackInRequest", (PlayerData)SelectedItem);
 		}
+		void deleteSelected()
+		{
+			var Element = SelectedItem;
+			switch (Element.NetObjType.id)
+			{
+				case 1:
+					if (!Fortress.FortressWalls.Contains((FortressWallsData)Element))
+					{
+						return;
+					}
+					Fortress.FortressWalls.Remove((FortressWallsData)Element);
+					break;
+				case 2:
+					if (!Fortress.FortressCPU.Contains((FortressCPUData)Element))
+					{
+						return;
+					}
+					Fortress.FortressCPU.Remove((FortressCPUData)Element);
+					break;
+				case 3:
+					if (!Fortress.FortressMemory.Contains((FortressMemoryData)Element))
+					{
+						return;
+					}
+					Fortress.FortressMemory.Remove((FortressMemoryData)Element);
+					break;
+				case 4:
+					if (!Fortress.FortressCodeGates.Contains((FortressCodeGatesData)Element))
+					{
+						return;
+					}
+
+					Fortress.FortressCodeGates.Remove((FortressCodeGatesData)Element);
+					break;
+				case 5:
+					if ((Element is FortressProgramsData && !Fortress.FortressPrograms.Contains((FortressProgramsData)Element)))
+					{
+						return;
+					}
+					else if (!(Element is FortressProgramsData))
+					{
+						return;
+					}
+					if (Element is FortressProgramsData)
+					{
+						Fortress.FortressPrograms.Remove((FortressProgramsData)Element);
+					}
+					break;
+				case 6:
+					break;
+				case 7:
+				case 8:
+				case 9:
+				case 10:
+				case 11:
+				case 12:
+				case 13:
+				case 14:
+				case 15:
+				case 16:
+				case 17:
+				case 18:
+				case 19:
+					if (!Fortress.FortressRemotes.Contains((FortressRemotesData)Element))
+					{
+						return;
+					}
+					Fortress.FortressRemotes.Remove((FortressRemotesData)Element);
+					break;
+			}
+			SelectedItem.CurrentTile.ContainedItems.Remove(SelectedItem);
+			SelectedItem = null;
+		}
 		void cancelPlace()
 		{
 			SelectedItem = null;
@@ -268,6 +343,13 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 			//var gridtileData = GridLookup[y][x];
 			//gridtileData.ContainedItems.Add(playerData);
 		}
+		void keypress(KeyboardEventArgs args)
+		{
+			if(args.Key== "Delete")
+			{
+				deleteSelected();
+			}
+		}
 		protected void collectionChange(object? sender, NotifyCollectionChangedEventArgs e)
 		{
 			
@@ -280,6 +362,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 						case 1:
 							if(Fortress.FortressWalls.Contains((FortressWallsData)Element))
 							{
+								SelectedItem = null;
 								return;
 							}
 							Fortress.FortressWalls.Add((FortressWallsData)Element);
@@ -288,6 +371,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 						case 2:
 							if (Fortress.FortressCPU.Contains((FortressCPUData)Element))
 							{
+								SelectedItem = null;
 								return;
 							}
 							Fortress.FortressCPU.Add((FortressCPUData)Element);
@@ -296,6 +380,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 						case 3:
 							if (Fortress.FortressMemory.Contains((FortressMemoryData)Element))
 							{
+								SelectedItem = null;
 								return;
 							}
 							Fortress.FortressMemory.Add((FortressMemoryData)Element);
@@ -304,6 +389,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 						case 4:
 							if (Fortress.FortressCodeGates.Contains((FortressCodeGatesData)Element))
 							{
+								SelectedItem = null;
 								return;
 							}
 							
@@ -313,6 +399,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 						case 5:
 							if ((Element is FortressProgramsData && Fortress.FortressPrograms.Contains((FortressProgramsData)Element)))
 							{
+								SelectedItem = null;
 								return;
 							}
 							else if (!(Element is FortressProgramsData))
@@ -349,6 +436,7 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
 						case 19:
 							if (Fortress.FortressRemotes.Contains((FortressRemotesData)Element))
 							{
+								SelectedItem = null;
 								return;
 							}
 							Fortress.FortressRemotes.Add((FortressRemotesData)Element);
@@ -381,7 +469,10 @@ namespace Cyberpunk_Server_Blazor.Pages.Subgird
                 {
                     var player = await ctx.Subgrid
                         .Include(p=>p.Fortress)
-                        .Include(p => p.Fortress).ThenInclude(p=>p.FortressCodeGates)
+						.ThenInclude(p=>p.AI_ICON)
+						.Include(p => p.Fortress)
+						.ThenInclude(p => p.AI_Personality)
+						.Include(p => p.Fortress).ThenInclude(p=>p.FortressCodeGates)
 						.Include(p => p.Fortress).ThenInclude(p => p.FortressCodeGates).ThenInclude(p=>p.TypeNavigation)
 						.Include(p => p.Fortress).ThenInclude(p => p.FortressCPU).ThenInclude(p => p.TypeNavigation)
 						.Include(p => p.Fortress).ThenInclude(p => p.FortressMemory).ThenInclude(p => p.TypeNavigation)

@@ -100,9 +100,19 @@ public class WallController : MonoBehaviour, NetItem
 
     public NetObjType Type { get => NetObjType.Wall; set { } }
 
-    public ProgramSummoner Owner { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public ProgramSummoner Owner { get; set; }
+    public ProgramSummoner ApparentOwner 
+    {
+        get
+        {
+            return Owner;
+        }
+        set
+        {
+        }
+    }
 
-	public string Name => throw new System.NotImplementedException();
+    public string Name => throw new System.NotImplementedException();
 
 	// Start is called before the first frame update
 	void Start()

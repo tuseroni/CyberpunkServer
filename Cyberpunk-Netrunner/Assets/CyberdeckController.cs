@@ -56,6 +56,16 @@ public class CyberdeckController : MonoBehaviour,NetActor, Device
     }
     public GameObject Object { get => this.gameObject; set { } }
     public ProgramSummoner Owner { get; set; }
+    public ProgramSummoner ApparentOwner
+    {
+        get
+        {
+            return Owner;
+        }
+        set
+        {
+        }
+    }
     public GameController Ref { get; set; }
     public bool Solid { get => false; set { } }
     public NetObjType Type { get => NetObjType.Cyberdeck; set { } }

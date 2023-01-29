@@ -1,0 +1,62 @@
+﻿<div>
+<h3>SP Calculator</h3>
+<div><label>Layer 0</label><input type="number" @bind-value=@Layers[0] @onchange="CalcSP" @bind-value:event="oninput"/> </div>
+<div><label>Layer 1</label><input type="number" @bind-value=@Layers[1] @onchange="CalcSP" @bind-value:event="oninput"/> </div>
+<div><label>Layer 2</label><input type="number" @bind-value=@Layers[2] @onchange="CalcSP" @bind-value:event="oninput"/> </div>
+<div><label>Layer 3</label><input type="number" @bind-value=@Layers[3] @onchange="CalcSP" @bind-value:event="oninput"/> </div>
+<div><label>Lotal SP</label><label>@TotalSP</label></div>
+<div><label>Encumberance</label><label>@TotalEnc</label></div>
+</div>
+@code {
+    int[] Layers = { 0, 0, 0, 0 };
+    int TotalSP = 0;
+    int TotalEnc = 0;
+    int bonus = 0;
+
+    void CalcSP()
+    {
+        TotalSP = 0;
+        bonus = 0;
+        TotalEnc = 0;
+
+        var max = Layers.Max();
+        for(var i=1;i<Layers.Length;i++)
+        {
+            if(Layers[i-1]==0 || Layers[i]==0)
+            {
+                continue;
+            }
+            var diff = Math.Abs(Layers[i] - Layers[i - 1]);
+            if(diff < 5)
+            {
+                bonus += 5;
+            }
+            else if(diff<9)
+            {
+                bonus += 4;
+            }
+            else if(diff<15)
+            {
+                bonus += 3;
+            }
+            else if(diff<21)
+            {
+                bonus += 2;
+            }
+            else if(diff<27)
+            {
+                bonus += 1;
+            }
+            if(i==2)
+            {
+                TotalEnc += 1;
+            }
+            else if(i>2)
+            {
+                TotalEnc += 2;
+            }
+
+        }
+        TotalSP = max + bonus;
+    }
+}

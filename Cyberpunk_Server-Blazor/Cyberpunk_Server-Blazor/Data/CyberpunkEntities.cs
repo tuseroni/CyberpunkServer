@@ -788,6 +788,8 @@ public partial class CyberpunkEntities : DbContext
         {
             entity.HasKey(e => e.id).HasName("PK__PlayerSk__3213E83F7CA325CB");
 
+            entity.Property(e => e.Name).HasColumnType("text");
+
             entity.HasOne(d => d.Player).WithMany(p => p.PlayerSkill)
                 .HasForeignKey(d => d.PlayerID)
                 .OnDelete(DeleteBehavior.Cascade)
@@ -838,15 +840,23 @@ public partial class CyberpunkEntities : DbContext
 
         modelBuilder.Entity<PlayerWeapon>(entity =>
         {
-            entity.HasKey(e => e.id).HasName("PK__PlayerWe__3213E83FFA7F9612");
+            entity.HasKey(e => e.id).HasName("PK__PlayerWe__3213E83F195E2F66");
+
+            entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.Name).HasMaxLength(255);
+
+            entity.HasOne(d => d.ConcNavigation).WithMany(p => p.PlayerWeapon)
+                .HasForeignKey(d => d.Conc)
+                .HasConstraintName("FK__PlayerWeap__Conc__7B4643B2");
 
             entity.HasOne(d => d.Player).WithMany(p => p.PlayerWeapon)
                 .HasForeignKey(d => d.PlayerID)
-                .HasConstraintName("FK__PlayerWea__Playe__75A278F5");
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK__PlayerWea__Playe__795DFB40");
 
-            entity.HasOne(d => d.Weapon).WithMany(p => p.PlayerWeapon)
-                .HasForeignKey(d => d.WeaponID)
-                .HasConstraintName("FK__PlayerWea__Weapo__76969D2E");
+            entity.HasOne(d => d.TypeNavigation).WithMany(p => p.PlayerWeapon)
+                .HasForeignKey(d => d.Type)
+                .HasConstraintName("FK__PlayerWeap__Type__7A521F79");
         });
 
         modelBuilder.Entity<Program>(entity =>

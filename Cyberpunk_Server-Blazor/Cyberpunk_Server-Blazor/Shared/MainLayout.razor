@@ -17,9 +17,13 @@
 
 				<div class="navbar-nav w-100">
 					<a class="nav-item nav-link" href="/"><i class="fa fa-laptop me-2"></i>Home</a>
+					<AuthorizeView>
+					<Authorized>
 					<a class="nav-item nav-link" href="/Players"><i class="fa fa-solid fa-user"></i>Players</a>
 					<a class="nav-item nav-link" href="/Subgrids"><i class="fa fa-solid fa-table"></i>Subgrids</a>
-					<a class="nav-item nav-link" href="/Tools"><i class="fa fa-solid fa-table"></i>Tools</a>
+					</Authorized>
+					</AuthorizeView>
+					<a class="nav-item nav-link" href="/Tools"><i class="fa fa-solid fa-wrench"></i>Tools</a>
 				</div>
 			</nav>
 		</div>
@@ -71,7 +75,6 @@
 		</div>
 		<!-- Content End -->
 		<!-- Back to Top -->
-		<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 	</div>
 	@code
 	{
