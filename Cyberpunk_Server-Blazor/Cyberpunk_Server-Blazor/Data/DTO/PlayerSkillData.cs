@@ -18,14 +18,25 @@ namespace CyberpunkServer.Models.DTO
         {
             this.PlayerSkillModifiers = new List<PlayerSkillModifiersData>();
         }
-        public int id { get; set; }
-        public Nullable<int> Ranks { get; set; }
-        public Nullable<int> Bonus { get; set; }
-        public Nullable<int> CurrentIP { get; set; }
-        public Nullable<int> PlayerID { get; set; }
-        public Nullable<int> SkillID { get; set; }
-    
-        public virtual SkillData Skill { get; set; }
+		public int id { get; set; }
+
+		public int Ranks { get; set; }
+
+		public int Bonus { get; set; }
+
+		public int CurrentIP { get; set; }
+
+		public int? PlayerID { get; set; }
+
+		public int? SkillID { get; set; }
+
+		public string? Name { get; set; }
+
+		public bool IsCustom { get; set; }
+
+		public bool IsChipped { get; set; }
+
+		public virtual SkillData Skill { get; set; }
         public virtual List<PlayerSkillModifiersData> PlayerSkillModifiers { get; set; }
 
 

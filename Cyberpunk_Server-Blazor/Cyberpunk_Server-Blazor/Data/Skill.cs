@@ -17,6 +17,8 @@ public partial class Skill
 
     public int Multiplier { get; set; }
 
+    public bool IsCustom { get; set; }
+
     public virtual ICollection<ComputerPeripheralSkillModifiers> ComputerPeripheralSkillModifiers { get; } = new List<ComputerPeripheralSkillModifiers>();
 
     public virtual ICollection<CyberdeckOptionsSkillModifiers> CyberdeckOptionsSkillModifiers { get; } = new List<CyberdeckOptionsSkillModifiers>();

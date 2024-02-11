@@ -28,7 +28,13 @@ namespace CyberpunkServer.Models.DTO
 
         public virtual StatData Stat { get; set; }
         public virtual List<PlayerStatModifiersData> PlayerStatModifiers { get; set; }
-
+        public int Total
+        {
+            get
+            {
+                return (int)(Base + (PlayerStatModifiers == null ? 0 : (int)PlayerStatModifiers.Sum(x => x.amount)));
+            }
+        }
 
     }
 }

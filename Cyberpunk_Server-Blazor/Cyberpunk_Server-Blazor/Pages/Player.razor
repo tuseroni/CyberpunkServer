@@ -53,7 +53,11 @@
 	}
 </style>
 <style>
-
+	.PlayerWeaponDiv
+	{
+		display: grid;
+		grid-template-columns: repeat(11,minmax(0px,1fr));
+	}
 	.PlayerStats, .PlayerSkill, .playerInfo, .SkillType, .ElectronicsType {
 		display: grid;
 		grid-gap: 5px 25px;
@@ -363,7 +367,7 @@ else
 			@foreach(var stat in Model.PlayerStat)
 			{
 				<div class="stat-block">
-					<label>@stat.Stat.ABBR</label>
+					<label @onclick="@(()=>{SelectedStat=stat;})">@stat.Stat.ABBR</label>
 					<input type="number" @bind=stat.Base/>
 				</div>
 			}
@@ -389,9 +393,90 @@ else
 		<div class="CyberneticsPage page" id="CyberneticsTab" data-tabname="Cybernetics">
 		</div>
 		<div class="WeaponsPage page" id="WeaponsTab" data-tabname="Weapons">
+			<div class="PlayerWeaponDiv">
+				<Label>Name</Label>
+				<Label>NumDice</Label>
+				<Label>DiceType</Label>
+				<Label>Bonus</Label>
+				<Label>ROF</Label>
+				<Label>REL</Label>
+				<Label>Type</Label>
+				<Label>Conc</Label>
+				<Label>Shots1</Label>
+				<Label>Shots2</Label>
+				<Label>Range</Label>
+			</div>
+			@foreach(var weapon in Model.PlayerWeapon)
+			{
+				<div class="PlayerWeaponDiv">
+					<input type="text" @bind=weapon.Name>
+					<input type="text" @bind=weapon.NumDice>
+					<input type="text" @bind=weapon.DiceType>
+					<input type="text" @bind=weapon.Bonus>
+					<input type="text" @bind=weapon.ROF>
+					<input type="text" @bind=weapon.REL>
+					<input type="text" @bind=weapon.Type>
+					<input type="text" @bind=weapon.Conc>
+					<input type="text" @bind=weapon.Shots1>
+					<input type="text" @bind=weapon.Shots2>
+					<input type="text" @bind=weapon.Range>
+				</div>
+			}
 		</div>
 		<GearPage Model=Model></GearPage>
 		
 	</div>
 	<button @onclick="SaveAsync">Save</button>
+	@if (SelectedStat !=null)
+	{
+
+		<div class="modal fade show d-block" id="exampleModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="titleLabel">Add Player</h5>
+						<button type="button" class="close" @onclick="@(()=>{SelectedStat=null;})" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="lastName">Base</label>
+							<input type="number" class="form-control" @bind=SelectedStat.Base>
+							<h3>Bonuses</h3>
+							<hr />
+							@if(SelectedStat.Stat.ABBR=="EMP")
+							{
+								<label for="lastName">Name</label>
+
+								<br />
+								<label for="lastName">Humanity Loss</label>
+
+								<br />
+								<label for="lastName">Modifier Amount</label>
+
+								<br />
+								<label for="lastName">-@(Math.Floor(Model.Humanity / 10.0f))</label>
+
+								<br />
+								
+							}
+							@foreach(var modifier in SelectedStat.PlayerStatModifiers)
+							{
+								<label for="lastName">Source Name</label>
+								<input type="text" id="lastName" class="form-control" @bind=modifier.name placeholder="Enter name">
+								<label for="lastName">Modifier Amount</label>
+								<input type="number" id="lastName" class="form-control" @bind=modifier.amount placeholder="Enter Amount">
+							}
+							<button type="button" class="close" @onclick="(()=>{AddStatModifier(SelectedStat);})" data-dismiss="modal" aria-label="Save">Add</button>
+							<hr />
+							<label for="lastName">Total</label>
+							<label>@(SelectedStat.Total - (SelectedStat.Stat.ABBR=="EMP"?Math.Floor(Model.Humanity / 10.0f):0) )</label>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	}
 }

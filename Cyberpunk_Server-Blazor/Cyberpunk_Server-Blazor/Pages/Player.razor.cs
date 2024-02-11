@@ -16,6 +16,7 @@ namespace Cyberpunk_Server_Blazor.Pages
     public partial class Player : IAsyncDisposable
     {
         [Parameter] public int playerID { get; set; }
+        PlayerStatData SelectedStat;
         public double Humanity
         {
             get
@@ -31,6 +32,14 @@ namespace Cyberpunk_Server_Blazor.Pages
 		{
 			StateHasChanged();
 		}
+        void AddStatModifier(PlayerStatData Stat)
+        {
+            Stat.PlayerStatModifiers.Add(new PlayerStatModifiersData
+            {
+                PlayerStatID = Stat.id
+            });
+            StateHasChanged();
+        }
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
             await base.OnAfterRenderAsync(firstRender);
@@ -70,6 +79,8 @@ namespace Cyberpunk_Server_Blazor.Pages
                             .ThenInclude(p => p.SkillTypeNavigation)
                         .Include(p => p.PlayerStat)
                             .ThenInclude(p => p.Stat)
+						.Include(p => p.PlayerStat).ThenInclude(p => p.PlayerStatModifiers)
+						.Include(p => p.PlayerSkill).ThenInclude(p => p.PlayerSkillModifiers)
                         .Include(p => p.PlayerWeapon)
                         .Include(p => p.PlayerArmor)
                         .Include(p => p.PlayerCybernetics)

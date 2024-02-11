@@ -19,11 +19,11 @@ services.AddSignalR(o =>
     o.MaximumReceiveMessageSize = null;
 });
 // Add services to the container.
-var connectionString = Secrets.Secret["ConnectionStrings:Cyberpunk-Connection"] ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration["ConnectionStrings:Cyberpunk-Connection"] ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
-services.AddDbContextFactory<CyberpunkEntities>(options => options.UseSqlServer(Secrets.Secret["ConnectionStrings:Cyberpunk-Connection"]));
-services.AddDbContext<CyberpunkEntities>(options => options.UseSqlServer(Secrets.Secret["ConnectionStrings:Cyberpunk-Connection"]));
+services.AddDbContextFactory<CyberpunkEntities>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:Cyberpunk-Connection"]));
+services.AddDbContext<CyberpunkEntities>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:Cyberpunk-Connection"]));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)

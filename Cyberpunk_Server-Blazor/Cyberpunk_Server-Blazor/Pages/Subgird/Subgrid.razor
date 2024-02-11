@@ -24,8 +24,15 @@
 		/* height: 60vh; */
 		background-color: white;
 		width: 100%;
+		border-style: solid;
+		border-width: 1px;
 	}
 
+	.Subgrid_sidebar {
+		border: solid 1px;
+		border-radius: 10px;
+		padding: 10px;
+	}
 	div#Elements {
 		display: grid;
 		grid-template-columns: repeat(19, 1fr);
@@ -135,7 +142,7 @@
 else
 {
 	<div class="FortressHolder" style="" @onkeyup=keypress tabindex="0">
-		<div style="border: solid 1px;border-radius: 10px;">
+		<div class="Subgrid_sidebar">
 			<div class="fortressInfo">
 				<div class="dataPair"><label>Name</label><input type="text" @bind=Fortress.Name></div>
 				<div class="dataPair"><label>Int</label><label>@Fortress.Int</label></div>

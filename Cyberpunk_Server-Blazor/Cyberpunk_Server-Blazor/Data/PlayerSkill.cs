@@ -19,6 +19,10 @@ public partial class PlayerSkill
 
     public string? Name { get; set; }
 
+    public bool IsCustom { get; set; }
+
+    public bool IsChipped { get; set; }
+
     public virtual Player? Player { get; set; }
 
     public virtual ICollection<PlayerSkillModifiers> PlayerSkillModifiers { get; } = new List<PlayerSkillModifiers>();

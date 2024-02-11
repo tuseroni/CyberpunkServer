@@ -7,8 +7,15 @@
 				@foreach (var elem in stat)
 				{
 					<div class="stat-block" style="--ranks:@elem.Ranks; --currentIP:@elem.CurrentIP; --multiplier:@elem.Skill.Multiplier">
-						<label>@elem.Skill.Name</label>
-						<input type="Number" @bind=@elem.CurrentIP title="Current IP" />
+						<label>@elem.Name</label>
+						@if(elem.IsChipped)
+						{
+							<label>Chip</label>
+						}
+						else
+						{
+							<input type="Number" @bind=@elem.CurrentIP title="Current IP" />
+						}
 						<input type="number" @bind=@elem.Ranks title="Ranks" />
 					</div>
 				}

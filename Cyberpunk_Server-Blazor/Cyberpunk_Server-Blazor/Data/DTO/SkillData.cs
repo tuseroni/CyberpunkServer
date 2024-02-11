@@ -27,7 +27,7 @@ namespace CyberpunkServer.Models.DTO
 		public int? StatID { get; set; }
 
 		public string? Description { get; set; }
-
+		public bool IsCustom { get; set; }
 		public int Multiplier { get; set; }
 		public virtual StatData Stat { get; set; }
         public SkillTypesData SkillTypeNavigation

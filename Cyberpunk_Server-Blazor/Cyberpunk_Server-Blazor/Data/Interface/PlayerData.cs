@@ -174,7 +174,7 @@ namespace CyberpunkServer.Models.DTO
         public static explicit operator PlayerData(CyberpunkServer.Models.Player player)
         {
             var ret = Converter<PlayerData, Models.Player>.ConvertType(player,new PlayerData());
-            ret.SkillLookup = ret.PlayerSkill.ToDictionary(x => x.Skill.Name, x => x);
+            ret.SkillLookup = ret.PlayerSkill.Where(x=>!x.IsCustom).ToDictionary(x => x.Name, x => x);
             ret.StatLookup = ret.PlayerStat.ToDictionary(x => x.Stat.ABBR, x => x);
             return ret;
         }
